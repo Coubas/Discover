@@ -4,8 +4,7 @@ project(Discover VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Quick)
-find_package(Qt6 REQUIRED COMPONENTS Positioning)
+find_package(Qt6 REQUIRED COMPONENTS Core QuickWidgets Positioning)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -16,10 +15,18 @@ qt_add_executable(appDiscover
 qt_add_qml_module(appDiscover
     URI Discover
     VERSION 1.0
-    QML_FILES Main.qml
+    SOURCES mainwindow.h mainwindow.cpp
     SOURCES MapHelper.h MapHelper.cpp
     SOURCES MapBackend.h MapBackend.cpp
     SOURCES VecGeoCoord2D.h VecGeoCoord2D.cpp
+    QML_FILES MapView.qml
+    RESOURCES mainwindow.ui
+    RESOURCES qml.qrc
+)
+
+qt_add_resources(appDiscover "qml"
+    PREFIX "/qml"
+    FILES MapView.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -34,7 +41,8 @@ set_target_properties(appDiscover PROPERTIES
 )
 
 target_link_libraries(appDiscover
-    PRIVATE Qt6::Quick
+    PRIVATE Qt6::Core
+    PRIVATE Qt6::QuickWidgets
     PRIVATE Qt6::Positioning
 )
 

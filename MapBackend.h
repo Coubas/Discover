@@ -30,15 +30,14 @@ public slots:
     void onMapDrag(const QGeoCoordinate& _newMapCenter);
 
 private:
+    void updateZoomTarget(int _zoomFactor);
+
+    double m_mouseMvtSmoothRatioOnZoom{0.1};
+
     float m_currentZoomLevel;
     QGeoCoordinate m_locusPos;
     QGeoCoordinate m_center;
     QGeoCoordinate m_mouse;
-
-    double m_mouseMvtSmoothRatioOnZoom{0.1};
-
-    void updateZoomTarget(int _zoomFactor);
-
 };
 
 #endif // MAPBACKEND_H
