@@ -6,6 +6,8 @@
 #include <QGeoCoordinate>
 #include <QVector2D>
 
+class InputHandler;
+
 class MapBackend : public QObject
 {
     Q_OBJECT
@@ -15,6 +17,8 @@ class MapBackend : public QObject
 
 public:
     explicit MapBackend(QObject *parent = nullptr);
+
+    void connectInputs(const InputHandler* _inputHdl);
 
     float currentZoomLevel() const {return m_currentZoomLevel;}
     void setCurrentZoomLevel(float _zoomLevel) {m_currentZoomLevel = _zoomLevel;}

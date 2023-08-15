@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/qml">
         <file>MapView.qml</file>
+        <file>MapMarkerModels.qml</file>
+        <file>MapMarkerMultiDelegate.qml</file>
     </qresource>
 </RCC>

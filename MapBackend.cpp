@@ -2,9 +2,22 @@
 
 #include <VecGeoCoord2D.h>
 
+#include <InputHandler.h>
+
 MapBackend::MapBackend(QObject *parent)
     : QObject{parent}
 {}
+
+void MapBackend::connectInputs(const InputHandler* _inputHdl)
+{
+    if(_inputHdl == nullptr)
+    {
+        return;
+    }
+
+    connect(_inputHdl, SIGNAL(mapZoomed(QGeoCoordinate,QGeoCoordinate,int)), this, SLOT(onMapZoom(QGeoCoordinate,QGeoCoordinate,int)));
+    connect(_inputHdl, SIGNAL(mapDraged(QGeoCoordinate)), this, SLOT(onMapDrag(QGeoCoordinate)));
+}
 
 QGeoCoordinate MapBackend::locusPos() const
 {

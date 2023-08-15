@@ -19,7 +19,15 @@ qt_add_qml_module(appDiscover
     SOURCES MapHelper.h MapHelper.cpp
     SOURCES MapBackend.h MapBackend.cpp
     SOURCES VecGeoCoord2D.h VecGeoCoord2D.cpp
+    SOURCES InputHandler.h InputHandler.cpp
+    SOURCES MapMarkerModel.h MapMarkerModel.cpp
+    SOURCES MapMarkerList.h MapMarkerList.cpp
+    SOURCES MapMarkerItem.h MapMarkerItem.cpp
+    SOURCES TracksManager.h TracksManager.cpp
+    SOURCES Track.h Track.cpp
     QML_FILES MapView.qml
+    QML_FILES MapMarkerMultiDelegate.qml
+    QML_FILES MapMarkerBase.qml
     RESOURCES mainwindow.ui
     RESOURCES qml.qrc
 )
@@ -27,6 +35,8 @@ qt_add_qml_module(appDiscover
 qt_add_resources(appDiscover "qml"
     PREFIX "/qml"
     FILES MapView.qml
+    FILES MapMarkerMultiDelegate.qml
+    FILES MapMarkerBase.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
