@@ -18,6 +18,7 @@ public:
     void addPoint(const QGeoCoordinate& _coord, const QString& _type = "circle");
     void removePoint(int _markerId);
     void setPointSelected(int _markerId, bool _selected = true);
+    void removeSelectedPoints();
 
 signals:
 

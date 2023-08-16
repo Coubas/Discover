@@ -1,5 +1,8 @@
 import QtQuick 2.0
+import QtQuick
 
+
+import QtQuick.Controls
 import QtPositioning 5.6
 import QtLocation 5.6
 import Qt.labs.qmlmodels
@@ -12,19 +15,17 @@ MouseArea
     property var visualComponentId
     anchors.fill: parent
     acceptedButtons: Qt.LeftButton | Qt.RightButton
-    onClicked:
+    onClicked: (mouse) =>
     {
         if (mouse.button === Qt.LeftButton)
         {
             tracksManager.setPointSelected(markerId, !markerIsSelected)
-            markerIsSelected ? mouseArea.state = "selected" : mouseArea.state = ""
+            mouseArea.state = markerIsSelected ? "selected" : ""
         }
         else if (mouse.button === Qt.RightButton)
         {
-            tracksManager.removePointFromActiveTrack(markerId)
+            contextMenu.popup()
         }
-
-        console.log("Marker clicked " + markerId + ", selected : " + markerIsSelected + ", state :" + mouseArea.state)
     }
 
     Text
@@ -45,4 +46,20 @@ MouseArea
             }
         }
     ]
+
+    Menu
+    {
+        id: contextMenu
+        closePolicy: Popup.CloseOnReleaseOutside | Popup.CloseOnEscape
+        MenuItem
+        {
+            text: "Remove"
+            onTriggered: tracksManager.removePointFromActiveTrack(markerId)
+        }
+        MenuItem
+        {
+            text: "Log Info"
+            onTriggered: console.log("Marker clicked " + markerId + ", selected : " + markerIsSelected + ", state :" + mouseArea.state)
+        }
+    }
 }

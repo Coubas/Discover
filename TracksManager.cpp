@@ -35,3 +35,8 @@ void TracksManager::setPointSelected(int _markerId, bool _selected /*= true*/)
 {
     getActiveTrack()->setPointSelected(_markerId, _selected);
 }
+
+void TracksManager::removeSelectedPointsFromActiveTrack()
+{
+    getActiveTrack()->removeSelectedPoints();
+}

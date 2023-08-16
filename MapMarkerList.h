@@ -19,6 +19,7 @@ public:
 
     void removeMaker(int _markerId);
     void setMarkerSelected(int _markerId, bool _selected = true);
+    void removeSelectedMarkers();
 
 signals:
     void preItemAppended();
@@ -32,16 +33,16 @@ signals:
 public slots:
     void appendMarker();
     void appendMarker(MapMarkerItem _item);
-    void removeItem(int _index);
+    void removeItem(int _index, bool _updateIds = true);
 
 private:
     const MapMarkerItem* getMarker(int _markerId) const;
     MapMarkerItem* getMarker(int _markerId);
     int getMarkerIndex(int _markerId) const;
-    void updateMarkerIdsOnRemove(int _removedId);
+    void updateMarkerIdsOnRemove(int _firstRemovedId = 0);
+    void OnMarkerListModified(int (&_modifBounds)[2], std::initializer_list<int> _modifiedRoles = {});
 
     QVector<MapMarkerItem> m_markers;
-
 };
 
 #endif // MAPMARKERLIST_H

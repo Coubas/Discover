@@ -48,6 +48,32 @@ void MapMarkerList::setMarkerSelected(int _markerId, bool _selected /*= true*/)
     }
 }
 
+void MapMarkerList::removeSelectedMarkers()
+{
+    int firstRemovedId = -1;
+    for (int i = 0; i < m_markers.size();)
+    {
+        if(m_markers[i].selected())
+        {
+            removeItem(i, false);
+
+            if(firstRemovedId < 0)
+            {
+                firstRemovedId = i;
+            }
+        }
+        else
+        {
+            i++;
+        }
+    }
+
+    if(firstRemovedId >= 0)
+    {
+        updateMarkerIdsOnRemove(firstRemovedId);
+    }
+}
+
 void MapMarkerList::appendMarker()
 {
     MapMarkerItem item;
@@ -63,7 +89,7 @@ void MapMarkerList::appendMarker(MapMarkerItem _item)
     emit postItemAppended();
 }
 
-void MapMarkerList::removeItem(int _index)
+void MapMarkerList::removeItem(int _index, bool _updateIds /*= true*/)
 {
     if(_index >= 0 & _index < m_markers.size())
     {
@@ -74,7 +100,10 @@ void MapMarkerList::removeItem(int _index)
 
         emit postItemRemoved();
 
-        updateMarkerIdsOnRemove(removedId);
+        if(_updateIds)
+        {
+            updateMarkerIdsOnRemove(removedId);
+        }
     }
 }
 
@@ -107,15 +136,15 @@ int MapMarkerList::getMarkerIndex(int _markerId) const
     return -1;
 }
 
-void MapMarkerList::updateMarkerIdsOnRemove(int _removedId)
+void MapMarkerList::updateMarkerIdsOnRemove(int _firstRemovedId /*= 0*/)
 {
     int modifBounds[2]{-1, -1};
-    for (int i = 0; i < m_markers.size(); ++i)
+    for (int i = _firstRemovedId; i < m_markers.size(); ++i)
     {
         int markerId = m_markers[i].markerId();
-        if(markerId > _removedId)
+        if(markerId != i)
         {
-            m_markers[i].setMarkerId(markerId - 1);
+            m_markers[i].setMarkerId(i);
 
             if(modifBounds[0] < 0)
             {
@@ -125,10 +154,19 @@ void MapMarkerList::updateMarkerIdsOnRemove(int _removedId)
         }
     }
 
-    if(modifBounds[0] >= 0)
+    OnMarkerListModified(modifBounds, {MapMarkerModel::MarkerField::MarkerId});
+}
+
+void MapMarkerList::OnMarkerListModified(int (&_modifBounds)[2], std::initializer_list<int> _modifiedRoles /*= {}*/)
+{
+    QList<int> modifiedRole{};
+    for (int role : _modifiedRoles)
     {
-        QList<int> modifiedRole{};
-        modifiedRole.append(MapMarkerModel::MarkerField::MarkerId);
-        emit dataChanged(modifBounds[0], modifBounds[1], modifiedRole);
+        modifiedRole.append(role);
+    }
+
+    if(_modifBounds[0] >= 0)
+    {
+        emit dataChanged(_modifBounds[0], _modifBounds[1], modifiedRole);
     }
 }

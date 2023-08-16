@@ -24,6 +24,7 @@ public slots:
     void addPointToActiveTrack(const QGeoCoordinate& _coord);
     void removePointFromActiveTrack(int _markerId);
     void setPointSelected(int _markerId, bool _selected /*= true*/);
+    void removeSelectedPointsFromActiveTrack();
 
 private:
     Track m_track;

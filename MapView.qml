@@ -69,7 +69,7 @@ Item
 
         MouseArea
         {
-            id: mouseArea
+            id: mapMouseArea
             objectName: "mouseArea"
             anchors.fill: parent
             property geoCoordinate coord: map.toCoordinate(Qt.point(mouseX, mouseY));
@@ -80,6 +80,16 @@ Item
                 geoModel.update();
 
                 mapClicked(coord);
+            }
+        }
+
+        Shortcut
+        {
+            sequence: StandardKey.Delete
+            onActivated:
+            {
+                console.log("DeletePressed")
+                tracksManager.removeSelectedPointsFromActiveTrack()
             }
         }
 

@@ -20,3 +20,8 @@ void Track::setPointSelected(int _markerId, bool _selected /*= true*/)
 {
     m_points.setMarkerSelected(_markerId, _selected);
 }
+
+void Track::removeSelectedPoints()
+{
+    m_points.removeSelectedMarkers();
+}
