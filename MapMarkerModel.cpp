@@ -4,6 +4,8 @@
 
 #include <MapMarkerList.h>
 
+const QList<int> MapMarkerModel::ms_allRoles{MapMarkerModel::MarkerId, MapMarkerModel::MarkerIsSelected, MapMarkerModel::MarkerType, MapMarkerModel::MarkerCoordinate};
+
 MapMarkerModel::MapMarkerModel(QObject *parent)
     : QAbstractItemModel(parent)
     , m_list(nullptr)
@@ -40,12 +42,28 @@ int MapMarkerModel::columnCount(const QModelIndex &parent) const
     return 1;
 }
 
+bool MapMarkerModel::insertRows(int _row, int _count, const QModelIndex &_parent)
+{
+
+    return false;
+}
+
+bool MapMarkerModel::removeRows(int _row, int _count, const QModelIndex &_parent)
+{
+    return false;
+}
+
+bool MapMarkerModel::moveRows(const QModelIndex &_sourceParent, int _sourceRow, int _count, const QModelIndex &_destinationParent, int _destinationChild)
+{
+    return false;
+}
+
 QVariant MapMarkerModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid() || m_list == nullptr)
         return QVariant();
 
-    const MapMarkerItem item = m_list->items().at(index.row());
+    const MapMarkerItem& item = m_list->items().at(index.row());
     switch (role) {
     case MarkerId:
         return QVariant(item.markerId());
@@ -142,6 +160,23 @@ void MapMarkerModel::setList(MapMarkerList *_list)
 
         connect(m_list, &MapMarkerList::postItemRemoved, this, [=](){
             endRemoveRows();
+        });
+
+        // Begin/end move rows will only work if we actually create things within the model.
+        // Here everything is handled externally with the MapMarkerList class
+        // So my guess is that the Track should own a model handling MapMarkerItems (prefer a tree model for future complex tracks https://doc.qt.io/qt-6/qtwidgets-itemviews-simpletreemodel-example.html)
+        connect(m_list, &MapMarkerList::preItemMoved, this, [=](){
+            //beginMoveRows(QModelIndex(), _index, _index, QModelIndex(), _dest);
+            emit layoutAboutToBeChanged(QList<QPersistentModelIndex>(), QAbstractItemModel::LayoutChangeHint::VerticalSortHint);
+        });
+
+        connect(m_list, &MapMarkerList::postItemMoved, this, [=](int _index, int _dest){
+            //endMoveRows();
+            //const QModelIndexList oldIndexes = persistentIndexList();
+            //QModelIndexList newIndexes{oldIndexes};
+            //newIndexes.move(_index, _dest);
+            //changePersistentIndexList(oldIndexes, newIndexes);
+            emit layoutChanged(QList<QPersistentModelIndex>(), QAbstractItemModel::LayoutChangeHint::VerticalSortHint);
         });
 
         connect(m_list, &MapMarkerList::dataChanged, this, [=](int _first, int _last, const QList<int>& _roles = QList<int>()){

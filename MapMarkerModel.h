@@ -20,6 +20,7 @@ public:
         MarkerType,
         MarkerCoordinate
     };
+    static const QList<int> ms_allRoles;
 
     // Basic functionality:
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
@@ -27,6 +28,10 @@ public:
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+
+    bool insertRows(int _row, int _count, const QModelIndex& _parent = QModelIndex()) override;
+    bool removeRows(int _row, int _count, const QModelIndex& _parent = QModelIndex()) override;
+    bool moveRows(const QModelIndex& _sourceParent, int _sourceRow, int _count, const QModelIndex& _destinationParent, int _destinationChild) override;
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 

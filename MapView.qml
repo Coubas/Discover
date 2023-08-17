@@ -100,7 +100,7 @@ Item
             {
                 list: tracksManager.activeTrack.points
             }
-            delegate: MapMarkerMultiDelegate{}
+            delegate: MapMarkerBase{}
         }
     }
 

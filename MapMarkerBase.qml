@@ -9,57 +9,106 @@ import Qt.labs.qmlmodels
 
 import Tracks 1.0
 
-MouseArea
+MapQuickItem
 {
-    id: mouseArea
-    property var visualComponentId
-    anchors.fill: parent
-    acceptedButtons: Qt.LeftButton | Qt.RightButton
-    onClicked: (mouse) =>
-    {
-        if (mouse.button === Qt.LeftButton)
-        {
-            tracksManager.setPointSelected(markerId, !markerIsSelected)
-            mouseArea.state = markerIsSelected ? "selected" : ""
-        }
-        else if (mouse.button === Qt.RightButton)
-        {
-            contextMenu.popup()
-        }
-    }
+    id: cursor
+    anchorPoint.x: shapeLoader.width / 2
+    anchorPoint.y:  shapeLoader.height / 2
+    coordinate: markerCoordinate
 
-    Text
-    {
-        text: markerId
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
-    }
-
-    states:
-    [
-        State {
-            name: "selected"
-            PropertyChanges
+    sourceItem:
+        Item
+        {
+            id: mapMarker
+            Loader
             {
-                target: mouseArea.visualComponentId
-                color: "red"
+                id: shapeLoader
+                source: getShape(markerType)
+
+                function getShape(t)
+                {
+                    switch(t)
+                    {
+                    case "pin":
+                        return "PinMarker.qml"
+                    case "circle":
+                        return "CircleMarker.qml"
+                    default:
+                        return "PinMarker.qml"
+                    }
+                }
+            }
+
+
+            MouseArea
+            {
+                id: mouseArea
+                anchors.fill: shapeLoader
+                acceptedButtons: Qt.LeftButton | Qt.RightButton
+                onClicked: (mouse) =>
+                {
+                    if (mouse.button === Qt.LeftButton)
+                    {
+                        tracksManager.setPointSelected(markerId, !markerIsSelected)
+                        mapMarker.state = markerIsSelected ? "selected" : ""
+                    }
+                    else if (mouse.button === Qt.RightButton)
+                    {
+                        contextMenu.popup()
+                    }
+                }
+            }
+
+            Text
+            {
+                text: markerId
+                anchors.verticalCenter: shapeLoader.verticalCenter
+                anchors.horizontalCenter: shapeLoader.horizontalCenter
+            }
+
+            states:
+            [
+                State {
+                    name: "selected"
+                    PropertyChanges
+                    {
+                        target: shapeLoader.item
+                        color: "red"
+                    }
+                }
+            ]
+
+            Menu
+            {
+                id: contextMenu
+                closePolicy: Popup.CloseOnReleaseOutside | Popup.CloseOnEscape
+                MenuItem
+                {
+                    text: "Remove"
+                    onTriggered: tracksManager.removePointFromActiveTrack(markerId)
+                }
+                MenuItem
+                {
+                    text: "Change index to " + changeIdSlider.value
+                    enabled: changeIdSlider.value != markerId
+                    onTriggered: tracksManager.changePointIndexFromActiveTrack(markerId, changeIdSlider.value)
+                    //onTriggered: console.log("changePointIndexFromActiveTrack("+markerId+", "+changeIdSlider.value+")")
+                }
+                Slider
+                {
+                    id: changeIdSlider
+                    from: 0
+                    value: markerId+1
+                    to: tracksManager.getActiveTrackSize()-1
+                    snapMode: Slider.SnapAlways
+                    stepSize: 1
+                    leftPadding: 25
+                }
+                MenuItem
+                {
+                    text: "Log Info"
+                    onTriggered: console.log("Marker clicked " + markerId + ", selected : " + markerIsSelected + ", state :" + mouseArea.state + "\nType : " + markerType)
+                }
             }
         }
-    ]
-
-    Menu
-    {
-        id: contextMenu
-        closePolicy: Popup.CloseOnReleaseOutside | Popup.CloseOnEscape
-        MenuItem
-        {
-            text: "Remove"
-            onTriggered: tracksManager.removePointFromActiveTrack(markerId)
-        }
-        MenuItem
-        {
-            text: "Log Info"
-            onTriggered: console.log("Marker clicked " + markerId + ", selected : " + markerIsSelected + ", state :" + mouseArea.state)
-        }
-    }
 }

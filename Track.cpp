@@ -6,7 +6,7 @@ Track::Track(QObject *parent)
 
 }
 
-void Track::addPoint(const QGeoCoordinate &_coord, const QString &_type /*= "circle"*/)
+void Track::addPoint(const QGeoCoordinate &_coord, const QString &_type /*= "pin"*/)
 {
     m_points.appendMarker(MapMarkerItem(m_points.size(), _type, _coord));
 }
@@ -24,4 +24,9 @@ void Track::setPointSelected(int _markerId, bool _selected /*= true*/)
 void Track::removeSelectedPoints()
 {
     m_points.removeSelectedMarkers();
+}
+
+void Track::changePointIndex(int _oldIndex, int _newIndex)
+{
+    m_points.changeMarkerIndex(_oldIndex, _newIndex);
 }

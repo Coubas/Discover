@@ -9,11 +9,6 @@ MapMarkerList::MapMarkerList(QObject *parent)
     : QObject{parent}
 {}
 
-const QVector<MapMarkerItem>& MapMarkerList::items() const
-{
-    return m_markers;
-}
-
 bool MapMarkerList::setItemAt(int _index, const MapMarkerItem &_item)
 {
     if(_index < 0 || _index >= m_markers.size())
@@ -70,8 +65,13 @@ void MapMarkerList::removeSelectedMarkers()
 
     if(firstRemovedId >= 0)
     {
-        updateMarkerIdsOnRemove(firstRemovedId);
+        updateMarkerIds(firstRemovedId);
     }
+}
+
+void MapMarkerList::changeMarkerIndex(int _oldMarkerId, int _newMarkerId)
+{
+    moveItem(_oldMarkerId, _newMarkerId);
 }
 
 void MapMarkerList::appendMarker()
@@ -102,8 +102,22 @@ void MapMarkerList::removeItem(int _index, bool _updateIds /*= true*/)
 
         if(_updateIds)
         {
-            updateMarkerIdsOnRemove(removedId);
+            updateMarkerIds(removedId);
         }
+    }
+}
+
+void MapMarkerList::moveItem(int _index, int _destIndex)
+{
+    if(_index >= 0 & _index < m_markers.size() && _destIndex != _index)
+    {
+        emit preItemMoved();
+
+        m_markers.move(_index, _destIndex);
+
+        emit postItemMoved(_index, _destIndex);
+
+        updateMarkerIds(qMin(_index, _destIndex));
     }
 }
 
@@ -136,10 +150,10 @@ int MapMarkerList::getMarkerIndex(int _markerId) const
     return -1;
 }
 
-void MapMarkerList::updateMarkerIdsOnRemove(int _firstRemovedId /*= 0*/)
+void MapMarkerList::updateMarkerIds(int _firstModifiedId /*= 0*/)
 {
     int modifBounds[2]{-1, -1};
-    for (int i = _firstRemovedId; i < m_markers.size(); ++i)
+    for (int i = _firstModifiedId; i < m_markers.size(); ++i)
     {
         int markerId = m_markers[i].markerId();
         if(markerId != i)
@@ -154,15 +168,23 @@ void MapMarkerList::updateMarkerIdsOnRemove(int _firstRemovedId /*= 0*/)
         }
     }
 
-    OnMarkerListModified(modifBounds, {MapMarkerModel::MarkerField::MarkerId});
+    //onMarkerListModified(modifBounds, {MapMarkerModel::MarkerField::MarkerId});
+    onMarkerListModified(modifBounds);
 }
 
-void MapMarkerList::OnMarkerListModified(int (&_modifBounds)[2], std::initializer_list<int> _modifiedRoles /*= {}*/)
+void MapMarkerList::onMarkerListModified(int (&_modifBounds)[2], std::initializer_list<int> _modifiedRoles /*= {}*/)
 {
     QList<int> modifiedRole{};
-    for (int role : _modifiedRoles)
+    if(_modifiedRoles.size() > 0)
     {
-        modifiedRole.append(role);
+        for (int role : _modifiedRoles)
+        {
+            modifiedRole.append(role);
+        }
+    }
+    else
+    {
+        modifiedRole = MapMarkerModel::ms_allRoles;
     }
 
     if(_modifBounds[0] >= 0)

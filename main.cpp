@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QQuickStyle>
 
 #include <InputHandler.h>
 #include <MainWindow.h>
@@ -14,13 +15,16 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
+    //QQuickStyle::setStyle("Material");
+
     qmlRegisterSingletonType<MapHelper>("MapHelper", 1, 0, "MapHelper", &MapHelper::qmlInstance);
     qmlRegisterUncreatableType<MapBackend>("MapBackend", 1, 0,"MapBackend", QStringLiteral("MapBackend should not be created in QML."));
     qmlRegisterType<MapMarkerModel>("MapMarker", 1, 0, "MapMarkerModel");
     qmlRegisterUncreatableType<MapMarkerList>("MapMarker", 1, 0, "MapMarkerList", QStringLiteral("MapMarkerList should not be created in QML."));
-    qmlRegisterUncreatableType<MapMarkerList>("Tracks", 1, 0, "TracksManager", QStringLiteral("TracksManager should not be created in QML."));
-    qmlRegisterUncreatableType<MapMarkerList>("Tracks", 1, 0, "Track", QStringLiteral("Track should not be created in QML."));
-    qmlRegisterUncreatableType<MapMarkerList>("Inputs", 1, 0, "InputManager", QStringLiteral("TracksManager should not be created in QML."));
+    qmlRegisterUncreatableType<TracksManager>("Tracks", 1, 0, "TracksManager", QStringLiteral("TracksManager should not be created in QML."));
+    qmlRegisterUncreatableType<Track>("Tracks", 1, 0, "Track", QStringLiteral("Track should not be created in QML."));
+    qmlRegisterUncreatableType<Track2>("Tracks", 1, 0, "Track2", QStringLiteral("Track2 should not be created in QML."));
+    qmlRegisterUncreatableType<InputHandler>("Inputs", 1, 0, "InputHandler", QStringLiteral("InputHandler should not be created in QML."));
 
     InputHandler inputHdl;
     MapBackend mapBackEnd;

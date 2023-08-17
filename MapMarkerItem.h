@@ -9,7 +9,7 @@ public:
     MapMarkerItem();
     MapMarkerItem(int _id, const QString& _type, const QGeoCoordinate& _coord, bool _selected = false);
 
-    bool operator==(const MapMarkerItem& _other) const { return m_markerId == _other.m_markerId; }
+    bool operator==(const MapMarkerItem& _other) const { return m_markerId == _other.m_markerId && m_markerCoordinate == _other.m_markerCoordinate; }
     bool operator!=(const MapMarkerItem& _other) const { return !operator==(_other); }
 
     int markerId() const;

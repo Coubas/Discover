@@ -2,7 +2,6 @@
 #define MAPMARKERLIST_H
 
 #include <QObject>
-#include <QVector>
 
 #include <MapMarkerItem.h>
 
@@ -12,7 +11,7 @@ class MapMarkerList : public QObject
 public:
     explicit MapMarkerList(QObject *parent = nullptr);
 
-    const QVector<MapMarkerItem>& items() const;
+    const QList<MapMarkerItem>& items() const { return m_markers; }
 
     bool setItemAt(int _index, const MapMarkerItem& _item);
     qsizetype size() const {return m_markers.size();}
@@ -20,6 +19,7 @@ public:
     void removeMaker(int _markerId);
     void setMarkerSelected(int _markerId, bool _selected = true);
     void removeSelectedMarkers();
+    void changeMarkerIndex(int _oldMarkerId, int _newMarkerId);
 
 signals:
     void preItemAppended();
@@ -28,21 +28,25 @@ signals:
     void preItemRemoved(int _index);
     void postItemRemoved();
 
+    void preItemMoved();
+    void postItemMoved(int _index, int _indexDest);
+
     void dataChanged(int _first, int _last, const QList<int>& _roles = QList<int>());
 
 public slots:
     void appendMarker();
     void appendMarker(MapMarkerItem _item);
     void removeItem(int _index, bool _updateIds = true);
+    void moveItem(int _index, int _destIndex);
 
 private:
     const MapMarkerItem* getMarker(int _markerId) const;
     MapMarkerItem* getMarker(int _markerId);
     int getMarkerIndex(int _markerId) const;
-    void updateMarkerIdsOnRemove(int _firstRemovedId = 0);
-    void OnMarkerListModified(int (&_modifBounds)[2], std::initializer_list<int> _modifiedRoles = {});
+    void updateMarkerIds(int _firstModifiedId = 0);
+    void onMarkerListModified(int (&_modifBounds)[2], std::initializer_list<int> _modifiedRoles = {});
 
-    QVector<MapMarkerItem> m_markers;
+    QList<MapMarkerItem> m_markers;
 };
 
 #endif // MAPMARKERLIST_H

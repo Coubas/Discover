@@ -14,11 +14,13 @@ public:
     explicit Track(QObject *parent = nullptr);
 
     MapMarkerList* getPointList() {return &m_points;}
+    qsizetype size() const {return m_points.size();}
 
-    void addPoint(const QGeoCoordinate& _coord, const QString& _type = "circle");
+    void addPoint(const QGeoCoordinate& _coord, const QString& _type = "pin");
     void removePoint(int _markerId);
     void setPointSelected(int _markerId, bool _selected = true);
     void removeSelectedPoints();
+    void changePointIndex(int _oldIndex, int _newIndex);
 
 signals:
 
