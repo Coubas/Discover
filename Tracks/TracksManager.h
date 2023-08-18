@@ -4,7 +4,6 @@
 #include <QObject>
 
 #include <Track.h>
-#include <Track2.h>
 
 class InputHandler;
 
@@ -20,9 +19,6 @@ public:
     const Track* getActiveTrack() const {return &m_track;}
     Track* getActiveTrack() {return &m_track;}
 
-    const Track2* getActiveTrack2() const {return &m_track2;}
-    Track2* getActiveTrack2() {return &m_track2;}
-
 signals:
 
 public slots:
@@ -35,7 +31,6 @@ public slots:
 
 private:
     Track m_track;
-    Track2 m_track2;
 
     int m_selectedPoint;
 };

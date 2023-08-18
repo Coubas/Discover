@@ -47,10 +47,11 @@ Item
             property: "zoomLevel"
             signal mapZoomed(geoCoordinate _centerCoord, geoCoordinate _mouseCoord, int _zoomFactor)
             onWheel: (event) => {
-                         //console.log("pos", event.x, event.y, "angleDelta", event.angleDelta.y, "zoom", map.zoomLevel);
-                         var coord = map.toCoordinate(Qt.point(event.x, event.y));
-                         var center = map.center;
-                         mapZoomed(center, coord, event.angleDelta.y);
+                        //console.log("pos", event.x, event.y, "angleDelta", event.angleDelta.y, "zoom", map.zoomLevel)
+                        var coord = map.toCoordinate(Qt.point(event.x, event.y))
+                        var center = map.center
+                        mapZoomed(center, coord, event.angleDelta.y)
+                        inputHandler.onMapZoomed(center, coord, event.angleDelta.y)
                      }
         }
 
@@ -64,6 +65,7 @@ Item
                                   {
                                       map.pan(-delta.x, -delta.y)
                                       mapDraged(map.center)
+                                      inputHandler.onMapDraged(map.center)
                                   }
         }
 
@@ -76,10 +78,11 @@ Item
             signal mapClicked(geoCoordinate _coord);
             onClicked:
             {
-                geoModel.query = coord;
-                geoModel.update();
+                geoModel.query = coord
+                geoModel.update()
 
-                mapClicked(coord);
+                mapClicked(coord)
+                inputHandler.onMapClicked(coord)
             }
         }
 
@@ -121,6 +124,7 @@ Item
             {
                 //console.log("Adresse : " + get(0).address.text + "\n" + get(0).coordinate)
                 cursorGeolocComputed(get(0).location)
+                inputHandler.onCursorGeolocComputed(get(0).location)
             }
         }
     }

@@ -1,8 +1,7 @@
 #include "MapBackend.h"
 
-#include <VecGeoCoord2D.h>
-
 #include <InputHandler.h>
+#include <VecGeoCoord2D.h>
 
 MapBackend::MapBackend(QObject *parent)
     : QObject{parent}
