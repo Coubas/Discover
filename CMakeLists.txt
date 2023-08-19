@@ -37,8 +37,10 @@ qt_add_qml_module(appDiscover
         Qml/MainWindowContent.qml
         Qml/MapView.qml
         Qml/MapMarkerBase.qml
-        Qml/PinMarker.qml
-        Qml/CircleMarker.qml
+        Qml/MapMarkerCursor.qml
+        Qml/CursorMarkerShape.qml
+        Qml/PinMarkerShape.qml
+        Qml/CircleMarkerShape.qml
     RESOURCES
         qtquickcontrols2.conf
         qml.qrc
@@ -52,8 +54,10 @@ qt_add_resources(appDiscover "qml"
         Qml/MainWindowContent.qml
         Qml/MapView.qml
         Qml/MapMarkerBase.qml
-        Qml/PinMarker.qml
-        Qml/CircleMarker.qml
+        Qml/MapMarkerCursor.qml
+        Qml/CursorMarkerShape.qml
+        Qml/PinMarkerShape.qml
+        Qml/CircleMarkerShape.qml
 )
 
 qt_add_resources(appDiscover "settings"

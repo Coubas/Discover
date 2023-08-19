@@ -22,7 +22,7 @@ public:
     void changeMarkerIndex(int _oldMarkerId, int _newMarkerId);
 
 signals:
-    void preItemAppended();
+    void preItemAppended(int _index);
     void postItemAppended();
 
     void preItemRemoved(int _index);
@@ -35,7 +35,7 @@ signals:
 
 public slots:
     void appendMarker();
-    void appendMarker(MapMarkerItem _item);
+    void appendMarker(MapMarkerItem _item, int _insertIndex = -1);
     void removeItem(int _index, bool _updateIds = true);
     void moveItem(int _index, int _destIndex);
 

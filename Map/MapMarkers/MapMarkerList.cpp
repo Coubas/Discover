@@ -80,13 +80,17 @@ void MapMarkerList::appendMarker()
     appendMarker(item);
 }
 
-void MapMarkerList::appendMarker(MapMarkerItem _item)
+void MapMarkerList::appendMarker(MapMarkerItem _item, int _insertIndex /*= -1*/)
 {
-    emit preItemAppended();
+    int index = _insertIndex >= 0 ? _insertIndex : m_markers.size();
 
-    m_markers.append(_item);
+    emit preItemAppended(index);
+
+    m_markers.insert(index, _item);
 
     emit postItemAppended();
+
+    updateMarkerIds(index);
 }
 
 void MapMarkerList::removeItem(int _index, bool _updateIds /*= true*/)

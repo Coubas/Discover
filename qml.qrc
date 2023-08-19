@@ -2,9 +2,11 @@
     <qresource prefix="/qml">
         <file>Qml/MainWindow.qml</file>
         <file>Qml/MainWindowContent.qml</file>
-        <file>Qml/CircleMarker.qml</file>
         <file>Qml/MapMarkerBase.qml</file>
         <file>Qml/MapView.qml</file>
-        <file>Qml/PinMarker.qml</file>
+        <file>Qml/MapMarkerCursor.qml</file>
+        <file>Qml/CircleMarkerShape.qml</file>
+        <file>Qml/CursorMarkerShape.qml</file>
+        <file>Qml/PinMarkerShape.qml</file>
     </qresource>
 </RCC>

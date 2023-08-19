@@ -13,7 +13,6 @@ class DiscoverMainWindow : public QObject
     Q_OBJECT
 public:
     DiscoverMainWindow(QQuickWindow* _window);
-    ~DiscoverMainWindow();
 
     void connectInputs(const InputHandler *_inputHdl);
 

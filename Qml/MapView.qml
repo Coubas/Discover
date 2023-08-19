@@ -32,6 +32,7 @@ Item
         zoomLevel: 10
         //activeMapType: MapType.StreetMap
         activeMapType: supportedMapTypes[supportedMapTypes.length - 1]
+        Component.onCompleted: addMapItem(cursor)
 
         WheelHandler
         {
@@ -45,12 +46,10 @@ Item
                              : PointerDevice.Mouse
             rotationScale: 1/120
             property: "zoomLevel"
-            signal mapZoomed(geoCoordinate _centerCoord, geoCoordinate _mouseCoord, int _zoomFactor)
             onWheel: (event) => {
                         //console.log("pos", event.x, event.y, "angleDelta", event.angleDelta.y, "zoom", map.zoomLevel)
                         var coord = map.toCoordinate(Qt.point(event.x, event.y))
                         var center = map.center
-                        mapZoomed(center, coord, event.angleDelta.y)
                         inputHandler.onMapZoomed(center, coord, event.angleDelta.y)
                      }
         }
@@ -60,11 +59,9 @@ Item
             id: dragHandler
             objectName: "dragHandler"
             target: null
-            signal mapDraged(geoCoordinate _coord)
             onTranslationChanged: (delta) =>
                                   {
                                       map.pan(-delta.x, -delta.y)
-                                      mapDraged(map.center)
                                       inputHandler.onMapDraged(map.center)
                                   }
         }
@@ -75,13 +72,11 @@ Item
             objectName: "mouseArea"
             anchors.fill: parent
             property geoCoordinate coord: map.toCoordinate(Qt.point(mouseX, mouseY));
-            signal mapClicked(geoCoordinate _coord);
             onClicked:
             {
                 geoModel.query = coord
                 geoModel.update()
 
-                mapClicked(coord)
                 inputHandler.onMapClicked(coord)
             }
         }
@@ -127,5 +122,10 @@ Item
                 inputHandler.onCursorGeolocComputed(get(0).location)
             }
         }
+    }
+
+    MapMarkerCursor
+    {
+        id: cursor
     }
 }

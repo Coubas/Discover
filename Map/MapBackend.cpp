@@ -14,6 +14,7 @@ void MapBackend::connectInputs(const InputHandler* _inputHdl)
         return;
     }
 
+    connect(_inputHdl, SIGNAL(mapClicked(QGeoCoordinate)), this, SLOT(onMapClick(QGeoCoordinate)));
     connect(_inputHdl, SIGNAL(mapZoomed(QGeoCoordinate,QGeoCoordinate,int)), this, SLOT(onMapZoom(QGeoCoordinate,QGeoCoordinate,int)));
     connect(_inputHdl, SIGNAL(mapDraged(QGeoCoordinate)), this, SLOT(onMapDrag(QGeoCoordinate)));
 }
@@ -34,7 +35,39 @@ void MapBackend::setLocusPos(const QGeoCoordinate& _coord)
     emit locusPosUptated();
 }
 
+bool MapBackend::cursorVisible() const
+{
+    return m_cursorVisible;
+}
+
+void MapBackend::setCursorVisible(bool _newCursorVisible)
+{
+    if (m_cursorVisible == _newCursorVisible)
+        return;
+    m_cursorVisible = _newCursorVisible;
+    emit cursorVisibleChanged();
+}
+
+QGeoCoordinate MapBackend::cursorPos() const
+{
+    return m_cursorPos;
+}
+
+void MapBackend::setCursorPos(const QGeoCoordinate& _newCursorPos)
+{
+    if (m_cursorPos == _newCursorPos)
+        return;
+    m_cursorPos = _newCursorPos;
+    emit cursorPosChanged();
+}
+
 // Slots
+void MapBackend::onMapClick(const QGeoCoordinate &_clickCoord)
+{
+    setCursorPos(_clickCoord);
+    setCursorVisible(true);
+}
+
 void MapBackend::onMapZoom(const QGeoCoordinate& _centerCoord, const QGeoCoordinate& _mouseCoord, int _zoomFactor)
 {
     m_center = _centerCoord;

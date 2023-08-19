@@ -11,19 +11,22 @@ class TracksManager : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(Track* activeTrack READ getActiveTrack CONSTANT)
+    Q_PROPERTY(int activeTrackSize READ getActiveTrackSize NOTIFY getActiveTrackSizeChanged FINAL)
 
 public:
     explicit TracksManager(QObject *parent = nullptr);
 
     void connectInputs(const InputHandler *_inputHdl);
+
     const Track* getActiveTrack() const {return &m_track;}
     Track* getActiveTrack() {return &m_track;}
+    qsizetype getActiveTrackSize() const {return getActiveTrack()->size();}
 
 signals:
+    void getActiveTrackSizeChanged();
 
 public slots:
-    qsizetype getActiveTrackSize() const {return getActiveTrack()->size();}
-    void addPointToActiveTrack(const QGeoCoordinate& _coord);
+    void addPointToActiveTrack(const QGeoCoordinate& _coord, int _insertIndex = -1, const QString& _type = "pin");
     void removePointFromActiveTrack(int _markerId);
     void setPointSelected(int _markerId, bool _selected /*= true*/);
     void removeSelectedPointsFromActiveTrack();

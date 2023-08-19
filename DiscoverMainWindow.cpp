@@ -17,14 +17,6 @@ DiscoverMainWindow::DiscoverMainWindow(QQuickWindow* _parent)
     bindWindowObjects();
 }
 
-DiscoverMainWindow::~DiscoverMainWindow()
-{
-    delete m_clickLatText;
-    delete m_clickLonText;
-    delete m_clickAdressText;
-    delete m_window;
-}
-
 void DiscoverMainWindow::connectInputs(const InputHandler* _inputHdl)
 {
     if(_inputHdl == nullptr)

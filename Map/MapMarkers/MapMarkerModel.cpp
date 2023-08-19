@@ -145,9 +145,8 @@ void MapMarkerModel::setList(MapMarkerList *_list)
 
     if(m_list)
     {
-        connect(m_list, &MapMarkerList::preItemAppended, this, [=](){
-            const int i = m_list->items().size();
-            beginInsertRows(QModelIndex(), i, i);
+        connect(m_list, &MapMarkerList::preItemAppended, this, [=](int _i){
+            beginInsertRows(QModelIndex(), _i, _i);
         });
 
         connect(m_list, &MapMarkerList::postItemAppended, this, [=](){

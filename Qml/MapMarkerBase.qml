@@ -29,12 +29,14 @@ MapQuickItem
                 {
                     switch(t)
                     {
+                    case "cursor":
+                        return "CursorMarkerShape.qml"
                     case "pin":
-                        return "PinMarker.qml"
+                        return "PinMarkerShape.qml"
                     case "circle":
-                        return "CircleMarker.qml"
+                        return "CircleMarkerShape.qml"
                     default:
-                        return "PinMarker.qml"
+                        return "PinMarkerShape.qml"
                     }
                 }
             }
@@ -99,7 +101,7 @@ MapQuickItem
                     id: changeIdSlider
                     from: 0
                     value: markerId+1
-                    to: tracksManager.getActiveTrackSize()-1
+                    to: tracksManager.activeTrackSize - 1
                     snapMode: Slider.SnapAlways
                     stepSize: 1
                     leftPadding: 25
@@ -107,7 +109,7 @@ MapQuickItem
                 MenuItem
                 {
                     text: "Log Info"
-                    onTriggered: console.log("Marker clicked " + markerId + ", selected : " + markerIsSelected + ", state :" + mouseArea.state + "\nType : " + markerType)
+                    onTriggered: console.log("Marker clicked " + markerId + ", selected : " + markerIsSelected + ", state :" + mapMarker.state + "\nType : " + markerType)
                 }
             }
         }

@@ -6,9 +6,9 @@ Track::Track(QObject *parent)
 
 }
 
-void Track::addPoint(const QGeoCoordinate &_coord, const QString &_type /*= "pin"*/)
+void Track::addPoint(const QGeoCoordinate &_coord, int _insertIndex /*= -1*/, const QString &_type /*= "pin"*/)
 {
-    m_points.appendMarker(MapMarkerItem(m_points.size(), _type, _coord));
+    m_points.appendMarker(MapMarkerItem(m_points.size(), _type, _coord), _insertIndex);
 }
 
 void Track::removePoint(int _markerId)
