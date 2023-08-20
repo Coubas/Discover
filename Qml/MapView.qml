@@ -74,8 +74,7 @@ Item
             property geoCoordinate coord: map.toCoordinate(Qt.point(mouseX, mouseY));
             onClicked:
             {
-                geoModel.query = coord
-                geoModel.update()
+                geoModel.updateQuery(coord)
 
                 inputHandler.onMapClicked(coord)
             }
@@ -107,7 +106,6 @@ Item
         id: geoModel
         objectName: "geoModel"
         plugin: mapPlugin
-        signal cursorGeolocComputed(geoLocation _location);
         onLocationsChanged:
         {
             if(error)
@@ -118,9 +116,14 @@ Item
             if (count>=1)
             {
                 //console.log("Adresse : " + get(0).address.text + "\n" + get(0).coordinate)
-                cursorGeolocComputed(get(0).location)
                 inputHandler.onCursorGeolocComputed(get(0).location)
             }
+        }
+
+        function updateQuery(coord)
+        {
+            query = coord
+            update()
         }
     }
 

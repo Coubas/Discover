@@ -11,7 +11,7 @@ import Tracks 1.0
 
 MapQuickItem
 {
-    id: cursor
+    id: marker
     anchorPoint.x: shapeLoader.width / 2
     anchorPoint.y:  shapeLoader.height / 2
     coordinate: markerCoordinate
@@ -57,6 +57,18 @@ MapQuickItem
                     else if (mouse.button === Qt.RightButton)
                     {
                         contextMenu.popup()
+                    }
+                }
+                drag
+                {
+                    target: marker
+                    axis: Drag.XAndYAxis
+                    onActiveChanged:
+                    {
+                        if(!drag.active)
+                        {
+                            markerCoordinate = coordinate
+                        }
                     }
                 }
             }
@@ -109,7 +121,8 @@ MapQuickItem
                 MenuItem
                 {
                     text: "Log Info"
-                    onTriggered: console.log("Marker clicked " + markerId + ", selected : " + markerIsSelected + ", state :" + mapMarker.state + "\nType : " + markerType)
+                    onTriggered: console.log("Marker clicked " + markerId + ", selected: " + markerIsSelected + ", state:" + mapMarker.state +
+                                             "\nType: " + markerType + ", Pos: " + markerCoordinate)
                 }
             }
         }

@@ -18,12 +18,14 @@ public slots:
     void onMapClicked(const QGeoCoordinate& _mouseCoord);
 
     void onCursorGeolocComputed(const QGeoLocation& _loc);
+    void onCursorPosChanged(const QGeoCoordinate& _coord);
 
 signals:
     void mapZoomed(const QGeoCoordinate& _centerCoord, const QGeoCoordinate& _mouseCoord, int _zoomFactor);
     void mapDraged(const QGeoCoordinate& _newMapCenter);
     void mapClicked(const QGeoCoordinate& _mouseCoord);
 
+    void cursorPosChanged(const QGeoCoordinate& _coord);
     void cursorGeolocComputed(const QGeoLocation& _loc);
 };
 

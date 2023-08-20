@@ -37,6 +37,21 @@ MapQuickItem
                     contextMenu.popup()
                 }
             }
+            drag
+            {
+                target: cursor
+                axis: Drag.XAndYAxis
+                onActiveChanged:
+                {
+                    if(!drag.active)
+                    {
+                        mapBackend.cursorPos = coordinate
+                        inputHandler.cursorPosChanged(coordinate)
+
+                        geoModel.updateQuery(coordinate)
+                    }
+                }
+            }
         }
 
 //        Text

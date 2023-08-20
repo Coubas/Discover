@@ -25,6 +25,7 @@ void DiscoverMainWindow::connectInputs(const InputHandler* _inputHdl)
     }
 
     connect(_inputHdl, SIGNAL(mapClicked(QGeoCoordinate)), this, SLOT(displayCurrentPos(QGeoCoordinate)));
+    connect(_inputHdl, SIGNAL(cursorPosChanged(QGeoCoordinate)), this, SLOT(displayCurrentPos(QGeoCoordinate)));
     connect(_inputHdl, SIGNAL(cursorGeolocComputed(QGeoLocation)), this, SLOT(displayAdress(QGeoLocation)));
 }
 
