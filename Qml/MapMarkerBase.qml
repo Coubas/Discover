@@ -52,13 +52,13 @@ MapQuickItem
                     if (mouse.button === Qt.LeftButton)
                     {
                         tracksManager.setPointSelected(markerId, !markerIsSelected)
-                        mapMarker.state = markerIsSelected ? "selected" : ""
                     }
                     else if (mouse.button === Qt.RightButton)
                     {
                         contextMenu.popup()
                     }
                 }
+
                 drag
                 {
                     target: marker
@@ -67,7 +67,7 @@ MapQuickItem
                     {
                         if(!drag.active)
                         {
-                            markerCoordinate = coordinate
+                            tracksManager.setPointCoordinate(markerId, coordinate)
                         }
                     }
                 }
@@ -80,6 +80,7 @@ MapQuickItem
                 anchors.horizontalCenter: shapeLoader.horizontalCenter
             }
 
+            state: markerIsSelected ? "selected" : ""
             states:
             [
                 State {
@@ -87,7 +88,7 @@ MapQuickItem
                     PropertyChanges
                     {
                         target: shapeLoader.item
-                        color: "red"
+                        color: Material.accentColor
                     }
                 }
             ]
@@ -121,7 +122,7 @@ MapQuickItem
                 MenuItem
                 {
                     text: "Log Info"
-                    onTriggered: console.log("Marker clicked " + markerId + ", selected: " + markerIsSelected + ", state:" + mapMarker.state +
+                    onTriggered: console.log("Marker id: " + markerId + ", selected: " + markerIsSelected + ", state:" + mapMarker.state +
                                              "\nType: " + markerType + ", Pos: " + markerCoordinate)
                 }
             }

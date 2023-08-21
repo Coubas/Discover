@@ -21,6 +21,11 @@ void Track::setPointSelected(int _markerId, bool _selected /*= true*/)
     m_points.setMarkerSelected(_markerId, _selected);
 }
 
+void Track::setPointCoordinate(int _markerId, const QGeoCoordinate &_coord)
+{
+    m_points.setMarkerCoordinate(_markerId, _coord);
+}
+
 void Track::removeSelectedPoints()
 {
     m_points.removeSelectedMarkers();
@@ -29,4 +34,14 @@ void Track::removeSelectedPoints()
 void Track::changePointIndex(int _oldIndex, int _newIndex)
 {
     m_points.changeMarkerIndex(_oldIndex, _newIndex);
+}
+
+const QString& Track::name() const
+{
+    return m_name;
+}
+
+void Track::setName(const QString& _newName)
+{
+    m_name = _newName;
 }

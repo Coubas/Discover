@@ -19,12 +19,17 @@ public:
     void addPoint(const QGeoCoordinate& _coord, int _insertIndex = -1, const QString& _type = "pin");
     void removePoint(int _markerId);
     void setPointSelected(int _markerId, bool _selected = true);
+    void setPointCoordinate(int _markerId, const QGeoCoordinate& _coord);
     void removeSelectedPoints();
     void changePointIndex(int _oldIndex, int _newIndex);
+
+    const QString& name() const;
+    void setName(const QString& _newName);
 
 signals:
 
 private:
+    QString m_name;
     MapMarkerList m_points;
 };
 

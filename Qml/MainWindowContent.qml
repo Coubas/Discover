@@ -1,17 +1,73 @@
-import QtQuick 2.0
+import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls 2.0
 
 import Discover 1.0
+import MapMarker 1.0
 
 Rectangle
 {
+    id: rectangle1
+    width: 1920
+    height: 1080
     anchors.fill: parent
     opacity: 1
     visible: true
-    ColumnLayout {
-        id: columnLayout
+
+    GridLayout {
+        id: gridLayout
         anchors.fill: parent
+        rows: 2
+        columns: 2
+
+        Item {
+            id: trackTree
+            width: 250
+            Layout.fillWidth: false
+            Layout.fillHeight: true
+            Layout.rowSpan: 2
+            Layout.columnSpan: 1
+
+            ColumnLayout {
+                id: columnLayout
+                anchors.fill: parent
+
+                TextInput {
+                    id: trackName
+                    text: tracksManager.activeTrackName
+                    font.pixelSize: 30
+                    horizontalAlignment: Text.AlignHCenter
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+                    onEditingFinished:
+                    {
+                        trackName.focus = false
+                        tracksManager.activeTrackName = text
+                    }
+                }
+
+                Rectangle
+                {
+                    id: listViewRoot
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+
+                    ListView {
+                        id: listView
+                        width: parent.width
+                        height: parent.height
+                        interactive: false
+                        property int dragItemIndex: -1
+                        model: MapMarkerModel
+                        {
+                            list: tracksManager.activeTrack.points
+                        }
+                        delegate: MapMarkerListViewItem {}
+                    }
+                }
+
+            }
+        }
 
         Item {
             id: item1
@@ -24,11 +80,8 @@ Rectangle
             {
                 objectName: "mapView"
                 anchors.fill: parent
-                Layout.fillHeight: true
-                Layout.fillWidth: true
             }
         }
-
         Rectangle {
             id: rectangle
             width: 0
@@ -111,5 +164,7 @@ Rectangle
                 }
             }
         }
+
     }
+
 }

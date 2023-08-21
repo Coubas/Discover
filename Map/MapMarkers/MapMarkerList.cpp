@@ -40,6 +40,16 @@ void MapMarkerList::setMarkerSelected(int _markerId, bool _selected /*= true*/)
     if(MapMarkerItem* marker = getMarker(_markerId))
     {
         marker->setSelected(_selected);
+        emit dataChanged(_markerId, _markerId, {MapMarkerModel::MarkerField::MarkerIsSelected});
+    }
+}
+
+void MapMarkerList::setMarkerCoordinate(int _markerId, const QGeoCoordinate &_coord)
+{
+    if(MapMarkerItem* marker = getMarker(_markerId))
+    {
+        marker->setMarkerCoordinate(_coord);
+        emit dataChanged(_markerId, _markerId, {MapMarkerModel::MarkerField::MarkerCoordinate});
     }
 }
 
@@ -72,6 +82,7 @@ void MapMarkerList::removeSelectedMarkers()
 void MapMarkerList::changeMarkerIndex(int _oldMarkerId, int _newMarkerId)
 {
     moveItem(_oldMarkerId, _newMarkerId);
+
 }
 
 void MapMarkerList::appendMarker()

@@ -38,6 +38,7 @@ qt_add_qml_module(appDiscover
         Qml/MapView.qml
         Qml/MapMarkerBase.qml
         Qml/MapMarkerCursor.qml
+        Qml/MapMarkerListViewItem.qml
         Qml/CursorMarkerShape.qml
         Qml/PinMarkerShape.qml
         Qml/CircleMarkerShape.qml
@@ -55,6 +56,7 @@ qt_add_resources(appDiscover "qml"
         Qml/MapView.qml
         Qml/MapMarkerBase.qml
         Qml/MapMarkerCursor.qml
+        Qml/MapMarkerListViewItem.qml
         Qml/CursorMarkerShape.qml
         Qml/PinMarkerShape.qml
         Qml/CircleMarkerShape.qml

@@ -2,8 +2,10 @@ import QtQuick
 import QtQuick 2.0
 
 import Qt.labs.qmlmodels
+import QtQuick.Controls
 import QtLocation
 import QtPositioning
+
 import MapHelper 1.0
 import MapBackend 1.0
 import MapMarker 1.0
@@ -12,6 +14,22 @@ import Tracks 1.0
 
 Item
 {
+//    ComboBox
+//    {
+//        z:100
+//        width: 200
+//        anchors.right: parent.right
+//        anchors.rightMargin: 5
+//        model: map.supportedMapTypes
+//        textRole:"name"
+//        currentIndex: map.supportedMapTypes.length - 1
+//        onCurrentIndexChanged: map.activeMapType = map.supportedMapTypes[currentIndex]
+//        delegate: ItemDelegate
+//        {
+//            text: map.supportedMapTypes[index].name
+//        }
+//    }
+
     Plugin {
         id: mapPlugin
         name: "osm"

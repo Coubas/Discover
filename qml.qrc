@@ -8,5 +8,6 @@
         <file>Qml/CircleMarkerShape.qml</file>
         <file>Qml/CursorMarkerShape.qml</file>
         <file>Qml/PinMarkerShape.qml</file>
+        <file>Qml/MapMarkerListViewItem.qml</file>
     </qresource>
 </RCC>

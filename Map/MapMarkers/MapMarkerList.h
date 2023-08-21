@@ -18,6 +18,7 @@ public:
 
     void removeMaker(int _markerId);
     void setMarkerSelected(int _markerId, bool _selected = true);
+    void setMarkerCoordinate(int _markerId, const QGeoCoordinate& _coord);
     void removeSelectedMarkers();
     void changeMarkerIndex(int _oldMarkerId, int _newMarkerId);
 
