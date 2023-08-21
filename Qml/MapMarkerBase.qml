@@ -12,8 +12,8 @@ import Tracks 1.0
 MapQuickItem
 {
     id: marker
-    anchorPoint.x: shapeLoader.width / 2
-    anchorPoint.y:  shapeLoader.height / 2
+    anchorPoint.x: shapeLoader.item.anchorX
+    anchorPoint.y:  shapeLoader.item.anchorY
     coordinate: markerCoordinate
 
     sourceItem:
@@ -88,7 +88,7 @@ MapQuickItem
                     PropertyChanges
                     {
                         target: shapeLoader.item
-                        color: Material.accentColor
+                        filled: true
                     }
                 }
             ]

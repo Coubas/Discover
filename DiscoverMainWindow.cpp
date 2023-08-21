@@ -13,6 +13,8 @@ DiscoverMainWindow::DiscoverMainWindow(QQuickWindow* _parent)
     , m_window{_parent}
 {
     m_window->setTitle("Discover");
+//    m_window->setIcon(QIcon("Discover/Images/Icons/explore.svg"));
+    m_window->setIcon(QIcon("Discover/moto.ico"));
 
     bindWindowObjects();
 }
