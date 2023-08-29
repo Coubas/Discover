@@ -18,7 +18,20 @@ ApplicationWindow
             title: "File"
             MenuItem
             {
-                text:"New Track"
+                text:"Save active track"
+                onTriggered: tracksManager.saveActiveTrackToFile()
+            }
+
+            MenuItem
+            {
+                text:"Load track"
+                onTriggered: tracksManager.loadActiveTrackFromFile()
+            }
+
+            MenuItem
+            {
+                text:"Export active track to GPX"
+                onTriggered: tracksManager.exportActiveTrackToGPX()
             }
         }
     }

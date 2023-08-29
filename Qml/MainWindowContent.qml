@@ -4,6 +4,7 @@ import QtQuick.Controls 2.0
 
 import Discover 1.0
 import MapMarker 1.0
+import QtLocation
 
 Rectangle
 {
@@ -32,40 +33,136 @@ Rectangle
                 id: columnLayout
                 anchors.fill: parent
 
-                TextInput {
+                Item {
                     id: trackName
-                    text: tracksManager.activeTrackName
-                    font.pixelSize: 30
-                    horizontalAlignment: Text.AlignHCenter
                     Layout.fillWidth: true
+                    height: 50
                     Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-                    onEditingFinished:
+
+                    Rectangle
                     {
-                        trackName.focus = false
-                        tracksManager.activeTrackName = text
+                        anchors.fill: parent
+                        color: "transparent"
+//                        border.color: "yellow"
+//                        border.width: 2
+
+                        TextInput
+                        {
+                            anchors.fill: parent
+                            text: tracksManager.activeTrackName
+                            font.pixelSize: 30
+                            horizontalAlignment: Text.AlignHCenter
+                            onEditingFinished:
+                            {
+                                trackName.focus = false
+                                tracksManager.activeTrackName = text
+                            }
+                        }
                     }
                 }
 
-                Rectangle
+                Item
                 {
                     id: listViewRoot
-                    Layout.fillHeight: true
                     Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Layout.alignment: Qt.AlignLeft | Qt.AlignTop
 
-                    ListView {
-                        id: listView
-                        width: parent.width
-                        height: parent.height
-                        interactive: false
-                        property int dragItemIndex: -1
-                        model: MapMarkerModel
-                        {
-                            list: tracksManager.activeTrack.points
+                    Rectangle
+                    {
+                        anchors.fill: parent
+                        color: "transparent"
+//                        border.color: "red"
+//                        border.width: 2
+
+                        ListView {
+                            id: listView
+                            width: parent.width
+                            height: parent.height
+                            interactive: false
+                            property int dragItemIndex: -1
+                            model: MapMarkerModel
+                            {
+                                list: tracksManager.activeTrack.points
+                            }
+                            delegate: MapMarkerListViewItem {}
                         }
-                        delegate: MapMarkerListViewItem {}
                     }
                 }
 
+                Item {
+                    id: pathManagement
+                    Layout.fillWidth: true
+                    height: 250
+                    Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+
+                    Rectangle
+                    {
+                        anchors.fill: parent
+                        color: "transparent"
+//                        border.color: "green"
+//                        border.width: 2
+                        ColumnLayout
+                        {
+                            anchors.fill: parent
+
+//                            RowLayout
+//                            {
+//                                width: parent.width
+//                                Text
+//                                {
+//                                    text: "Travel Mode: "
+//                                }
+//                                ComboBox
+//                                {
+//                                    id: travelModeSetting
+//                                    width: parent.width
+//                                    textRole: "text"
+//                                    valueRole: "value"
+//                                    model: ListModel
+//                                    {
+//                                        ListElement { text: "Car"; value: RouteQuery.CarTravel }
+//                                        ListElement { text: "Pedestrian"; value: RouteQuery.PedestrianTravel }
+//                                        ListElement { text: "Bicycle"; value: RouteQuery.BicycleTravel }
+//                                        ListElement { text: "Public"; value: RouteQuery.PublicTransitTravel }
+//                                        ListElement { text: "Truck"; value: RouteQuery.TruckTravel }
+//                                    }
+//                                }
+//                            }
+
+//                            RowLayout
+//                            {
+//                                width: parent.width
+//                                Text
+//                                {
+//                                    text: "Path Mode: "
+//                                }
+//                                ComboBox
+//                                {
+//                                    id: pathModeSetting
+//                                    width: parent.width
+//                                    textRole: "text"
+//                                    valueRole: "value"
+//                                    model: ListModel
+//                                    {
+//                                        ListElement { text: "Shortest"; value: RouteQuery.ShortestRoute }
+//                                        ListElement { text: "Fastest"; value: RouteQuery.FastestRoute }
+//                                        ListElement { text: "MostEconomic"; value: RouteQuery.MostEconomicRoute }
+//                                        ListElement { text: "MostScenic"; value: RouteQuery.MostScenicRoute }
+//                                    }
+//                                }
+//                            }
+
+                            Button
+                            {
+                                Layout.alignment: Qt.AlignCenter
+                                text: "Compute path"
+                                //onClicked: mapView.updateRouteQuery(travelModeSetting.currentValue, pathModeSetting.currentValue)
+                                onClicked: mapView.updateRouteQuery()
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -76,8 +173,9 @@ Rectangle
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            MapView
+            DiscoverMapView
             {
+                id: mapView
                 objectName: "mapView"
                 anchors.fill: parent
             }

@@ -4,6 +4,7 @@
 #include <QObject>
 
 #include <MapMarkerItem.h>
+#include <QVariant>
 
 class MapMarkerList : public QObject
 {
@@ -21,12 +22,15 @@ public:
     void setMarkerCoordinate(int _markerId, const QGeoCoordinate& _coord);
     void removeSelectedMarkers();
     void changeMarkerIndex(int _oldMarkerId, int _newMarkerId);
+    const QVariantList& getWaypoints() const { return m_waypoints; }
+
+    void clear();
 
 signals:
     void preItemAppended(int _index);
     void postItemAppended();
 
-    void preItemRemoved(int _index);
+    void preItemRemoved(int _first, int _last);
     void postItemRemoved();
 
     void preItemMoved();
@@ -48,6 +52,10 @@ private:
     void onMarkerListModified(int (&_modifBounds)[2], std::initializer_list<int> _modifiedRoles = {});
 
     QList<MapMarkerItem> m_markers;
+    QVariantList m_waypoints; // simple reflexion of the marker list containing only the coordinates.
 };
+
+QDataStream &operator<<(QDataStream& _ds, const MapMarkerList& _mrkList);
+QDataStream &operator>>(QDataStream& _ds, MapMarkerList& _mrkList);
 
 #endif // MAPMARKERLIST_H

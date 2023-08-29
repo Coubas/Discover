@@ -7,6 +7,8 @@
 
 MapMarkerList::MapMarkerList(QObject *parent)
     : QObject{parent}
+    , m_markers{}
+    , m_waypoints{}
 {}
 
 bool MapMarkerList::setItemAt(int _index, const MapMarkerItem &_item)
@@ -23,6 +25,7 @@ bool MapMarkerList::setItemAt(int _index, const MapMarkerItem &_item)
     }
 
     m_markers[_index] = _item;
+    m_waypoints[_index] = QVariant::fromValue(_item.markerCoordinate());
     return true;
 }
 
@@ -51,6 +54,7 @@ void MapMarkerList::setMarkerCoordinate(int _markerId, const QGeoCoordinate &_co
         marker->setMarkerCoordinate(_coord);
         emit dataChanged(_markerId, _markerId, {MapMarkerModel::MarkerField::MarkerCoordinate});
     }
+    m_waypoints[_markerId] = QVariant::fromValue(_coord);
 }
 
 void MapMarkerList::removeSelectedMarkers()
@@ -85,6 +89,16 @@ void MapMarkerList::changeMarkerIndex(int _oldMarkerId, int _newMarkerId)
 
 }
 
+void MapMarkerList::clear()
+{
+    emit preItemRemoved(0, m_markers.size() - 1);
+
+    m_markers.clear();
+    m_waypoints.clear();
+
+    emit postItemRemoved();
+}
+
 void MapMarkerList::appendMarker()
 {
     MapMarkerItem item;
@@ -98,6 +112,7 @@ void MapMarkerList::appendMarker(MapMarkerItem _item, int _insertIndex /*= -1*/)
     emit preItemAppended(index);
 
     m_markers.insert(index, _item);
+    m_waypoints.insert(index, QVariant::fromValue(_item.markerCoordinate()));
 
     emit postItemAppended();
 
@@ -108,10 +123,11 @@ void MapMarkerList::removeItem(int _index, bool _updateIds /*= true*/)
 {
     if(_index >= 0 & _index < m_markers.size())
     {
-        emit preItemRemoved(_index);
+        emit preItemRemoved(_index, _index);
 
         int removedId = m_markers[_index].markerId();
         m_markers.removeAt(_index);
+        m_waypoints.removeAt(_index);
 
         emit postItemRemoved();
 
@@ -129,6 +145,7 @@ void MapMarkerList::moveItem(int _index, int _destIndex)
         emit preItemMoved();
 
         m_markers.move(_index, _destIndex);
+        m_waypoints.move(_index, _destIndex);
 
         emit postItemMoved(_index, _destIndex);
 
@@ -206,4 +223,29 @@ void MapMarkerList::onMarkerListModified(int (&_modifBounds)[2], std::initialize
     {
         emit dataChanged(_modifBounds[0], _modifBounds[1], modifiedRole);
     }
+}
+
+QDataStream& operator<<(QDataStream& _ds, const MapMarkerList& _mrkList)
+{
+    _ds << _mrkList.size();
+    for(const MapMarkerItem& item : _mrkList.items())
+    {
+        _ds << item;
+    }
+    return _ds;
+}
+
+QDataStream& operator>>(QDataStream& _ds, MapMarkerList& _mrkList)
+{
+    qsizetype nbMarkers;
+    _ds >> nbMarkers;
+
+    MapMarkerItem item;
+    for (int i = 0; i < nbMarkers; ++i)
+    {
+        _ds >> item;
+        _mrkList.appendMarker(item);
+    }
+
+    return _ds;
 }

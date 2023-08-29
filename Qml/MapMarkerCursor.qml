@@ -83,7 +83,7 @@ MapQuickItem
             text: "Add marker at " + insertIdSlider.value
             onTriggered:
             {
-                tracksManager.addPointToActiveTrack(cursor.coordinate, insertIdSlider.value, insertShape.currentText)
+                tracksManager.addPointToActiveTrack(cursor.coordinate, insertShape.currentText, insertIdSlider.value)
                 mapBackend.cursorVisible = false
             }
         }

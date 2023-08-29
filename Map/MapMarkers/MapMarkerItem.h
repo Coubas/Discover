@@ -31,4 +31,7 @@ private:
     QGeoCoordinate m_markerCoordinate{0.0, 0.0};
 };
 
+QDataStream &operator<<(QDataStream& _ds, const MapMarkerItem& _mrk);
+QDataStream &operator>>(QDataStream& _ds, MapMarkerItem& _mrk);
+
 #endif // MAPMARKERITEM_H

@@ -29,6 +29,32 @@ Item
 //            text: map.supportedMapTypes[index].name
 //        }
 //    }
+//    Button
+//    {
+//        text: "Test Button"
+//        z:100
+//        width: 200
+//        anchors.right: parent.right
+//        anchors.rightMargin: 5
+//        onClicked: (mouse) =>
+//                   {
+//                   }
+//    }
+
+    function updateRouteQuery(/*travelMode, pathMode*/)
+    {
+        routeQuery.clearWaypoints();
+        for (var i = 0; i < tracksManager.activeTrackWaypoints.length; i++)
+        {
+           var coord = tracksManager.activeTrackWaypoints[i]
+           routeQuery.addWaypoint(coord)
+        }
+//        routeQuery.travelModes = travelMode
+//        routeQuery.routeOptimizations = pathMode
+//        routeQuery.setFeatureWeight(RouteQuery.HighwayFeature, RouteQuery.DisallowFeatureWeight)
+//        routeQuery.numberAlternativeRoutes = 2
+        routeModel.update()
+    }
 
     Plugin {
         id: mapPlugin
@@ -37,6 +63,14 @@ Item
         PluginParameter {
             name: "osm.mapping.custom.host"
             value: "http://a.tile.openstreetmap.fr/osmfr/"
+        }
+        PluginParameter {
+            name: "osm.geocoding.include_extended_data"
+            value: true
+        }
+        PluginParameter {
+            name: "osm.places.debug_query"
+            value: true
         }
     }
 
@@ -108,6 +142,16 @@ Item
             }
         }
 
+        Shortcut
+        {
+            sequence: StandardKey.Cancel
+            onActivated:
+            {
+                console.log("DeletePressed")
+                mapBackend.cursorVisible = false
+            }
+        }
+
         MapItemView
         {
             id: mapMarkers
@@ -117,6 +161,18 @@ Item
             }
             delegate: MapMarkerBase{}
         }
+
+        MapItemView
+        {
+            id: mapRoutes
+            model: routeModel
+            delegate: MapRouteBase {}
+        }
+    }
+
+    MapMarkerCursor
+    {
+        id: cursor
     }
 
     GeocodeModel
@@ -145,8 +201,47 @@ Item
         }
     }
 
-    MapMarkerCursor
+    RouteModel
     {
-        id: cursor
+        id: routeModel
+        plugin: mapPlugin
+        autoUpdate: false
+        query: routeQuery
+
+        onQueryChanged: console.log("New Query...")
+        onRoutesChanged:
+        {
+            var r = get(0)
+            console.log("Routes CHanged..." +  "Dist :" + r.distance + " travel time: " + r.travelTime + " extended: " + r.extendedAttributes.requestUrl)
+        }
+
+        onStatusChanged:
+        {
+            if (status == RouteModel.Ready)
+            {
+                switch (count) {
+                case 0:
+                    // technically not an error
+                    console.log("Route conputed with no points, something might be wrong :/")
+                    break
+                case 1:
+                    console.log("Route computed !")
+                    break
+                }
+            }
+            else if (status == RouteModel.Error)
+            {
+                console.log("Error during route computation : " + errorString)
+            }
+            else if (status == routeModel.Loading)
+            {
+                console.log("Computing route...")
+            }
+        }
+    }
+
+    RouteQuery
+    {
+        id: routeQuery
     }
 }

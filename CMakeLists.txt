@@ -4,7 +4,7 @@ project(Discover VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Core QuickWidgets Positioning)
+find_package(Qt6 REQUIRED COMPONENTS Core QuickWidgets Positioning Location)
 find_package(Qt6 REQUIRED COMPONENTS QuickControls2)
 
 qt_standard_project_setup(REQUIRES 6.5)
@@ -41,10 +41,11 @@ qt_add_qml_module(Discover
     QML_FILES
         Qml/MainWindow.qml
         Qml/MainWindowContent.qml
-        Qml/MapView.qml
+        Qml/DiscoverMapView.qml
         Qml/MapMarkerBase.qml
         Qml/MapMarkerCursor.qml
         Qml/MapMarkerListViewItem.qml
+        Qml/MapRouteBase.qml
         Qml/CursorMarkerShape.qml
         Qml/PinMarkerShape.qml
         Qml/CircleMarkerShape.qml
@@ -80,6 +81,7 @@ qt_add_qml_module(Discover
         Images/Icons/person_pin_circle_filled.svg
         Images/Icons/push_pin.svg
         Images/Icons/push_pin_filled.svg
+        SOURCES GPXExporter.h GPXExporter.cpp
 )
 
 qt_add_resources(Discover "qml"
@@ -87,10 +89,11 @@ qt_add_resources(Discover "qml"
     FILES
         Qml/MainWindow.qml
         Qml/MainWindowContent.qml
-        Qml/MapView.qml
+        Qml/DiscoverMapView.qml
         Qml/MapMarkerBase.qml
         Qml/MapMarkerCursor.qml
         Qml/MapMarkerListViewItem.qml
+        Qml/MapRouteBase.qml
         Qml/CursorMarkerShape.qml
         Qml/PinMarkerShape.qml
         Qml/CircleMarkerShape.qml
@@ -148,6 +151,7 @@ target_link_libraries(Discover
     PRIVATE Qt6::Core
     PRIVATE Qt6::QuickWidgets
     PRIVATE Qt6::Positioning
+    PRIVATE Qt6::Location
     PRIVATE Qt6::QuickControls2
 )
 

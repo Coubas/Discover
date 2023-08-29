@@ -48,3 +48,25 @@ void MapMarkerItem::setSelected(bool newSelected)
 {
     m_selected = newSelected;
 }
+
+QDataStream &operator<<(QDataStream& _ds, const MapMarkerItem& _mrk)
+{
+    _ds << _mrk.markerId() << _mrk.selected() << _mrk.markerType() << _mrk.markerCoordinate();
+    return _ds;
+}
+
+QDataStream &operator>>(QDataStream& _ds, MapMarkerItem& _mrk)
+{
+    int markerId{-1};
+    bool selected{false};
+    QString markerType{"invalidType"};
+    QGeoCoordinate markerCoordinate{0.0, 0.0};
+    _ds >> markerId >> selected >> markerType >> markerCoordinate;
+
+    _mrk.setMarkerId(markerId);
+    _mrk.setSelected(selected);
+    _mrk.setMarkerType(markerType);
+    _mrk.setMarkerCoordinate(markerCoordinate);
+
+    return _ds;
+}

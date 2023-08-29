@@ -153,8 +153,8 @@ void MapMarkerModel::setList(MapMarkerList *_list)
             endInsertRows();
         });
 
-        connect(m_list, &MapMarkerList::preItemRemoved, this, [=](int _i){
-            beginRemoveRows(QModelIndex(), _i, _i);
+        connect(m_list, &MapMarkerList::preItemRemoved, this, [=](int _first, int _last){
+            beginRemoveRows(QModelIndex(), _first, _last);
         });
 
         connect(m_list, &MapMarkerList::postItemRemoved, this, [=](){

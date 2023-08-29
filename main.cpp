@@ -1,4 +1,6 @@
 #include <QApplication>
+//#include <QGeoServiceProvider>
+//#include <QGeoRoutingManager>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickStyle>
@@ -23,6 +25,10 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<TracksManager>("Tracks", 1, 0, "TracksManager", QStringLiteral("TracksManager should not be created in QML."));
     qmlRegisterUncreatableType<Track>("Tracks", 1, 0, "Track", QStringLiteral("Track should not be created in QML."));
     qmlRegisterUncreatableType<InputHandler>("Inputs", 1, 0, "InputHandler", QStringLiteral("InputHandler should not be created in QML."));
+
+//    QGeoServiceProvider geoServiceProvider("osm");
+//    QGeoRoutingManager* routingManager = geoServiceProvider.routingManager();
+
 
     InputHandler inputHdl;
     MapBackend mapBackEnd;
