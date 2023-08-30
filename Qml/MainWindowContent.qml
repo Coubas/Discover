@@ -23,7 +23,7 @@ Rectangle
 
         Item {
             id: trackTree
-            width: 250
+            width: 350
             Layout.fillWidth: false
             Layout.fillHeight: true
             Layout.rowSpan: 2

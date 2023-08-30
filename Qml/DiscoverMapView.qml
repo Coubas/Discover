@@ -64,14 +64,6 @@ Item
             name: "osm.mapping.custom.host"
             value: "http://a.tile.openstreetmap.fr/osmfr/"
         }
-        PluginParameter {
-            name: "osm.geocoding.include_extended_data"
-            value: true
-        }
-        PluginParameter {
-            name: "osm.places.debug_query"
-            value: true
-        }
     }
 
     Map
@@ -154,19 +146,19 @@ Item
 
         MapItemView
         {
+            id: mapRoutes
+            model: routeModel
+            delegate: MapRouteBase {}
+        }
+
+        MapItemView
+        {
             id: mapMarkers
             model: MapMarkerModel
             {
                 list: tracksManager.activeTrack.points
             }
             delegate: MapMarkerBase{}
-        }
-
-        MapItemView
-        {
-            id: mapRoutes
-            model: routeModel
-            delegate: MapRouteBase {}
         }
     }
 

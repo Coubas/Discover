@@ -17,7 +17,7 @@ Item
         id: text
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent?.left
-        text: markerId + ": " + markerCoordinate + "\n type: " + markerType + " selected: " + markerIsSelected
+        text: markerId + ": " + markerCoordinate //+ "\n type: " + markerType + " selected: " + markerIsSelected
     }
 
     Button
