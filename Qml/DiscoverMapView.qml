@@ -44,15 +44,21 @@ Item
     function updateRouteQuery(/*travelMode, pathMode*/)
     {
         routeQuery.clearWaypoints();
-        for (var i = 0; i < tracksManager.activeTrackWaypoints.length; i++)
+//        for (var i = 0; i < tracksManager.activeTrackWaypoints.length; i++)
+//        {
+//           var coord = tracksManager.activeTrackWaypoints[i]
+//           routeQuery.addWaypoint(coord)
+//        }
+        var waypoints = tracksManager.treeTrackWaypoints
+        for (var i = 0; i < waypoints.length; i++)
         {
-           var coord = tracksManager.activeTrackWaypoints[i]
+           var coord = waypoints[i]
            routeQuery.addWaypoint(coord)
         }
 //        routeQuery.travelModes = travelMode
 //        routeQuery.routeOptimizations = pathMode
 //        routeQuery.setFeatureWeight(RouteQuery.HighwayFeature, RouteQuery.DisallowFeatureWeight)
-//        routeQuery.numberAlternativeRoutes = 2
+//        routeQuery.numberAlternativeRoutes = 3
         routeModel.update()
     }
 
@@ -154,10 +160,15 @@ Item
         MapItemView
         {
             id: mapMarkers
-            model: MapMarkerModel
-            {
-                list: tracksManager.activeTrack.points
-            }
+//            model: MapMarkerModel
+//            {
+//                list: tracksManager.activeTrack.points
+//            }
+//            model: MapMarkerModel
+//            {
+//                list: tracksManager.treeTrack.treeModel.list
+//            }
+            model: tracksManager.treeTrack.treeModel.listModel
             delegate: MapMarkerBase{}
         }
     }
@@ -203,8 +214,9 @@ Item
         onQueryChanged: console.log("New Query...")
         onRoutesChanged:
         {
+            console.log("Number of route computed: " + count)
             var r = get(0)
-            console.log("Routes CHanged..." +  "Dist :" + r.distance + " travel time: " + r.travelTime + " extended: " + r.extendedAttributes.requestUrl)
+            console.log("Routes CHanged..." +  "Dist :" + r.distance + " travel time: " + r.travelTime)
         }
 
         onStatusChanged:

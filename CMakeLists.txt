@@ -35,9 +35,15 @@ qt_add_qml_module(Discover
         Map/MapMarkers/MapMarkerModel.h Map/MapMarkers/MapMarkerModel.cpp
         Map/MapMarkers/MapMarkerList.h Map/MapMarkers/MapMarkerList.cpp
         Map/MapMarkers/MapMarkerItem.h Map/MapMarkers/MapMarkerItem.cpp
+        Map/MapMarkers/MapMarkerTreeItem.h Map/MapMarkers/MapMarkerTreeItem.cpp
+        Map/MapMarkers/MapMarkerTreeListModel.h Map/MapMarkers/MapMarkerTreeListModel.cpp
+        Map/MapMarkers/MapMarkerTreeModel.h Map/MapMarkers/MapMarkerTreeModel.cpp
+        Map/MapMarkers/VisitorReturnEnum.h
         Tracks/TracksManager.h Tracks/TracksManager.cpp
         Tracks/Track.h Tracks/Track.cpp
+        Tracks/TreeTrack.h Tracks/TreeTrack.cpp
         DiscoverMainWindow.h DiscoverMainWindow.cpp
+        GPXExporter.h GPXExporter.cpp
     QML_FILES
         Qml/MainWindow.qml
         Qml/MainWindowContent.qml
@@ -81,7 +87,6 @@ qt_add_qml_module(Discover
         Images/Icons/person_pin_circle_filled.svg
         Images/Icons/push_pin.svg
         Images/Icons/push_pin_filled.svg
-        SOURCES GPXExporter.h GPXExporter.cpp
 )
 
 qt_add_resources(Discover "qml"

@@ -3,6 +3,8 @@ import QtQuick.Controls
 
 import Discover 1.0
 
+import MapMarker 1.0
+
 
 ApplicationWindow
 {

@@ -49,6 +49,7 @@ MapQuickItem
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
                 onClicked: (mouse) =>
                 {
+                               console.log("Click on marker " + markerId + " " + markerCoordinate)
                     if (mouse.button === Qt.LeftButton)
                     {
                         tracksManager.setPointSelected(markerId, !markerIsSelected)
@@ -76,6 +77,9 @@ MapQuickItem
             Text
             {
                 text: markerId
+                font.pointSize: 24
+                color: "red"
+
                 anchors.verticalCenter: shapeLoader.verticalCenter
                 anchors.horizontalCenter: shapeLoader.horizontalCenter
             }

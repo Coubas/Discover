@@ -1,10 +1,11 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls 2.0
+import QtLocation
+import Qt.labs.qmlmodels
 
 import Discover 1.0
 import MapMarker 1.0
-import QtLocation
 
 Rectangle
 {
@@ -72,20 +73,41 @@ Rectangle
                     {
                         anchors.fill: parent
                         color: "transparent"
-//                        border.color: "red"
-//                        border.width: 2
+                        border.color: "red"
+                        border.width: 2
 
-                        ListView {
-                            id: listView
-                            width: parent.width
-                            height: parent.height
-                            interactive: false
-                            property int dragItemIndex: -1
-                            model: MapMarkerModel
+//                        ListView {
+//                            id: listView
+//                            width: parent.width
+//                            height: parent.height
+//                            interactive: false
+//                            property int dragItemIndex: -1
+//                            model: MapMarkerModel
+//                            {
+//                                list: tracksManager.activeTrack.points
+//                            }
+//                            delegate: MapMarkerListViewItem {}
+//                        }
+
+                        TreeView {
+                            anchors.fill: parent
+                            model: tracksManager.treeTrack.treeModel
+                            delegate: TreeViewDelegate
                             {
-                                list: tracksManager.activeTrack.points
+                                contentItem: Row {
+                                    CheckBox
+                                    {
+                                        visible: isTreeNode
+                                        checked: model.markerIsActive
+                                        onToggled: model.markerIsActive = checked
+                                    }
+                                    Text
+                                    {
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        text: model.display
+                                    }
+                                }
                             }
-                            delegate: MapMarkerListViewItem {}
                         }
                     }
                 }
@@ -262,7 +284,5 @@ Rectangle
                 }
             }
         }
-
     }
-
 }

@@ -4,6 +4,7 @@
 #include <QObject>
 
 #include <Track.h>
+#include <TreeTrack.h>
 
 class InputHandler;
 
@@ -14,6 +15,9 @@ class TracksManager : public QObject
     Q_PROPERTY(int activeTrackSize READ getActiveTrackSize NOTIFY activeTrackSizeChanged FINAL)
     Q_PROPERTY(QString activeTrackName READ getActiveTrackName WRITE setActiveTrackName NOTIFY activeTrackNameChanged FINAL)
     Q_PROPERTY(const QVariantList& activeTrackWaypoints READ getActiveTrackWaypoints CONSTANT FINAL)
+
+    Q_PROPERTY(TreeTrack* treeTrack READ getTreeTrack CONSTANT)
+    Q_PROPERTY(const QVariantList& treeTrackWaypoints READ getTreeTrackWaypoints CONSTANT FINAL)
 
 public:
     explicit TracksManager(QObject *parent = nullptr);
@@ -34,6 +38,13 @@ public:
         return getActiveTrack()->getWaypoints();
     }
 
+    const TreeTrack* getTreeTrack() const {return &m_treeTrack;}
+    TreeTrack* getTreeTrack() {return &m_treeTrack;}
+    const QVariantList getTreeTrackWaypoints() const
+    {
+        return m_treeTrack.getTreeModel()->getWaypoints();
+    }
+
 signals:
     void activeTrackSizeChanged();
     void activeTrackNameChanged();
@@ -52,7 +63,8 @@ public slots:
     void exportActiveTrackToGPX();
 
 private:
-    Track m_track;
+    Track m_track{};
+    TreeTrack m_treeTrack{};
 
     int m_selectedPoint;
     QString getSaveLoadPath();

@@ -2,6 +2,7 @@
 
 Track::Track(QObject *parent)
     : QObject{parent}
+    , m_name{""}
 {
     m_author = qgetenv("USER");
     if (m_author.isEmpty())

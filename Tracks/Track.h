@@ -4,11 +4,12 @@
 #include <QObject>
 
 #include <MapMarkerList.h>
+#include <MapMarkerTreeItem.h>
 
 class Track : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(MapMarkerList *points READ getPointList CONSTANT)
+    Q_PROPERTY(MapMarkerList* points READ getPointList CONSTANT)
 
 public:
     explicit Track(QObject *parent = nullptr);

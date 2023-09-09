@@ -20,15 +20,15 @@ public:
 
     QGeoCoordinate markerCoordinate() const;
     void setMarkerCoordinate(const QGeoCoordinate &newMarkerCoordinate);
-
     bool selected() const;
     void setSelected(bool newSelected);
 
+
 private:
     int m_markerId{-1};
-    bool m_selected{false};
     QString m_markerType{"invalidType"};
     QGeoCoordinate m_markerCoordinate{0.0, 0.0};
+    bool m_selected{false};
 };
 
 QDataStream &operator<<(QDataStream& _ds, const MapMarkerItem& _mrk);
