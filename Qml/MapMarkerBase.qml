@@ -49,7 +49,7 @@ MapQuickItem
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
                 onClicked: (mouse) =>
                 {
-                               console.log("Click on marker " + markerId + " " + markerCoordinate)
+//                    console.log("Click on marker " + markerId + " " + markerCoordinate)
                     if (mouse.button === Qt.LeftButton)
                     {
                         tracksManager.setPointSelected(markerId, !markerIsSelected)
@@ -110,6 +110,7 @@ MapQuickItem
                 {
                     text: "Change index to " + changeIdSlider.value
                     enabled: changeIdSlider.value != markerId
+                    //TODO
                     onTriggered: tracksManager.changePointIndexFromActiveTrack(markerId, changeIdSlider.value)
                     //onTriggered: console.log("changePointIndexFromActiveTrack("+markerId+", "+changeIdSlider.value+")")
                 }
@@ -118,6 +119,7 @@ MapQuickItem
                     id: changeIdSlider
                     from: 0
                     value: markerId+1
+                    //TODO
                     to: tracksManager.activeTrackSize - 1
                     snapMode: Slider.SnapAlways
                     stepSize: 1

@@ -4,8 +4,8 @@ project(Discover VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Core QuickWidgets Positioning Location)
-find_package(Qt6 REQUIRED COMPONENTS QuickControls2)
+find_package(Qt6 REQUIRED COMPONENTS Core QuickWidgets Positioning Location QuickControls2)
+#find_package(Qt6 REQUIRED COMPONENTS Test)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -55,6 +55,8 @@ qt_add_qml_module(Discover
         Qml/CursorMarkerShape.qml
         Qml/PinMarkerShape.qml
         Qml/CircleMarkerShape.qml
+        Qml/TextColumnItem.qml
+        Qml/CheckboxColumnItem.qml
     RESOURCES
         qtquickcontrols2.conf
         qml.qrc
@@ -102,6 +104,8 @@ qt_add_resources(Discover "qml"
         Qml/CursorMarkerShape.qml
         Qml/PinMarkerShape.qml
         Qml/CircleMarkerShape.qml
+        Qml/TextColumnItem.qml
+        Qml/CheckboxColumnItem.qml
 )
 
 qt_add_resources(Discover "settings"
@@ -158,6 +162,7 @@ target_link_libraries(Discover
     PRIVATE Qt6::Positioning
     PRIVATE Qt6::Location
     PRIVATE Qt6::QuickControls2
+#    PRIVATE Qt6::Test
 )
 
 include(GNUInstallDirs)

@@ -42,6 +42,7 @@ public:
     int getRoleIdFromColumn(int _column) const;
 
     MapMarkerTreeItem* parent();
+    const MapMarkerTreeItem* parent() const;
     MapMarkerTreeItem* child(int _row);
     int childCount() const;
     int childNumber() const;
@@ -49,13 +50,20 @@ public:
     QVariant data(int _role = Qt::DisplayRole) const;
     bool setData(const QVariant& _value, int _role = Qt::EditRole);
     bool appendChild(const MapMarkerTreeItemData& _data);
-    bool insertChildren(int _position, int _count, int _columnsCount);
+    bool insertChildren(int _position, int _count);
     bool removeChildren(int _position, int _count);
 //    bool insertColumns(int _position, int _count);
 //    bool removeColumns(int _position, int _count);
 
-    MapMarkerTreeItemData markerData() const;
+    const MapMarkerTreeItemData& markerData() const;
+    MapMarkerTreeItemData& markerData();
     void setMarkerData(const MapMarkerTreeItemData &newMarkerData);
+    bool inActiveHierarchy() const;
+    void setInActiveHierarchy(bool newInActiveHierarchy);
+    int linearIndex() const;
+    void setLinearIndex(int newLinearIndex);
+    int linearIndexActiveHierarchy() const;
+    void setLinearIndexActiveHierarchy(int newLinearIndexActiveHierarchy);
 
     VisitorReturn visit(std::function<VisitorReturn(MapMarkerTreeItem*)> _function);
     VisitorReturn visitChilds(std::function<VisitorReturn(MapMarkerTreeItem*)> _function);
@@ -76,6 +84,10 @@ private:
     QList<MapMarkerTreeItem*> m_childItems;
 
     MapMarkerTreeItemData m_markerData{};
+    bool m_inActiveHierarchy{ false };
+    int m_linearIndex{ -1 };
+    int m_linearIndexActiveHierarchy{ -1 };
+
 
     static const QList<int> ms_columns;
 };

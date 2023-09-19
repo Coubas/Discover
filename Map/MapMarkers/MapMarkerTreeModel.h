@@ -20,6 +20,7 @@ public:
     ~MapMarkerTreeModel();
 
     QModelIndex index(int _row, int _column, const QModelIndex& _parent = QModelIndex()) const override;
+    QModelIndex index(const MapMarkerTreeItem* _item) const;
     QModelIndex parent(const QModelIndex& _index) const override;
 
     int rowCount(const QModelIndex& _parent = QModelIndex()) const override;
@@ -44,11 +45,18 @@ public:
     const MapMarkerTreeListModel* getListModel() const {return m_listModel;}
     const QVariantList getWaypoints() const;
 
+    bool removeMaker(int _markerId);
+    bool setMarkerSelected(int _markerId, bool _selected = true);
+    bool setMarkerCoordinate(int _markerId, const QGeoCoordinate& _coord);
+//    void removeSelectedMarkers();
+
 private:
     MapMarkerTreeItem* getItem(const QModelIndex& _index) const;
     bool isInActiveHierarchy(MapMarkerTreeItem& _item, bool _includeFirstRankDisabled = false);
     int getLinearIndexFromRoot(MapMarkerTreeItem& _item, bool _includeFirstRankDisabled = false);
     int getNbVisibleChild(MapMarkerTreeItem& _item);
+
+    void updateTreeItemIndexInfo();
 
     MapMarkerTreeItem* m_root{nullptr};
     MapMarkerTreeListModel* m_listModel{nullptr};

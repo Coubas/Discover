@@ -20,20 +20,20 @@ TreeTrack::TreeTrack(QObject *parent)
 //    m_points.appendMarker(MapMarkerItem(m_points.size(), _type, _coord), _insertIndex);
 //}
 
-//void TreeTrack::removePoint(int _markerId)
-//{
-//    m_points.removeMaker(_markerId);
-//}
+void TreeTrack::removePoint(int _markerId)
+{
+    m_tree.removeMaker(_markerId);
+}
 
-//void TreeTrack::setPointSelected(int _markerId, bool _selected /*= true*/)
-//{
-//    m_points.setMarkerSelected(_markerId, _selected);
-//}
+void TreeTrack::setPointSelected(int _markerId, bool _selected /*= true*/)
+{
+    m_tree.setMarkerSelected(_markerId, _selected);
+}
 
-//void TreeTrack::setPointCoordinate(int _markerId, const QGeoCoordinate &_coord)
-//{
-//    m_points.setMarkerCoordinate(_markerId, _coord);
-//}
+void TreeTrack::setPointCoordinate(int _markerId, const QGeoCoordinate &_coord)
+{
+    m_tree.setMarkerCoordinate(_markerId, _coord);
+}
 
 //void TreeTrack::removeSelectedPoints()
 //{

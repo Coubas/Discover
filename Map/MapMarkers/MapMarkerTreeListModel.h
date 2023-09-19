@@ -29,7 +29,9 @@ public:
     QVariant data(const QModelIndex& _index, int _role) const override;
     bool setData(const QModelIndex& _index, const QVariant& _value, int _role = Qt::EditRole) override;
 
-    void triggerDataChanged(int _first, int _last, int _role, const QVariant& _value);
+    void triggerDataChanged(int _first, int _last, int _role, const QVariant& _value = QVariant());
+    void triggerBeginRemoveRows(int _first, int _last);
+    void triggerEndRemoveRows();
 
 private:
     MapMarkerTreeItem* getItem(const QModelIndex& _index) const;

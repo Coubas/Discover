@@ -95,19 +95,43 @@ Rectangle
                             delegate: TreeViewDelegate
                             {
                                 contentItem: Row {
-                                    CheckBox
+//                                    CheckBox
+//                                    {
+//                                        anchors.verticalCenter: parent.verticalCenter
+//                                        visible: isTreeNode
+//                                        checked: model.markerIsActive
+//                                        onToggled: model.markerIsActive = checked
+//                                    }
+//                                    Text
+//                                    {
+//                                        anchors.verticalCenter: isTreeNode ? parent.verticalCenter : 0
+//                                        text: model.display
+//                                    }
+                                    Loader
                                     {
-                                        visible: isTreeNode
-                                        checked: model.markerIsActive
-                                        onToggled: model.markerIsActive = checked
-                                    }
-                                    Text
-                                    {
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        text: model.display
+                                        id: shapeLoader
+                                        source: getShape(model.column)
+
+                                        function getShape(t)
+                                        {
+                                            switch(t)
+                                            {
+                                            case 0:
+                                                return "CheckboxColumnItem.qml"
+                                            default:
+                                                return "TextColumnItem.qml"
+                                            }
+                                        }
                                     }
                                 }
+
+                                background: Rectangle {
+                                    anchors.fill: parent
+                                    opacity: model.markerIsSelected ? 0.5 : 0
+                                    color: Material.accent
+                                }
                             }
+                            Component.onCompleted: expandRecursively()
                         }
                     }
                 }

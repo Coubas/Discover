@@ -160,14 +160,6 @@ Item
         MapItemView
         {
             id: mapMarkers
-//            model: MapMarkerModel
-//            {
-//                list: tracksManager.activeTrack.points
-//            }
-//            model: MapMarkerModel
-//            {
-//                list: tracksManager.treeTrack.treeModel.list
-//            }
             model: tracksManager.treeTrack.treeModel.listModel
             delegate: MapMarkerBase{}
         }

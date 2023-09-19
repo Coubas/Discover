@@ -19,9 +19,9 @@ public:
 //    qsizetype size() const {return m_points.size();}
 
 //    void addPoint(const QGeoCoordinate& _coord, const QString& _type = "pin", int _insertIndex = -1);
-//    void removePoint(int _markerId);
-//    void setPointSelected(int _markerId, bool _selected = true);
-//    void setPointCoordinate(int _markerId, const QGeoCoordinate& _coord);
+    void removePoint(int _markerId);
+    void setPointSelected(int _markerId, bool _selected = true);
+    void setPointCoordinate(int _markerId, const QGeoCoordinate& _coord);
 //    void removeSelectedPoints();
 //    void changePointIndex(int _oldIndex, int _newIndex);
 //    const QVariantList& getWaypoints() const { return m_points.getWaypoints(); }

@@ -169,9 +169,9 @@ bool MapMarkerTreeListModel::setData(const QModelIndex& _index, const QVariant& 
     return false;
 }
 
-void MapMarkerTreeListModel::triggerDataChanged(int _first, int _last, int _role, const QVariant& _value)
+void MapMarkerTreeListModel::triggerDataChanged(int _first, int _last, int _role, const QVariant& _value /*= QVariant()*/)
 {
-    qDebug() << Q_FUNC_INFO << "first: "<< _first<< " last: "<< _last << " role: "<<roleNames()[_role];
+//    qDebug() << Q_FUNC_INFO << "first: "<< _first<< " last: "<< _last << " role: "<<roleNames()[_role];
 
     if(_role == MapMarkerTreeItem::MarkerIsActive)
     {
@@ -192,6 +192,16 @@ void MapMarkerTreeListModel::triggerDataChanged(int _first, int _last, int _role
         QModelIndex bottomRight{index(_last, 0)};
         emit dataChanged(topLeft, bottomRight, {_role});
     }
+}
+
+void MapMarkerTreeListModel::triggerBeginRemoveRows(int _first, int _last)
+{
+    beginRemoveRows(QModelIndex(), _first, _last);
+}
+
+void MapMarkerTreeListModel::triggerEndRemoveRows()
+{
+    endRemoveRows();
 }
 
 MapMarkerTreeItem* MapMarkerTreeListModel::getItem(const QModelIndex& _index) const

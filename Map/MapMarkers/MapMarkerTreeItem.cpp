@@ -1,6 +1,6 @@
 #include "MapMarkerTreeItem.h"
 
-const QList<int> MapMarkerTreeItem::ms_columns{MapMarkerTreeItem::MarkerId, MapMarkerTreeItem::MarkerCoordinateLatitude, MapMarkerTreeItem::MarkerCoordinateLongitude};
+const QList<int> MapMarkerTreeItem::ms_columns{MapMarkerTreeItem::MarkerIsActive, MapMarkerTreeItem::MarkerId, MapMarkerTreeItem::MarkerCoordinateLatitude, MapMarkerTreeItem::MarkerCoordinateLongitude};
 
 MapMarkerTreeItem::MapMarkerTreeItem(MapMarkerTreeItem* _parent /*= nullptr*/)
     : m_parentItem(_parent)
@@ -36,6 +36,11 @@ int MapMarkerTreeItem::getRoleIdFromColumn(int _column) const
 }
 
 MapMarkerTreeItem* MapMarkerTreeItem::parent()
+{
+    return m_parentItem;
+}
+
+const MapMarkerTreeItem* MapMarkerTreeItem::parent() const
 {
     return m_parentItem;
 }
@@ -130,7 +135,7 @@ bool MapMarkerTreeItem::appendChild(const MapMarkerTreeItemData& _data)
     return true;
 }
 
-bool MapMarkerTreeItem::insertChildren(int _position, int _count, int _columnsCount)
+bool MapMarkerTreeItem::insertChildren(int _position, int _count)
 {
     if (_position < 0 || _position > m_childItems.size())
     {
@@ -161,7 +166,12 @@ bool MapMarkerTreeItem::removeChildren(int _position, int _count)
     return true;
 }
 
-MapMarkerTreeItemData MapMarkerTreeItem::markerData() const
+const MapMarkerTreeItemData& MapMarkerTreeItem::markerData() const
+{
+    return m_markerData;
+}
+
+MapMarkerTreeItemData& MapMarkerTreeItem::markerData()
 {
     return m_markerData;
 }
@@ -169,6 +179,36 @@ MapMarkerTreeItemData MapMarkerTreeItem::markerData() const
 void MapMarkerTreeItem::setMarkerData(const MapMarkerTreeItemData &newMarkerData)
 {
     m_markerData = newMarkerData;
+}
+
+bool MapMarkerTreeItem::inActiveHierarchy() const
+{
+    return m_inActiveHierarchy;
+}
+
+void MapMarkerTreeItem::setInActiveHierarchy(bool newInActiveHierarchy)
+{
+    m_inActiveHierarchy = newInActiveHierarchy;
+}
+
+int MapMarkerTreeItem::linearIndex() const
+{
+    return m_linearIndex;
+}
+
+void MapMarkerTreeItem::setLinearIndex(int newLinearIndex)
+{
+    m_linearIndex = newLinearIndex;
+}
+
+int MapMarkerTreeItem::linearIndexActiveHierarchy() const
+{
+    return m_linearIndexActiveHierarchy;
+}
+
+void MapMarkerTreeItem::setLinearIndexActiveHierarchy(int newLinearIndexActiveHierarchy)
+{
+    m_linearIndexActiveHierarchy = newLinearIndexActiveHierarchy;
 }
 
 VisitorReturn MapMarkerTreeItem::visit(std::function<VisitorReturn (MapMarkerTreeItem *)> _function)

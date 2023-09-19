@@ -6,6 +6,15 @@
 #include <QQuickStyle>
 #include <QQuickView>
 
+//#include <QAbstractItemModelTester>
+
+//#define TEST_SIMPLETREEVIEW
+#ifdef TEST_SIMPLETREEVIEW
+#include <QTreeView>
+#include <QFileSystemModel>
+#include <QPushButton>
+#endif // TEST_SIMPLETREEVIEW
+
 #include <DiscoverMainWindow.h>
 #include <InputHandler.h>
 #include <MapBackend.h>
@@ -15,6 +24,8 @@
 #include <MapMarkerTreeModel.h>
 #include <MapMarkerTreeItem.h>
 #include <TracksManager.h>
+
+
 
 int main(int argc, char *argv[])
 {
@@ -42,11 +53,46 @@ int main(int argc, char *argv[])
     TracksManager tracksManager;
     tracksManager.connectInputs(&inputHdl);
 
+//    MapMarkerTreeModel *modelToBeTested = tracksManager.getTreeTrack()->getTreeModel();
+//    auto tester = new QAbstractItemModelTester(modelToBeTested, QAbstractItemModelTester::FailureReportingMode::Fatal);
+
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("inputHandler", &inputHdl);
     engine.rootContext()->setContextProperty("tracksManager", &tracksManager);
     engine.rootContext()->setContextProperty("mapBackend", &mapBackEnd);
     engine.load(QUrl(QStringLiteral("qrc:/qml/Qml/MainWindow.qml")));
+
+#ifdef TEST_SIMPLETREEVIEW
+    QWidget *wdg = new QWidget;
+    wdg->show();
+
+    QFileSystemModel *model = new QFileSystemModel;
+    model->setRootPath(QDir::currentPath());
+
+    QTreeView *tree = new QTreeView(wdg);
+    tree->setModel(tracksManager.getTreeTrack()->getTreeModel());
+    //tree->setModel(simpleModel);
+    tree->show();
+
+    QPushButton *button = new QPushButton(
+        QApplication::translate("childwidget", "Press me"), wdg);
+    button->move(100, 300);
+    button->show();
+
+    int prevID = 0;
+    wdg->connect(button, &QPushButton::released, wdg, [&]()
+    {
+        qDebug() << Q_FUNC_INFO << "btn click";
+        QGeoCoordinate randCoord = QGeoCoordinate((double)rand() / RAND_MAX, (double)rand() / RAND_MAX);
+        tracksManager.setPointCoordinate(prevID, randCoord);
+        //tracksManager.getTreeTrack()->getTreeModel()->setData(tracksManager.getTreeTrack()->getTreeModel()->index(0, 0), QVariant::fromValue<QGeoCoordinate>(randCoord), MapMarkerTreeItem::MarkerCoordinate);
+//        tracksManager.getTreeTrack()->getTreeModel()->setData(tracksManager.getTreeTrack()->getTreeModel()->index(0, 1), (double)rand() / RAND_MAX, MapMarkerTreeItem::MarkerCoordinateLatitude);
+//        tracksManager.getTreeTrack()->getTreeModel()->setData(tracksManager.getTreeTrack()->getTreeModel()->index(0, 2), (double)rand() / RAND_MAX, MapMarkerTreeItem::MarkerCoordinateLongitude);
+        prevID = rand();
+        tracksManager.getTreeTrack()->getTreeModel()->setData(tracksManager.getTreeTrack()->getTreeModel()->index(0, 0), prevID, MapMarkerTreeItem::MarkerId);
+        //simpleModel->setData(simpleModel->index(1,1), rand());
+    });
+#endif // TEST_SIMPLETREEVIEW
 
     DiscoverMainWindow mainWindow{qobject_cast<QQuickWindow*>(engine.rootObjects().at(0))};
     mainWindow.connectInputs(&inputHdl);

@@ -45,18 +45,18 @@ void TracksManager::addPointToActiveTrack(const QGeoCoordinate &_coord, const QS
 
 void TracksManager::removePointFromActiveTrack(int _markerId)
 {
-    getActiveTrack()->removePoint(_markerId);
+    getTreeTrack()->removePoint(_markerId);
     emit activeTrackSizeChanged();
 }
 
 void TracksManager::setPointSelected(int _markerId, bool _selected /*= true*/)
 {
-    getActiveTrack()->setPointSelected(_markerId, _selected);
+    getTreeTrack()->setPointSelected(_markerId, _selected);
 }
 
 void TracksManager::setPointCoordinate(int _markerId, const QGeoCoordinate &_coord)
 {
-    getActiveTrack()->setPointCoordinate(_markerId, _coord);
+    getTreeTrack()->setPointCoordinate(_markerId, _coord);
 }
 
 void TracksManager::removeSelectedPointsFromActiveTrack()
