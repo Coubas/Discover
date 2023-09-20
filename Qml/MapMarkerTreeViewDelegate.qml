@@ -68,37 +68,149 @@ TreeViewDelegate
 
                 treeView.dragMarkerId = markerId;
             }
-            //content.Drag.drop();
+            else
+            {
+                console.log("dragStopped ind: " + row)
+                content.Drag.drop();
+            }
         }
     }
 
     DropArea
     {
-        id: dropArea
+        id: dropAreaTop
         width: parent.width
-        height: parent.height
+        height: parent.height * 0.25
+        y: 0
 
-        onExited: console.log("exited " + row)
+        onExited: () =>
+        {
+        }
         onEntered: (drag) =>
         {
-            var from = treeView.dragMarkerId
-            var to = markerId //mouseArea.DelegateModel.itemsRow
+           var from = treeView.dragMarkerId
+           var to = markerId
 
            if(from !== to)
            {
-               console.log("drag from " + from + " to " + to)
-               treeView.model.moveItem(from,to)
+               console.log("Entered " + to + " top")
            }
         }
 
         onDropped: (drop) =>
         {
+                       console.log("Dropped " + markerId + " top")
+           var from = treeView.dragMarkerId
+           var to = markerId
+
+           if(from !== to)
+           {
+                treeView.model.moveItem(from, to, false)
+           }
            treeView.dragMarkerId = -1
         }
 
         Rectangle {
+            color: "green"
+            //opacity: treeView.dragMarkerId > -1 ? 0.2 : 0
+            opacity: parent.containsDrag ? 1 : 0.2
+            anchors.fill: parent
+        }
+    }
+
+    DropArea
+    {
+        id: dropAreaMid
+        width: parent.width
+        height: parent.height * 0.5
+        y: parent.height * 0.25
+
+        onExited: () =>
+        {
+            expendTimer.stop()
+            //console.log("exited " + row)
+        }
+        onEntered: (drag) =>
+        {
+            var from = treeView.dragMarkerId
+            var to = markerId
+
+           if(from !== to)
+           {
+                console.log("Entered " + to + " middle")
+                expendTimer.restart()
+                //treeView.model.moveItem(from,to)
+           }
+        }
+
+        onDropped: (drop) =>
+        {
+                       console.log("Dropped " + markerId + " middle")
+
+            expendTimer.stop()
+
+            var from = treeView.dragMarkerId
+            var to = markerId
+
+            if(from !== to)
+            {
+                treeView.model.addItemAsChild(from,to)
+            }
+            treeView.dragMarkerId = -1
+        }
+
+        Rectangle {
             color: "blue"
-            opacity: treeView.dragMarkerId > -1 ? 0.2 : 0
+            //opacity: treeView.dragMarkerId > -1 ? 0.2 : 0
+            opacity: parent.containsDrag ? 1 : 0.2
+            anchors.fill: parent
+        }
+
+        Timer{
+            id: expendTimer
+            interval: 500
+            onTriggered: treeView.expand(row)
+        }
+    }
+
+    DropArea
+    {
+        id: dropAreaBot
+        width: parent.width
+        height: parent.height * 0.25
+        y: parent.height * 0.75
+
+        onExited: () =>
+        {
+        }
+        onEntered: (drag) =>
+        {
+            var from = treeView.dragMarkerId
+            var to = markerId
+
+            if(from !== to)
+            {
+                console.log("Entered " + to + " bottom")
+            }
+        }
+
+        onDropped: (drop) =>
+        {
+                       console.log("Dropped " + markerId + " bottom")
+           var from = treeView.dragMarkerId
+           var to = markerId
+
+           if(from !== to)
+           {
+                treeView.model.moveItem(from, to, true)
+           }
+           treeView.dragMarkerId = -1
+        }
+
+        Rectangle {
+            color: "yellow"
+            //opacity: treeView.dragMarkerId > -1 ? 0.2 : 0
+            opacity: parent.containsDrag ? 1 : 0.2
             anchors.fill: parent
         }
     }

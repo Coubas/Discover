@@ -459,22 +459,34 @@ bool MapMarkerTreeModel::setMarkerCoordinate(int _markerId, const QGeoCoordinate
     return done;
 }
 
-void MapMarkerTreeModel::moveItem(int _fromMarkerId, int _toMarkerId)
+void MapMarkerTreeModel::moveItem(int _fromMarkerId, int _toMarkerId, bool addAfter /*= false*/)
 {
     QModelIndex from = getIndexFromMarkerId(_fromMarkerId);
     QModelIndex to = getIndexFromMarkerId(_toMarkerId);
 
-    qDebug() << Q_FUNC_INFO << "Move("<<from<<", "<<to<<")";
-
     int fromRow = from.row();
     int destRow = to.row();
+
+    qDebug() << Q_FUNC_INFO << "Move("<<fromRow<<", "<<destRow<<", "<<addAfter<<")";
+
     if(from.parent() == to.parent())
     {
-        if(destRow > from.row())
+        if((fromRow == destRow - 1 && !addAfter) ||
+            (fromRow == destRow + 1 && addAfter))
         {
-            ++destRow;
+            qDebug() << Q_FUNC_INFO << "aborted";
+            return;
         }
-        else
+    }
+
+    if(addAfter)
+    {
+        ++destRow;
+    }
+
+    if(from.parent() == to.parent())
+    {
+        if(destRow < fromRow)
         {
             ++fromRow;
         }
@@ -486,7 +498,8 @@ void MapMarkerTreeModel::moveItem(int _fromMarkerId, int _toMarkerId)
     MapMarkerTreeItem* sourceParent = getItem(from.parent());
     MapMarkerTreeItem* destParent = getItem(to.parent());
 
-    if(source->inActiveHierarchy())
+    bool shouldUpdateListModel = source->inActiveHierarchy() || (source->markerData().active && destParent->inActiveHierarchy());
+    if(shouldUpdateListModel)
     {
         // Could be improved by using begin/endmoverows or begin/endremoverows (demending if the dest node is in active hierarchy or not)
         // But this seems fine for now
@@ -501,7 +514,42 @@ void MapMarkerTreeModel::moveItem(int _fromMarkerId, int _toMarkerId)
         updateTreeItemIndexInfo();
     }
 
-    if(source->inActiveHierarchy())
+    if(shouldUpdateListModel)
+    {
+        m_listModel->triggerEndResetModel();
+    }
+
+    endMoveRows();
+}
+
+void MapMarkerTreeModel::addItemAsChild(int _fromMarkerId, int _toMarkerId)
+{
+    QModelIndex from = getIndexFromMarkerId(_fromMarkerId);
+    QModelIndex to = getIndexFromMarkerId(_toMarkerId);
+
+    MapMarkerTreeItem* source = getItem(from);
+    MapMarkerTreeItem* sourceParent = getItem(from.parent());
+    MapMarkerTreeItem* dest = getItem(to);
+
+    beginMoveRows(from.parent(), from.row(), from.row(), to, dest->childCount());
+
+    bool shouldUpdateListModel = source->inActiveHierarchy() || (source->markerData().active && dest->inActiveHierarchy());
+    if(shouldUpdateListModel)
+    {
+        // Could be improved by using begin/endmoverows or begin/endremoverows (demending if the dest node is in active hierarchy or not)
+        // But this seems fine for now
+        m_listModel->triggerBeginResetModel();
+    }
+
+    if(source != nullptr && sourceParent != nullptr && dest != nullptr)
+    {
+        dest->appendChild(source);
+        sourceParent->removeChildren(from.row(), 1);
+
+        updateTreeItemIndexInfo();
+    }
+
+    if(shouldUpdateListModel)
     {
         m_listModel->triggerEndResetModel();
     }
@@ -662,7 +710,7 @@ void MapMarkerTreeModel::updateTreeItemIndexInfo()
             _treeItem->setLinearIndexActiveHierarchy(-1);
         }
 
-        qDebug() << Q_FUNC_INFO << "Id: "<< _treeItem->markerData().markerId << "linearIndex: "<< _treeItem->linearIndex() << ", inActiveHierarchy: " << _treeItem->inActiveHierarchy() << ", linearIndexInActiveHierarchy: " << _treeItem->linearIndexActiveHierarchy();
+        //qDebug() << Q_FUNC_INFO << "Id: "<< _treeItem->markerData().markerId << "linearIndex: "<< _treeItem->linearIndex() << ", inActiveHierarchy: " << _treeItem->inActiveHierarchy() << ", linearIndexInActiveHierarchy: " << _treeItem->linearIndexActiveHierarchy();
         return VisitorReturn::VisitorContinue;
     };
     visit(updateInfo);

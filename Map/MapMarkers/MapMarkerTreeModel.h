@@ -50,7 +50,8 @@ public:
 //    void removeSelectedMarkers();
 
 public slots:
-    void moveItem(int _fromMarkerId, int _toMarkerId);
+    void moveItem(int _fromMarkerId, int _toMarkerId, bool addAfter = false);
+    void addItemAsChild(int _fromMarkerId, int _toMarkerId);
 
 private:
     MapMarkerTreeItem* getItem(const QModelIndex& _index) const;
