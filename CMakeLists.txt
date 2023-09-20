@@ -57,6 +57,7 @@ qt_add_qml_module(Discover
         Qml/CircleMarkerShape.qml
         Qml/TextColumnItem.qml
         Qml/CheckboxColumnItem.qml
+        Qml/MapMarkerTreeViewDelegate.qml
     RESOURCES
         qtquickcontrols2.conf
         qml.qrc

@@ -437,8 +437,9 @@ bool MapMarkerTreeModel::setMarkerSelected(int _markerId, bool _selected)
 
 bool MapMarkerTreeModel::setMarkerCoordinate(int _markerId, const QGeoCoordinate &_coord)
 {
-    bool done = false;
+//    qDebug() << Q_FUNC_INFO << "setMarkerCoordinate("<<_markerId<<", "<<_coord<<")";
 
+    bool done = false;
     auto setCoordinate = [&](MapMarkerTreeItem* _treeItem) -> VisitorReturn
     {
         if(_treeItem->markerData().markerId == _markerId)
@@ -456,6 +457,56 @@ bool MapMarkerTreeModel::setMarkerCoordinate(int _markerId, const QGeoCoordinate
     visit(setCoordinate);
 
     return done;
+}
+
+void MapMarkerTreeModel::moveItem(int _fromMarkerId, int _toMarkerId)
+{
+    QModelIndex from = getIndexFromMarkerId(_fromMarkerId);
+    QModelIndex to = getIndexFromMarkerId(_toMarkerId);
+
+    qDebug() << Q_FUNC_INFO << "Move("<<from<<", "<<to<<")";
+
+    int fromRow = from.row();
+    int destRow = to.row();
+    if(from.parent() == to.parent())
+    {
+        if(destRow > from.row())
+        {
+            ++destRow;
+        }
+        else
+        {
+            ++fromRow;
+        }
+    }
+
+    beginMoveRows(from.parent(), from.row(), from.row(), to.parent(), destRow);
+
+    MapMarkerTreeItem* source = getItem(from);
+    MapMarkerTreeItem* sourceParent = getItem(from.parent());
+    MapMarkerTreeItem* destParent = getItem(to.parent());
+
+    if(source->inActiveHierarchy())
+    {
+        // Could be improved by using begin/endmoverows or begin/endremoverows (demending if the dest node is in active hierarchy or not)
+        // But this seems fine for now
+        m_listModel->triggerBeginResetModel();
+    }
+
+    if(source != nullptr && sourceParent != nullptr && destParent != nullptr)
+    {
+        destParent->insertChild(destRow, source);
+        sourceParent->removeChildren(fromRow, 1);
+
+        updateTreeItemIndexInfo();
+    }
+
+    if(source->inActiveHierarchy())
+    {
+        m_listModel->triggerEndResetModel();
+    }
+
+    endMoveRows();
 }
 
 MapMarkerTreeItem* MapMarkerTreeModel::getItem(const QModelIndex& _index) const
@@ -565,6 +616,25 @@ int MapMarkerTreeModel::getNbVisibleChild(MapMarkerTreeItem &_item)
     return nb;
 }
 
+QModelIndex MapMarkerTreeModel::getIndexFromMarkerId(int _markerId)
+{
+    QModelIndex id;
+
+    auto getModelIndex = [&](MapMarkerTreeItem* _treeItem) -> VisitorReturn
+    {
+        if(_treeItem->markerData().markerId == _markerId)
+        {
+            id = index(_treeItem);
+            return VisitorReturn::VisitorBreak;
+        }
+
+        return VisitorReturn::VisitorContinue;
+    };
+    visit(getModelIndex);
+
+    return id;
+}
+
 void MapMarkerTreeModel::updateTreeItemIndexInfo()
 {
     int id = 0;
@@ -592,7 +662,7 @@ void MapMarkerTreeModel::updateTreeItemIndexInfo()
             _treeItem->setLinearIndexActiveHierarchy(-1);
         }
 
-        //qDebug() << Q_FUNC_INFO << "Id: "<< _treeItem->markerData().markerId << "linearIndex: "<< _treeItem->linearIndex() << ", inActiveHierarchy: " << _treeItem->inActiveHierarchy() << ", linearIndexInActiveHierarchy: " << _treeItem->linearIndexActiveHierarchy();
+        qDebug() << Q_FUNC_INFO << "Id: "<< _treeItem->markerData().markerId << "linearIndex: "<< _treeItem->linearIndex() << ", inActiveHierarchy: " << _treeItem->inActiveHierarchy() << ", linearIndexInActiveHierarchy: " << _treeItem->linearIndexActiveHierarchy();
         return VisitorReturn::VisitorContinue;
     };
     visit(updateInfo);

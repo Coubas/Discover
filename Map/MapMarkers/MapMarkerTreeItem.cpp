@@ -2,9 +2,22 @@
 
 const QList<int> MapMarkerTreeItem::ms_columns{MapMarkerTreeItem::MarkerIsActive, MapMarkerTreeItem::MarkerId, MapMarkerTreeItem::MarkerCoordinateLatitude, MapMarkerTreeItem::MarkerCoordinateLongitude};
 
-MapMarkerTreeItem::MapMarkerTreeItem(MapMarkerTreeItem* _parent /*= nullptr*/)
+MapMarkerTreeItem::MapMarkerTreeItem(MapMarkerTreeItem* _parent /*= nullptr*/, const MapMarkerTreeItem *_source /*= nullptr*/)
     : m_parentItem(_parent)
-{}
+{
+    if(_source != nullptr)
+    {
+        this->setMarkerData(_source->m_markerData);
+
+        if(!_source->m_childItems.empty())
+        {
+            for(const MapMarkerTreeItem* child : _source->m_childItems)
+            {
+                this->appendChild(child);
+            }
+        }
+    }
+}
 
 MapMarkerTreeItem::~MapMarkerTreeItem()
 {
@@ -132,6 +145,28 @@ bool MapMarkerTreeItem::appendChild(const MapMarkerTreeItemData& _data)
     MapMarkerTreeItem* item = new MapMarkerTreeItem(this);
     item->setMarkerData(_data);
     m_childItems.append(item);
+    return true;
+}
+
+bool MapMarkerTreeItem::appendChild(const MapMarkerTreeItem* _source)
+{
+    MapMarkerTreeItem* item = new MapMarkerTreeItem(this, _source);
+    m_childItems.append(item);
+    return true;
+}
+
+bool MapMarkerTreeItem::insertChild(int _position, const MapMarkerTreeItemData &_data)
+{
+    MapMarkerTreeItem* item = new MapMarkerTreeItem(this);
+    item->setMarkerData(_data);
+    m_childItems.insert(_position, item);
+    return true;
+}
+
+bool MapMarkerTreeItem::insertChild(int _position, const MapMarkerTreeItem* _source)
+{
+    MapMarkerTreeItem* item = new MapMarkerTreeItem(this, _source);
+    m_childItems.insert(_position, item);
     return true;
 }
 

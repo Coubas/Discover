@@ -23,7 +23,7 @@ struct MapMarkerTreeItemData
 class MapMarkerTreeItem
 {
 public:
-    explicit MapMarkerTreeItem(MapMarkerTreeItem* parentItem = nullptr);
+    explicit MapMarkerTreeItem(MapMarkerTreeItem* _parent = nullptr, const MapMarkerTreeItem *_source = nullptr);
     ~MapMarkerTreeItem();
 
     enum MarkerField
@@ -50,6 +50,9 @@ public:
     QVariant data(int _role = Qt::DisplayRole) const;
     bool setData(const QVariant& _value, int _role = Qt::EditRole);
     bool appendChild(const MapMarkerTreeItemData& _data);
+    bool appendChild(const MapMarkerTreeItem* _source);
+    bool insertChild(int _position, const MapMarkerTreeItemData& _data);
+    bool insertChild(int _position, const MapMarkerTreeItem* _source);
     bool insertChildren(int _position, int _count);
     bool removeChildren(int _position, int _count);
 //    bool insertColumns(int _position, int _count);

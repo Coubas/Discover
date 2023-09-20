@@ -204,6 +204,16 @@ void MapMarkerTreeListModel::triggerEndRemoveRows()
     endRemoveRows();
 }
 
+void MapMarkerTreeListModel::triggerBeginResetModel()
+{
+    beginResetModel();
+}
+
+void MapMarkerTreeListModel::triggerEndResetModel()
+{
+    endResetModel();
+}
+
 MapMarkerTreeItem* MapMarkerTreeListModel::getItem(const QModelIndex& _index) const
 {
     if (_index.isValid())

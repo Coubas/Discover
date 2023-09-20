@@ -38,7 +38,6 @@ public:
     bool insertRows(int _position, int _count, const QModelIndex& _parent = QModelIndex()) override;
     bool removeRows(int _position, int _count, const QModelIndex& _parent = QModelIndex()) override;
 
-
     void visit(std::function<VisitorReturn(MapMarkerTreeItem*)> _function) const;
 
     MapMarkerTreeListModel* getListModel() {return m_listModel;}
@@ -50,11 +49,15 @@ public:
     bool setMarkerCoordinate(int _markerId, const QGeoCoordinate& _coord);
 //    void removeSelectedMarkers();
 
+public slots:
+    void moveItem(int _fromMarkerId, int _toMarkerId);
+
 private:
     MapMarkerTreeItem* getItem(const QModelIndex& _index) const;
     bool isInActiveHierarchy(MapMarkerTreeItem& _item, bool _includeFirstRankDisabled = false);
     int getLinearIndexFromRoot(MapMarkerTreeItem& _item, bool _includeFirstRankDisabled = false);
     int getNbVisibleChild(MapMarkerTreeItem& _item);
+    QModelIndex getIndexFromMarkerId(int _markerId);
 
     void updateTreeItemIndexInfo();
 

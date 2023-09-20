@@ -81,7 +81,6 @@ Item
                 timer.restart()
         }
 
-
         // Drag handling
         drag.target: content
         drag.axis: Drag.YAxis

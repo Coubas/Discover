@@ -64,7 +64,7 @@ Rectangle
 
                 Item
                 {
-                    id: listViewRoot
+                    id: treeViewRoot
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     Layout.alignment: Qt.AlignLeft | Qt.AlignTop
@@ -73,8 +73,8 @@ Rectangle
                     {
                         anchors.fill: parent
                         color: "transparent"
-                        border.color: "red"
-                        border.width: 2
+//                        border.color: "red"
+//                        border.width: 2
 
 //                        ListView {
 //                            id: listView
@@ -90,47 +90,12 @@ Rectangle
 //                        }
 
                         TreeView {
+                            id: treeView
                             anchors.fill: parent
+                            interactive: false
+                            property int dragMarkerId: -1
                             model: tracksManager.treeTrack.treeModel
-                            delegate: TreeViewDelegate
-                            {
-                                contentItem: Row {
-//                                    CheckBox
-//                                    {
-//                                        anchors.verticalCenter: parent.verticalCenter
-//                                        visible: isTreeNode
-//                                        checked: model.markerIsActive
-//                                        onToggled: model.markerIsActive = checked
-//                                    }
-//                                    Text
-//                                    {
-//                                        anchors.verticalCenter: isTreeNode ? parent.verticalCenter : 0
-//                                        text: model.display
-//                                    }
-                                    Loader
-                                    {
-                                        id: shapeLoader
-                                        source: getShape(model.column)
-
-                                        function getShape(t)
-                                        {
-                                            switch(t)
-                                            {
-                                            case 0:
-                                                return "CheckboxColumnItem.qml"
-                                            default:
-                                                return "TextColumnItem.qml"
-                                            }
-                                        }
-                                    }
-                                }
-
-                                background: Rectangle {
-                                    anchors.fill: parent
-                                    opacity: model.markerIsSelected ? 0.5 : 0
-                                    color: Material.accent
-                                }
-                            }
+                            delegate: MapMarkerTreeViewDelegate{}
                             Component.onCompleted: expandRecursively()
                         }
                     }
