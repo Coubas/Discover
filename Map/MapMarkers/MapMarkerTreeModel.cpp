@@ -186,7 +186,7 @@ bool MapMarkerTreeModel::setData(const QModelIndex& _index, const QVariant& _val
             }
             if(first >= 0)
             {
-                qDebug() << Q_FUNC_INFO << "m_listModel->triggerDataChanged(" << first <<", " << last <<", " << roleNames()[_role] <<", " << _value <<")";
+                //qDebug() << Q_FUNC_INFO << "m_listModel->triggerDataChanged(" << first <<", " << last <<", " << roleNames()[_role] <<", " << _value <<")";
                 m_listModel->triggerDataChanged(first, last, _role, _value);
             }
 
@@ -214,7 +214,7 @@ bool MapMarkerTreeModel::setData(const QModelIndex& _index, const QVariant& _val
                 QModelIndex id = createIndex(_index.row(), item->getColumnIdFromRole(_role), item);
                 emit dataChanged(id, id, roles);
             }
-            qDebug() << Q_FUNC_INFO << "Emit dataChanged("<<_index<<", "<<_index<< ", "<<roles<<")";
+            //qDebug() << Q_FUNC_INFO << "Emit dataChanged("<<_index<<", "<<_index<< ", "<<roles<<")";
 
             return true;
         }
@@ -367,47 +367,17 @@ bool MapMarkerTreeModel::removeMaker(int _markerId)
 {
     bool done = false;
 
-    auto setSelected = [&](MapMarkerTreeItem* _treeItem) -> VisitorReturn
+    auto remove = [&](MapMarkerTreeItem* _treeItem) -> VisitorReturn
     {
         if(_treeItem->markerData().markerId == _markerId)
         {
-            done = true;
-
-            QModelIndex id = index(_treeItem);
-//            qDebug() << Q_FUNC_INFO << _markerId << " beginRemoveRows("<<id.parent()<<", "<<id.row()<<", "<<id.row()<<")";
-            beginRemoveRows(id.parent(), id.row(), id.row());
-            if(_treeItem->inActiveHierarchy())
-            {
-                int first = _treeItem->linearIndexActiveHierarchy();
-                int last = first;
-                if(_treeItem->childCount() > 0)
-                {
-                    int nb = getNbVisibleChild(*_treeItem);
-                    last = first + nb;
-                }
-//                qDebug() << Q_FUNC_INFO << "triggerBeginRemoveRows("<<first<<", "<<last<<")";
-                m_listModel->triggerBeginRemoveRows(first, last);
-            }
-
-            _treeItem->parent()->removeChildren(id.row(), 1);
-
-            if(_treeItem->inActiveHierarchy())
-            {
-                m_listModel->triggerEndRemoveRows();
-            }
-
-            endRemoveRows();
-
+            done = removeItem(_treeItem);
             return VisitorReturn::VisitorBreak;
         }
 
         return VisitorReturn::VisitorContinue;
     };
-    visit(setSelected);
-
-    updateTreeItemIndexInfo();
-//    beginResetModel();
-//    endResetModel();
+    visit(remove);
 
     return done;
 }
@@ -459,22 +429,86 @@ bool MapMarkerTreeModel::setMarkerCoordinate(int _markerId, const QGeoCoordinate
     return done;
 }
 
-void MapMarkerTreeModel::moveItem(int _fromMarkerId, int _toMarkerId, bool addAfter /*= false*/)
+void MapMarkerTreeModel::removeSelectedMarkers()
 {
+    auto removeSelected = [&](MapMarkerTreeItem* _treeItem) -> VisitorReturn
+    {
+        if(_treeItem->markerData().selected)
+        {
+            removeItem(_treeItem);
+            return VisitorReturn::VisitorIgnoreChilds;
+        }
+
+        return VisitorReturn::VisitorContinue;
+    };
+    visit(removeSelected);
+}
+
+bool MapMarkerTreeModel::isValidMove(int _fromMarkerId, int _toMarkerId, bool addAfter)
+{
+    if(_fromMarkerId == _toMarkerId)
+    {
+        return false;
+    }
+
     QModelIndex from = getIndexFromMarkerId(_fromMarkerId);
     QModelIndex to = getIndexFromMarkerId(_toMarkerId);
 
     int fromRow = from.row();
     int destRow = to.row();
 
-    qDebug() << Q_FUNC_INFO << "Move("<<fromRow<<", "<<destRow<<", "<<addAfter<<")";
+    if(from.parent() == to.parent())
+    {
+        if((fromRow == destRow - 1 && !addAfter) ||
+            (fromRow == destRow + 1 && addAfter))
+        {
+            //qDebug() << Q_FUNC_INFO << "aborted";
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool MapMarkerTreeModel::isValidNewChild(int _fromMarkerId, int _toMarkerId)
+{
+    if(_fromMarkerId == _toMarkerId)
+    {
+        return false;
+    }
+
+    QModelIndex from = getIndexFromMarkerId(_fromMarkerId);
+    QModelIndex to = getIndexFromMarkerId(_toMarkerId);
+
+    if(from.parent() == to)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+void MapMarkerTreeModel::moveItem(int _fromMarkerId, int _toMarkerId, bool addAfter /*= false*/)
+{
+    if(_fromMarkerId == _toMarkerId)
+    {
+        return;
+    }
+
+    QModelIndex from = getIndexFromMarkerId(_fromMarkerId);
+    QModelIndex to = getIndexFromMarkerId(_toMarkerId);
+
+    int fromRow = from.row();
+    int destRow = to.row();
+
+    //qDebug() << Q_FUNC_INFO << "Move("<<fromRow<<", "<<destRow<<", "<<addAfter<<")";
 
     if(from.parent() == to.parent())
     {
         if((fromRow == destRow - 1 && !addAfter) ||
             (fromRow == destRow + 1 && addAfter))
         {
-            qDebug() << Q_FUNC_INFO << "aborted";
+            //qDebug() << Q_FUNC_INFO << "aborted";
             return;
         }
     }
@@ -524,8 +558,18 @@ void MapMarkerTreeModel::moveItem(int _fromMarkerId, int _toMarkerId, bool addAf
 
 void MapMarkerTreeModel::addItemAsChild(int _fromMarkerId, int _toMarkerId)
 {
+    if(_fromMarkerId == _toMarkerId)
+    {
+        return;
+    }
+
     QModelIndex from = getIndexFromMarkerId(_fromMarkerId);
     QModelIndex to = getIndexFromMarkerId(_toMarkerId);
+
+    if(from.parent() == to)
+    {
+        return;
+    }
 
     MapMarkerTreeItem* source = getItem(from);
     MapMarkerTreeItem* sourceParent = getItem(from.parent());
@@ -598,7 +642,7 @@ bool MapMarkerTreeModel::isInActiveHierarchy(MapMarkerTreeItem &_item, bool _inc
     };
     visit(searchInActive);
 
-    qDebug() << Q_FUNC_INFO << "Id: "<< _item.markerData().markerId <<"is in active hierarchy = "<< found;
+    //qDebug() << Q_FUNC_INFO << "Id: "<< _item.markerData().markerId <<"is in active hierarchy = "<< found;
     return found;
 }
 
@@ -681,6 +725,39 @@ QModelIndex MapMarkerTreeModel::getIndexFromMarkerId(int _markerId)
     visit(getModelIndex);
 
     return id;
+}
+
+bool MapMarkerTreeModel::removeItem(MapMarkerTreeItem *_treeItem)
+{
+    bool done = false;
+
+    QModelIndex id = index(_treeItem);
+    beginRemoveRows(id.parent(), id.row(), id.row());
+    if(_treeItem->inActiveHierarchy())
+    {
+        int first = _treeItem->linearIndexActiveHierarchy();
+        int last = first;
+        if(_treeItem->childCount() > 0)
+        {
+            int nb = getNbVisibleChild(*_treeItem);
+            last = first + nb;
+        }
+        m_listModel->triggerBeginRemoveRows(first, last);
+        qDebug() << Q_FUNC_INFO << "triggerBeginRemoveRows(" << first << ", " << last << ")";
+    }
+
+    done = _treeItem->parent()->removeChildren(id.row(), 1);
+
+    if(_treeItem->inActiveHierarchy())
+    {
+        m_listModel->triggerEndRemoveRows();
+    }
+
+    endRemoveRows();
+
+    updateTreeItemIndexInfo();
+
+    return done;
 }
 
 void MapMarkerTreeModel::updateTreeItemIndexInfo()

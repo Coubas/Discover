@@ -35,6 +35,11 @@ void TreeTrack::setPointCoordinate(int _markerId, const QGeoCoordinate &_coord)
     m_tree.setMarkerCoordinate(_markerId, _coord);
 }
 
+void TreeTrack::removeSelectedPoints()
+{
+    m_tree.removeSelectedMarkers();
+}
+
 //void TreeTrack::removeSelectedPoints()
 //{
 //    m_points.removeSelectedMarkers();

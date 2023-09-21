@@ -135,7 +135,6 @@ Item
             sequence: StandardKey.Delete
             onActivated:
             {
-                console.log("DeletePressed")
                 tracksManager.removeSelectedPointsFromActiveTrack()
             }
         }
@@ -145,7 +144,6 @@ Item
             sequence: StandardKey.Cancel
             onActivated:
             {
-                console.log("DeletePressed")
                 mapBackend.cursorVisible = false
             }
         }

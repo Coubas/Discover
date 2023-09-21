@@ -47,9 +47,11 @@ public:
     bool removeMaker(int _markerId);
     bool setMarkerSelected(int _markerId, bool _selected = true);
     bool setMarkerCoordinate(int _markerId, const QGeoCoordinate& _coord);
-//    void removeSelectedMarkers();
+    void removeSelectedMarkers();
 
 public slots:
+    bool isValidMove(int _fromMarkerId, int _toMarkerId, bool addAfter = false);
+    bool isValidNewChild(int _fromMarkerId, int _toMarkerId);
     void moveItem(int _fromMarkerId, int _toMarkerId, bool addAfter = false);
     void addItemAsChild(int _fromMarkerId, int _toMarkerId);
 
@@ -59,6 +61,7 @@ private:
     int getLinearIndexFromRoot(MapMarkerTreeItem& _item, bool _includeFirstRankDisabled = false);
     int getNbVisibleChild(MapMarkerTreeItem& _item);
     QModelIndex getIndexFromMarkerId(int _markerId);
+    bool removeItem(MapMarkerTreeItem* _treeItem);
 
     void updateTreeItemIndexInfo();
 

@@ -24,7 +24,11 @@ TreeViewDelegate
             }
 
     background: Rectangle {
-        anchors.fill: parent
+        //anchors.fill: parent
+        visible: isTreeNode
+        width: delegate.parent.width
+        height: delegate.height
+        x: leftMargin * 0.5
         opacity: model.markerIsSelected ? 0.5 : 0
         color: Material.accent
     }
@@ -119,7 +123,7 @@ TreeViewDelegate
             var from = treeView.dragMarkerId
             var to = markerId
 
-            if(from !== to)
+            if(treeView.model.isValidMove(from,to, false))
             {
                 treeView.dragOveredRow = row
                 treeView.dragOveredRowPart = "top"
@@ -131,23 +135,13 @@ TreeViewDelegate
             var from = treeView.dragMarkerId
             var to = markerId
 
-            if(from !== to)
+            if(treeView.model.isValidMove(from,to, false))
             {
                 treeView.model.moveItem(from, to, false)
             }
 
             treeView.resetDragInfo()
         }
-
-//        Rectangle {
-//            id: moveTopFeedback
-//            color: "green"
-//            width: parent.width
-//            height: 4
-//            y: -2
-//            //opacity: treeView.dragMarkerId > -1 ? 0.2 : 0
-//            opacity: treeView.dragOveredRow === row && treeView.dragOveredRowPart === "top" ? 1 : 0.2
-//        }
     }
 
     DropArea
@@ -167,7 +161,7 @@ TreeViewDelegate
             var from = treeView.dragMarkerId
             var to = markerId
 
-            if(from !== to)
+            if(treeView.model.isValidNewChild(from,to))
             {
                 treeView.dragOveredRow = row
                 treeView.dragOveredRowPart = "middle"
@@ -182,7 +176,7 @@ TreeViewDelegate
             var from = treeView.dragMarkerId
             var to = markerId
 
-            if(from !== to)
+            if(treeView.model.isValidNewChild(from,to))
             {
                 treeView.model.addItemAsChild(from,to)
             }
@@ -213,7 +207,7 @@ TreeViewDelegate
             var from = treeView.dragMarkerId
             var to = markerId
 
-            if(from !== to)
+            if(treeView.model.isValidMove(from,to, true))
             {
                 treeView.dragOveredRow = row
                 treeView.dragOveredRowPart = "bottom"
@@ -225,7 +219,7 @@ TreeViewDelegate
             var from = treeView.dragMarkerId
             var to = markerId
 
-            if(from !== to)
+            if(treeView.model.isValidMove(from,to, true))
             {
                 treeView.model.moveItem(from, to, true)
             }
@@ -263,6 +257,7 @@ TreeViewDelegate
         x: leftMargin * 0.5
         border.color: Material.primary
         border.width: 2
+        color: "transparent"
         //color: Material.primary
         //opacity: treeView.dragOveredRow === row && treeView.dragOveredRowPart === "middle" ? 0.5 : 0
     }
