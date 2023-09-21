@@ -12,6 +12,5 @@
         <file>Qml/MapRouteBase.qml</file>
         <file>Qml/TextColumnItem.qml</file>
         <file>Qml/CheckboxColumnItem.qml</file>
-        <file>Qml/MapMarkerTreeViewRow.qml</file>
     </qresource>
 </RCC>

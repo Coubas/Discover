@@ -94,9 +94,17 @@ Rectangle
                             anchors.fill: parent
                             interactive: false
                             property int dragMarkerId: -1
+                            property int dragOveredRow: -1
+                            property var dragOveredRowPart: "none"
                             model: tracksManager.treeTrack.treeModel
                             delegate: MapMarkerTreeViewDelegate{}
                             Component.onCompleted: expandRecursively()
+
+                            function resetDragInfo()
+                            {
+                                dragOveredRow = -1
+                                dragOveredRowPart = "none"
+                            }
                         }
                     }
                 }

@@ -4,13 +4,40 @@ import QtQuick.Controls 2.0
 TreeViewDelegate
 {
     id: delegate
+    contentItem:
+            Loader
+            {
+                id: shapeLoader
+                z:10
+                source: getShape(model.column)
+
+                function getShape(t)
+                {
+                    switch(t)
+                    {
+                    case 0:
+                        return "CheckboxColumnItem.qml"
+                    default:
+                        return "TextColumnItem.qml"
+                    }
+                }
+            }
+
+    background: Rectangle {
+        anchors.fill: parent
+        opacity: model.markerIsSelected ? 0.5 : 0
+        color: Material.accent
+    }
+
     Rectangle {
         id: content
-        color: "red"
         visible: mouseArea.drag.active
+        color: "transparent"
+        width: delegate.parent.width
+        height: delegate.height
+        border.color: Material.accent
+        border.width: 2
         opacity: 0.2
-        width: parent.width
-        height: 50
         Drag.active: visible
         Drag.source: mouseArea
         Drag.hotSpot.x: width * 0.5
@@ -59,8 +86,8 @@ TreeViewDelegate
         drag.axis: Drag.YAxis
         drag.onActiveChanged:
         {
-            if (mouseArea.drag.active) {
-                console.log("dragStarted ind: " + row)
+            if (mouseArea.drag.active)
+            {
                 if(parent.expanded)
                 {
                     treeView.collapseRecursively(row)
@@ -70,8 +97,8 @@ TreeViewDelegate
             }
             else
             {
-                console.log("dragStopped ind: " + row)
                 content.Drag.drop();
+                treeView.dragMarkerId = -1
             }
         }
     }
@@ -85,37 +112,42 @@ TreeViewDelegate
 
         onExited: () =>
         {
+            treeView.resetDragInfo()
         }
         onEntered: (drag) =>
         {
-           var from = treeView.dragMarkerId
-           var to = markerId
+            var from = treeView.dragMarkerId
+            var to = markerId
 
-           if(from !== to)
-           {
-               console.log("Entered " + to + " top")
-           }
+            if(from !== to)
+            {
+                treeView.dragOveredRow = row
+                treeView.dragOveredRowPart = "top"
+            }
         }
 
         onDropped: (drop) =>
         {
-                       console.log("Dropped " + markerId + " top")
-           var from = treeView.dragMarkerId
-           var to = markerId
+            var from = treeView.dragMarkerId
+            var to = markerId
 
-           if(from !== to)
-           {
+            if(from !== to)
+            {
                 treeView.model.moveItem(from, to, false)
-           }
-           treeView.dragMarkerId = -1
+            }
+
+            treeView.resetDragInfo()
         }
 
-        Rectangle {
-            color: "green"
-            //opacity: treeView.dragMarkerId > -1 ? 0.2 : 0
-            opacity: parent.containsDrag ? 1 : 0.2
-            anchors.fill: parent
-        }
+//        Rectangle {
+//            id: moveTopFeedback
+//            color: "green"
+//            width: parent.width
+//            height: 4
+//            y: -2
+//            //opacity: treeView.dragMarkerId > -1 ? 0.2 : 0
+//            opacity: treeView.dragOveredRow === row && treeView.dragOveredRowPart === "top" ? 1 : 0.2
+//        }
     }
 
     DropArea
@@ -128,25 +160,23 @@ TreeViewDelegate
         onExited: () =>
         {
             expendTimer.stop()
-            //console.log("exited " + row)
+            treeView.resetDragInfo()
         }
         onEntered: (drag) =>
         {
             var from = treeView.dragMarkerId
             var to = markerId
 
-           if(from !== to)
-           {
-                console.log("Entered " + to + " middle")
+            if(from !== to)
+            {
+                treeView.dragOveredRow = row
+                treeView.dragOveredRowPart = "middle"
                 expendTimer.restart()
-                //treeView.model.moveItem(from,to)
-           }
+            }
         }
 
         onDropped: (drop) =>
         {
-                       console.log("Dropped " + markerId + " middle")
-
             expendTimer.stop()
 
             var from = treeView.dragMarkerId
@@ -156,14 +186,8 @@ TreeViewDelegate
             {
                 treeView.model.addItemAsChild(from,to)
             }
-            treeView.dragMarkerId = -1
-        }
 
-        Rectangle {
-            color: "blue"
-            //opacity: treeView.dragMarkerId > -1 ? 0.2 : 0
-            opacity: parent.containsDrag ? 1 : 0.2
-            anchors.fill: parent
+            treeView.resetDragInfo()
         }
 
         Timer{
@@ -182,6 +206,7 @@ TreeViewDelegate
 
         onExited: () =>
         {
+            treeView.resetDragInfo()
         }
         onEntered: (drag) =>
         {
@@ -190,29 +215,56 @@ TreeViewDelegate
 
             if(from !== to)
             {
-                console.log("Entered " + to + " bottom")
+                treeView.dragOveredRow = row
+                treeView.dragOveredRowPart = "bottom"
             }
         }
 
         onDropped: (drop) =>
         {
-                       console.log("Dropped " + markerId + " bottom")
-           var from = treeView.dragMarkerId
-           var to = markerId
+            var from = treeView.dragMarkerId
+            var to = markerId
 
-           if(from !== to)
-           {
+            if(from !== to)
+            {
                 treeView.model.moveItem(from, to, true)
-           }
-           treeView.dragMarkerId = -1
-        }
+            }
 
-        Rectangle {
-            color: "yellow"
-            //opacity: treeView.dragMarkerId > -1 ? 0.2 : 0
-            opacity: parent.containsDrag ? 1 : 0.2
-            anchors.fill: parent
+            treeView.resetDragInfo()
         }
+    }
+
+    Rectangle {
+        id: moveToptFeedback
+        visible: isTreeNode
+        color: Material.primary
+        width: delegate.parent.width
+        height: 2
+        x: leftMargin * 0.5
+        opacity: treeView.dragOveredRow === row && treeView.dragOveredRowPart === "top" ? 1 : 0
+    }
+
+    Rectangle {
+        id: moveBotFeedback
+        visible: isTreeNode
+        color: Material.primary
+        width: delegate.parent.width
+        height: 2
+        x: leftMargin * 0.5
+        y: parent.height - height
+        opacity: treeView.dragOveredRow === row && treeView.dragOveredRowPart === "bottom" ? 1 : 0
+    }
+
+    Rectangle {
+        id: moveIntoFeedback
+        visible: isTreeNode && treeView.dragOveredRow === row && treeView.dragOveredRowPart === "middle"
+        width: delegate.parent.width
+        height: delegate.height
+        x: leftMargin * 0.5
+        border.color: Material.primary
+        border.width: 2
+        //color: Material.primary
+        //opacity: treeView.dragOveredRow === row && treeView.dragOveredRowPart === "middle" ? 0.5 : 0
     }
 
     states:
@@ -231,33 +283,4 @@ TreeViewDelegate
             }
         }
     ]
-
-    contentItem:
-//        Row {
-//            leftPadding: 0
-//            rightPadding: 0
-//            spacing: 0
-            Loader
-            {
-                id: shapeLoader
-                source: getShape(model.column)
-
-                function getShape(t)
-                {
-                    switch(t)
-                    {
-                    case 0:
-                        return "CheckboxColumnItem.qml"
-                    default:
-                        return "TextColumnItem.qml"
-                    }
-                }
-            }
-//        }
-
-    background: Rectangle {
-        anchors.fill: parent
-        opacity: model.markerIsSelected ? 0.5 : 0
-        color: Material.accent
-    }
 }
