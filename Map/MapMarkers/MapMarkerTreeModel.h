@@ -16,10 +16,14 @@ class MapMarkerTreeModel : public QAbstractItemModel
 
 public:
     explicit MapMarkerTreeModel(QObject *parent = nullptr);
-//    MapMarkerTreeModel(const QStringList& _headers, QObject* _parent = nullptr);
     ~MapMarkerTreeModel();
 
     int size() const;
+    void clear();
+    MapMarkerTreeItem* getRoot() { return m_root; }
+    const MapMarkerTreeItem* getRoot() const { return m_root; }
+    int getHighestLinearIndexInActiveHierarchy() const{ return m_highestLinearIndexInActiveHierarchy; }
+    void setHighestLinearIndexInActiveHierarchy(int _value) { m_highestLinearIndexInActiveHierarchy = _value; }
 
     QModelIndex index(int _row, int _column, const QModelIndex& _parent = QModelIndex()) const override;
     QModelIndex index(const MapMarkerTreeItem* _item) const;
@@ -54,6 +58,11 @@ public:
     bool addNewMarkerAfterFirstSelected(const QGeoCoordinate& _coord, const QString& _type = "pin");
     bool addNewMarkerAsChildOfFirstSelected(const QGeoCoordinate& _coord, const QString& _type = "pin");
 
+    void updateTreeItemIndexInfo();
+
+    void triggerBeginResetModel() { beginResetModel(); }
+    void triggerEndResetModel() { endResetModel(); }
+
 public slots:
     bool isValidMove(int _fromMarkerId, int _toMarkerId, bool addAfter = false);
     bool isValidNewChild(int _fromMarkerId, int _toMarkerId);
@@ -69,13 +78,13 @@ private:
     bool removeItem(MapMarkerTreeItem* _treeItem);
     MapMarkerTreeItem* getFirstSelectedMarkerId();
 
-    void updateTreeItemIndexInfo();
-
     MapMarkerTreeItem* m_root{nullptr};
     MapMarkerTreeListModel* m_listModel{nullptr};
 
     int m_highestLinearIndexInActiveHierarchy{-1};
-
 };
+
+QDataStream &operator<<(QDataStream& _ds, const MapMarkerTreeModel& _treeModel);
+QDataStream &operator>>(QDataStream& _ds, MapMarkerTreeModel& _treeModel);
 
 #endif // MAPMARKERTREEMODEL_H

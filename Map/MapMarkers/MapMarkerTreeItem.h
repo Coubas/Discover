@@ -44,6 +44,7 @@ public:
     MapMarkerTreeItem* parent();
     const MapMarkerTreeItem* parent() const;
     MapMarkerTreeItem* child(int _row);
+    const MapMarkerTreeItem* child(int _row) const;
     int childCount() const;
     int childNumber() const;
     int columnCount() const;
@@ -94,5 +95,11 @@ private:
 
     static const QList<int> ms_columns;
 };
+
+QDataStream &operator<<(QDataStream& _ds, const MapMarkerTreeItemData& _data);
+QDataStream &operator>>(QDataStream& _ds, MapMarkerTreeItemData& _data);
+
+QDataStream &operator<<(QDataStream& _ds, const MapMarkerTreeItem& _item);
+QDataStream &operator>>(QDataStream& _ds, MapMarkerTreeItem& _item);
 
 #endif // MAPMARKERTREEITEM_H

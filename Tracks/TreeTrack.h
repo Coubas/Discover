@@ -36,6 +36,8 @@ public:
     {
         m_name = "";
         m_author = "";
+
+        m_tree.clear();
     }
 
     void computeBounds(QPair<double, double>& _latBounds, QPair<double, double>& _lonBounds) const;

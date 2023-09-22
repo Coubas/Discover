@@ -90,8 +90,9 @@ void TreeTrack::setAuthor(const QString& _newAuthor)
 QDataStream& operator<<(QDataStream& _ds, const TreeTrack& _trk)
 {
     _ds << _trk.name()
-        << _trk.author();
-        //<< *(_trk.getPointList());
+        << _trk.author()
+        << *(_trk.getTreeModel());
+
     return _ds;
 }
 
@@ -104,9 +105,7 @@ QDataStream& operator>>(QDataStream& _ds, TreeTrack& _trk)
     _ds >> input;
     _trk.setAuthor(input);
 
-//    MapMarkerList markers;
-//    _ds >> markers;
-//    _trk.setPointList(markers);
+    _ds >> *(_trk.getTreeModel());
 
     return _ds;
 }

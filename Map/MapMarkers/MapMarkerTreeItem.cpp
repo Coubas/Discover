@@ -67,6 +67,15 @@ MapMarkerTreeItem* MapMarkerTreeItem::child(int _row)
     return m_childItems.at(_row);
 }
 
+const MapMarkerTreeItem* MapMarkerTreeItem::child(int _row) const
+{
+    if (_row < 0 || _row >= m_childItems.size())
+    {
+        return nullptr;
+    }
+    return m_childItems.at(_row);
+}
+
 int MapMarkerTreeItem::childCount() const
 {
     return m_childItems.count();
@@ -334,3 +343,71 @@ int MapMarkerTreeItem::count() const
 
 //    return true;
 //}
+
+QDataStream &operator<<(QDataStream& _ds, const MapMarkerTreeItemData& _data)
+{
+    _ds << _data.markerId
+        << _data.markerType
+        << _data.markerCoordinate
+        << _data.selected
+        << _data.active;
+
+    return _ds;
+}
+
+QDataStream &operator>>(QDataStream& _ds, MapMarkerTreeItemData& _data)
+{
+    _ds >> _data.markerId
+        >> _data.markerType
+        >> _data.markerCoordinate
+        >> _data.selected
+        >> _data.active;
+
+    return _ds;
+}
+
+QDataStream& operator<<(QDataStream& _ds, const MapMarkerTreeItem& _item)
+{
+    _ds << _item.markerData();
+
+    _ds << _item.linearIndex()
+        << _item.inActiveHierarchy()
+        << _item.linearIndexActiveHierarchy();
+
+    int childCount = _item.childCount();
+    _ds << childCount;
+
+    for(int i = 0; i < childCount; ++i)
+    {
+        _ds << *(_item.child(i));
+    }
+
+    return _ds;
+}
+
+QDataStream& operator>>(QDataStream& _ds, MapMarkerTreeItem& _item)
+{
+    MapMarkerTreeItemData data;
+    _ds >> data;
+    _item.setMarkerData(data);
+
+    int val;
+    _ds >> val;
+    _item.setLinearIndex(val);
+
+    bool inActiveHierarchy;
+    _ds >> inActiveHierarchy;
+    _item.setInActiveHierarchy(inActiveHierarchy);
+
+    _ds >> val;
+    _item.setLinearIndexActiveHierarchy(val);
+
+    _ds >> val;
+    _item.insertChildren(0, val);
+    for(int i = 0; i < val; ++i)
+    {
+        _ds >> *(_item.child(i));
+    }
+
+    return _ds;
+}
