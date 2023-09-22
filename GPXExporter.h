@@ -3,12 +3,12 @@
 
 #include <QXmlStreamWriter>
 
-class Track;
+class TreeTrack;
 
 class GPXExporter
 {
 public:
-    explicit GPXExporter(const Track& _track);
+    explicit GPXExporter(const TreeTrack& _track);
 
     bool writeFile(QIODevice* _output);
 
@@ -16,7 +16,7 @@ private:
     void writeTrack();
 
     QXmlStreamWriter m_xml;
-    const Track& m_track;
+    const TreeTrack& m_track;
 };
 
 #endif // GPXEXPORTER_H

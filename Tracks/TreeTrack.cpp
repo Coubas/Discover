@@ -70,22 +70,10 @@ void TreeTrack::setAuthor(const QString& _newAuthor)
     m_author = _newAuthor;
 }
 
-//void TreeTrack::computeBounds(QPair<double, double> &_latBounds, QPair<double, double> &_lonBounds) const
-//{
-//    _latBounds = {std::numeric_limits<double>::max(), std::numeric_limits<double>::min()};
-//    _lonBounds = {std::numeric_limits<double>::max(), std::numeric_limits<double>::min()};
-
-//    for(const MapMarkerItem& marker : m_points.items())
-//    {
-//        const QGeoCoordinate& coord = marker.markerCoordinate();
-
-//        _latBounds.first = qMin(_latBounds.first, coord.latitude());
-//        _latBounds.second = qMax(_latBounds.second, coord.latitude());
-
-//        _lonBounds.first = qMin(_lonBounds.first, coord.longitude());
-//        _lonBounds.second = qMax(_lonBounds.second, coord.longitude());
-//    }
-//}
+void TreeTrack::computeBounds(QPair<double, double> &_latBounds, QPair<double, double> &_lonBounds) const
+{
+    m_tree.computeBounds(_latBounds, _lonBounds);
+}
 
 QDataStream& operator<<(QDataStream& _ds, const TreeTrack& _trk)
 {

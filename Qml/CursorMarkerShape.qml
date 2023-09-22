@@ -4,6 +4,9 @@ import QtQuick.Controls 2.0
 
 Image
 {
+    width: 40
+    height: 40
+
     property bool filled: false
     property color color: "black"
     property var anchorX: width * 0.5

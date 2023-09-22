@@ -918,6 +918,32 @@ void MapMarkerTreeModel::updateTreeItemIndexInfo()
     m_highestLinearIndexInActiveHierarchy = idActiveHierarchy - 1;
 }
 
+void MapMarkerTreeModel::computeBounds(QPair<double, double>& _latBounds, QPair<double, double>& _lonBounds) const
+{
+    _latBounds = {std::numeric_limits<double>::max(), std::numeric_limits<double>::min()};
+    _lonBounds = {std::numeric_limits<double>::max(), std::numeric_limits<double>::min()};
+
+    auto gatherTreeBounds = [&](MapMarkerTreeItem* _treeItem) -> VisitorReturn
+    {
+        if(_treeItem->markerData().active)
+        {
+
+            const QGeoCoordinate& coord = _treeItem->markerData().markerCoordinate;
+
+            _latBounds.first = qMin(_latBounds.first, coord.latitude());
+            _latBounds.second = qMax(_latBounds.second, coord.latitude());
+
+            _lonBounds.first = qMin(_lonBounds.first, coord.longitude());
+            _lonBounds.second = qMax(_lonBounds.second, coord.longitude());
+
+            return VisitorReturn::VisitorContinue;
+        }
+
+        return VisitorReturn::VisitorIgnoreChilds;
+    };
+    visit(gatherTreeBounds);
+}
+
 QDataStream& operator<<(QDataStream& _ds, const MapMarkerTreeModel& _treeModel)
 {
     _ds << *(_treeModel.getRoot())

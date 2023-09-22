@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.16)
 
+## To deploy
+## in QT commandline window, cd to the exe directory then
+## windeployqt.exe Discover.exe
+
 project(Discover VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

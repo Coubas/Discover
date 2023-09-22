@@ -4,6 +4,9 @@ import QtQuick.Controls 2.0
 
 Image
 {
+    width: mapMarker.shapeWidth
+    height: mapMarker.shapeHeight
+
     property bool filled: false
     property color color: Material.accent
     property double anchorX: width * 0.5

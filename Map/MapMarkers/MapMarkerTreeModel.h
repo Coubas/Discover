@@ -59,6 +59,7 @@ public:
     bool addNewMarkerAsChildOfFirstSelected(const QGeoCoordinate& _coord, const QString& _type = "pin");
 
     void updateTreeItemIndexInfo();
+    void computeBounds(QPair<double, double>& _latBounds, QPair<double, double>& _lonBounds) const;
 
     void triggerBeginResetModel() { beginResetModel(); }
     void triggerEndResetModel() { endResetModel(); }

@@ -28,11 +28,11 @@ MapQuickItem
             acceptedButtons: Qt.LeftButton | Qt.RightButton
             onClicked: (mouse) =>
             {
-                if (mouse.button === Qt.LeftButton)
+                /*if (mouse.button === Qt.LeftButton)
                 {
                     cursor.state = cursor.isSelected ? "" : "selected"
                 }
-                else if (mouse.button === Qt.RightButton)
+                else */if (mouse.button === Qt.RightButton)
                 {
                     contextMenu.popup()
                 }
@@ -69,7 +69,7 @@ MapQuickItem
             PropertyChanges
             {
                 target: shape
-                color: "red"
+                color: Material.accent
             }
         }
     ]

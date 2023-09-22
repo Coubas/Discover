@@ -20,6 +20,8 @@ MapQuickItem
         Item
         {
             id: mapMarker
+            property int shapeWidth: 45
+            property int shapeHeight: 45
             Loader
             {
                 id: shapeLoader
@@ -77,8 +79,9 @@ MapQuickItem
             Text
             {
                 text: markerId
-                font.pointSize: 24
-                color: "red"
+                font.pointSize: mapMarker.shapeWidth * 0.33
+                font.bold: true
+                color: markerIsSelected ? "white" : Material.primary
 
                 anchors.verticalCenter: shapeLoader.verticalCenter
                 anchors.horizontalCenter: shapeLoader.horizontalCenter

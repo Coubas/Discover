@@ -24,7 +24,7 @@ Rectangle
 
         Item {
             id: trackTree
-            width: 350
+            width: 400
             Layout.fillWidth: false
             Layout.fillHeight: true
             Layout.rowSpan: 2
@@ -33,6 +33,7 @@ Rectangle
             ColumnLayout {
                 id: columnLayout
                 anchors.fill: parent
+                Layout.alignment: Qt.AlignLeft | Qt.AlignTop
 
                 Item {
                     id: trackName
@@ -49,14 +50,25 @@ Rectangle
 
                         TextInput
                         {
+                            id: trackNameInput
                             anchors.fill: parent
                             text: tracksManager.activeTrackName
                             font.pixelSize: 30
                             horizontalAlignment: Text.AlignHCenter
                             onEditingFinished:
                             {
-                                trackName.focus = false
+                                trackNameInput.focus = false
                                 tracksManager.activeTrackName = text
+                            }
+
+                            property string placeholderText: "Track name..."
+
+                            Text {
+                                text: trackNameInput.placeholderText
+                                color: "#aaa"
+                                font.pixelSize: 30
+                                horizontalAlignment: Text.AlignHCenter
+                                visible: !trackNameInput.text
                             }
                         }
                     }
@@ -73,21 +85,6 @@ Rectangle
                     {
                         anchors.fill: parent
                         color: "transparent"
-//                        border.color: "red"
-//                        border.width: 2
-
-//                        ListView {
-//                            id: listView
-//                            width: parent.width
-//                            height: parent.height
-//                            interactive: false
-//                            property int dragItemIndex: -1
-//                            model: MapMarkerModel
-//                            {
-//                                list: tracksManager.activeTrack.points
-//                            }
-//                            delegate: MapMarkerListViewItem {}
-//                        }
 
                         TreeView {
                             id: treeView
@@ -176,6 +173,8 @@ Rectangle
                             {
                                 Layout.alignment: Qt.AlignCenter
                                 text: "Compute path"
+                                highlighted: true
+                                Material.background: Material.primary
                                 //onClicked: mapView.updateRouteQuery(travelModeSetting.currentValue, pathModeSetting.currentValue)
                                 onClicked: mapView.updateRouteQuery()
                             }
