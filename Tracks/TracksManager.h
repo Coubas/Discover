@@ -12,7 +12,6 @@ class TracksManager : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(Track* activeTrack READ getActiveTrack CONSTANT)
-    Q_PROPERTY(int activeTrackSize READ getActiveTrackSize NOTIFY activeTrackSizeChanged FINAL)
     Q_PROPERTY(QString activeTrackName READ getActiveTrackName WRITE setActiveTrackName NOTIFY activeTrackNameChanged FINAL)
     Q_PROPERTY(const QVariantList& activeTrackWaypoints READ getActiveTrackWaypoints CONSTANT FINAL)
 
@@ -28,7 +27,6 @@ public:
     Track* getActiveTrack() {return &m_track;}
     const QString& getActiveTrackName() const;
     void setActiveTrackName(const QString& _name);
-    qsizetype getActiveTrackSize() const {return getActiveTrack()->size();}
     const QVariantList& getActiveTrackWaypoints() const
     {
 //        for (const QVariant& v : getActiveTrack()->getWaypoints())
@@ -46,16 +44,16 @@ public:
     }
 
 signals:
-    void activeTrackSizeChanged();
     void activeTrackNameChanged();
 
 public slots:
-    void addPointToActiveTrack(const QGeoCoordinate& _coord, const QString& _type = "pin", int _insertIndex = -1);
-    void removePointFromActiveTrack(int _markerId);
-    void setPointSelected(int _markerId, bool _selected /*= true*/);
-    void setPointCoordinate(int _markerId, const QGeoCoordinate& _coord);
+    bool addPointToActiveTrack(const QGeoCoordinate& _coord, const QString& _type = "pin", int _insertIndex = -1);
+    bool addPointAfterFirstSelectedToActiveTrack(const QGeoCoordinate& _coord, const QString& _type = "pin");
+    bool addPointAsChildOfFirstSelectedToActiveTrack(const QGeoCoordinate& _coord, const QString& _type = "pin");
+    bool removePointFromActiveTrack(int _markerId);
+    bool setPointSelected(int _markerId, bool _selected /*= true*/);
+    bool setPointCoordinate(int _markerId, const QGeoCoordinate& _coord);
     void removeSelectedPointsFromActiveTrack();
-    void changePointIndexFromActiveTrack(int _oldIndex, int _newIndex);
 
     // Save, Load, Export
     void saveActiveTrackToFile();

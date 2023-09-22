@@ -32,6 +32,8 @@ public:
     void triggerDataChanged(int _first, int _last, int _role, const QVariant& _value = QVariant());
     void triggerBeginRemoveRows(int _first, int _last);
     void triggerEndRemoveRows();
+    void triggerBeginInsertRows(int _first, int _last);
+    void triggerEndInsertRows();
     void triggerBeginResetModel();
     void triggerEndResetModel();
 

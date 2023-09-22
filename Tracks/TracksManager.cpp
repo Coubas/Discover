@@ -9,11 +9,13 @@
 TracksManager::TracksManager(QObject *parent)
     : QObject{parent}
 {
-    m_track.setName("My first track");
-    m_track.addPoint(QGeoCoordinate(43.77483, 3.86748), "circle");
-    m_track.addPoint(QGeoCoordinate(43.78895, 3.80571));
-    m_track.addPoint(QGeoCoordinate(43.82016, 3.81434));
-    m_track.addPoint(QGeoCoordinate(43.89330, 3.85638));
+//    m_track.setName("My first track");
+//    m_track.addPoint(QGeoCoordinate(43.77483, 3.86748), "circle");
+//    m_track.addPoint(QGeoCoordinate(43.78895, 3.80571));
+//    m_track.addPoint(QGeoCoordinate(43.82016, 3.81434));
+//    m_track.addPoint(QGeoCoordinate(43.89330, 3.85638));
+
+    m_treeTrack.setName("My first tree track");
 }
 
 void TracksManager::connectInputs(const InputHandler* _inputHdl)
@@ -28,44 +30,48 @@ void TracksManager::connectInputs(const InputHandler* _inputHdl)
 
 const QString &TracksManager::getActiveTrackName() const
 {
-    return getActiveTrack()->name();
+    return getTreeTrack()->name();
 }
 
 void TracksManager::setActiveTrackName(const QString &_name)
 {
-    getActiveTrack()->setName(_name);
+    getTreeTrack()->setName(_name);
     emit activeTrackNameChanged();
 }
 
-void TracksManager::addPointToActiveTrack(const QGeoCoordinate &_coord, const QString& _type /*= "pin"*/, int _insertIndex /*= -1*/)
+bool TracksManager::addPointToActiveTrack(const QGeoCoordinate &_coord, const QString& _type /*= "pin"*/, int _insertIndex /*= -1*/)
 {
-    getActiveTrack()->addPoint(_coord, _type, _insertIndex);
-    emit activeTrackSizeChanged();
+    return getTreeTrack()->addPoint(_coord, _type, _insertIndex);
 }
 
-void TracksManager::removePointFromActiveTrack(int _markerId)
+bool TracksManager::addPointAfterFirstSelectedToActiveTrack(const QGeoCoordinate &_coord, const QString &_type /*= "pin"*/)
 {
-    getTreeTrack()->removePoint(_markerId);
+    return getTreeTrack()->addPointAfterFirstSelected(_coord, _type);
 }
 
-void TracksManager::setPointSelected(int _markerId, bool _selected /*= true*/)
+bool TracksManager::addPointAsChildOfFirstSelectedToActiveTrack(const QGeoCoordinate &_coord, const QString &_type /*= "pin"*/)
 {
-    getTreeTrack()->setPointSelected(_markerId, _selected);
+    return getTreeTrack()->addPointAsChildOfFirstSelected(_coord, _type);
 }
 
-void TracksManager::setPointCoordinate(int _markerId, const QGeoCoordinate &_coord)
+bool TracksManager::removePointFromActiveTrack(int _markerId)
 {
-    getTreeTrack()->setPointCoordinate(_markerId, _coord);
+    return getTreeTrack()->removePoint(_markerId);
+}
+
+bool TracksManager::setPointSelected(int _markerId, bool _selected /*= true*/)
+{
+    return getTreeTrack()->setPointSelected(_markerId, _selected);
+}
+
+bool TracksManager::setPointCoordinate(int _markerId, const QGeoCoordinate &_coord)
+{
+    return getTreeTrack()->setPointCoordinate(_markerId, _coord);
 }
 
 void TracksManager::removeSelectedPointsFromActiveTrack()
 {
     getTreeTrack()->removeSelectedPoints();
-}
-
-void TracksManager::changePointIndexFromActiveTrack(int _oldIndex, int _newIndex)
-{
-    getActiveTrack()->changePointIndex(_oldIndex, _newIndex);
 }
 
 QString TracksManager::getSaveLoadPath()

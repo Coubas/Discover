@@ -19,6 +19,8 @@ public:
 //    MapMarkerTreeModel(const QStringList& _headers, QObject* _parent = nullptr);
     ~MapMarkerTreeModel();
 
+    int size() const;
+
     QModelIndex index(int _row, int _column, const QModelIndex& _parent = QModelIndex()) const override;
     QModelIndex index(const MapMarkerTreeItem* _item) const;
     QModelIndex parent(const QModelIndex& _index) const override;
@@ -48,6 +50,9 @@ public:
     bool setMarkerSelected(int _markerId, bool _selected = true);
     bool setMarkerCoordinate(int _markerId, const QGeoCoordinate& _coord);
     void removeSelectedMarkers();
+    bool addNewMarker(const QGeoCoordinate& _coord, const QString& _type = "pin", int _parentMarkerId = -1);
+    bool addNewMarkerAfterFirstSelected(const QGeoCoordinate& _coord, const QString& _type = "pin");
+    bool addNewMarkerAsChildOfFirstSelected(const QGeoCoordinate& _coord, const QString& _type = "pin");
 
 public slots:
     bool isValidMove(int _fromMarkerId, int _toMarkerId, bool addAfter = false);
@@ -62,11 +67,14 @@ private:
     int getNbVisibleChild(MapMarkerTreeItem& _item);
     QModelIndex getIndexFromMarkerId(int _markerId);
     bool removeItem(MapMarkerTreeItem* _treeItem);
+    MapMarkerTreeItem* getFirstSelectedMarkerId();
 
     void updateTreeItemIndexInfo();
 
     MapMarkerTreeItem* m_root{nullptr};
     MapMarkerTreeListModel* m_listModel{nullptr};
+
+    int m_highestLinearIndexInActiveHierarchy{-1};
 
 };
 

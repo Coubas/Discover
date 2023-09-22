@@ -7,7 +7,7 @@ MapMarkerTreeModel::MapMarkerTreeModel(QObject *parent)
     : QAbstractItemModel(parent)
 {
     m_root = new MapMarkerTreeItem();
-    m_root->markerData().markerId = 666;
+    m_root->markerData().markerId = -1;
     m_root->setInActiveHierarchy(true);
 
     MapMarkerTreeItemData item1{0, "pin", QGeoCoordinate(43.77483, 3.86748), false, true};
@@ -36,6 +36,16 @@ MapMarkerTreeModel::~MapMarkerTreeModel()
     delete m_root;
 }
 
+int MapMarkerTreeModel::size() const
+{
+    if(m_root != nullptr)
+    {
+        return m_root->count();
+    }
+
+    return 0;
+}
+
 QModelIndex MapMarkerTreeModel::index(int _row, int _column, const QModelIndex& _parent/* = QModelIndex()*/) const
 {
 //    qDebug() << Q_FUNC_INFO << "index("<<_row<<", "<<_column<<", "<<_parent<<")";
@@ -59,6 +69,11 @@ QModelIndex MapMarkerTreeModel::index(int _row, int _column, const QModelIndex& 
 
 QModelIndex MapMarkerTreeModel::index(const MapMarkerTreeItem* _item) const
 {
+    if(_item == m_root)
+    {
+        return QModelIndex();
+    }
+
     QModelIndex index{};
     if(_item != nullptr)
     {
@@ -444,6 +459,98 @@ void MapMarkerTreeModel::removeSelectedMarkers()
     visit(removeSelected);
 }
 
+bool MapMarkerTreeModel::addNewMarker(const QGeoCoordinate& _coord, const QString& _type /*= "pin"*/, int _parentMarkerId /*= -1*/)
+{
+    bool done = false;
+
+    if(_parentMarkerId == -1)
+    {
+        int insertIndex = m_root->childCount();
+        int listInsterIndex = m_highestLinearIndexInActiveHierarchy + 1;
+
+        beginInsertRows(index(m_root), insertIndex, insertIndex);
+        m_listModel->triggerBeginInsertRows(listInsterIndex, listInsterIndex);
+
+        MapMarkerTreeItemData markerData{ size(), _type, _coord, false, true};
+        done = m_root->appendChild(markerData);
+
+        m_listModel->triggerEndInsertRows();
+        endInsertRows();
+    }
+    else
+    {
+        auto addMarker = [&](MapMarkerTreeItem* _treeItem) -> VisitorReturn
+        {
+            if(_treeItem->markerData().markerId == _parentMarkerId)
+            {
+                QModelIndex id = index(_treeItem);
+                beginInsertRows(id, _treeItem->childCount(), _treeItem->childCount());
+//                qDebug() << Q_FUNC_INFO << "beginInsertRows(" << id  << ", " << _treeItem->childCount()  << ", " << _treeItem->childCount() << ")";
+                if(_treeItem->inActiveHierarchy())
+                {
+                    int insertIndex = _treeItem->linearIndexActiveHierarchy() + getNbVisibleChild(*_treeItem) + 1;
+                    m_listModel->triggerBeginInsertRows(insertIndex, insertIndex);
+//                    qDebug() << Q_FUNC_INFO << "triggerBeginInsertRows(" << insertIndex << ", " << insertIndex << ")";
+                }
+
+                MapMarkerTreeItemData markerData{ size(), _type, _coord, false, true};
+                done = _treeItem->appendChild(markerData);
+
+                if(_treeItem->inActiveHierarchy())
+                {
+                    m_listModel->triggerEndInsertRows();
+                }
+
+                endInsertRows();
+
+                return VisitorReturn::VisitorBreak;
+            }
+
+            return VisitorReturn::VisitorContinue;
+        };
+        visit(addMarker);
+    }
+
+    updateTreeItemIndexInfo();
+
+    return done;
+}
+
+bool MapMarkerTreeModel::addNewMarkerAfterFirstSelected(const QGeoCoordinate &_coord, const QString &_type /*= "pin"*/)
+{
+    bool done = false;
+    MapMarkerTreeItem* firstSelectedMarkerId = getFirstSelectedMarkerId();
+
+    if(firstSelectedMarkerId == m_root)
+    {
+        // No selected marker
+        return false;
+    }
+
+    if(MapMarkerTreeItem* parent = firstSelectedMarkerId->parent())
+    {
+        done = addNewMarker(_coord, _type, parent->markerData().markerId);
+    }
+
+    return done;
+}
+
+bool MapMarkerTreeModel::addNewMarkerAsChildOfFirstSelected(const QGeoCoordinate &_coord, const QString &_type /*= "pin"*/)
+{
+    bool done = false;
+    MapMarkerTreeItem* firstSelectedMarkerId = getFirstSelectedMarkerId();
+
+    if(firstSelectedMarkerId == m_root)
+    {
+        // No selected marker
+        return false;
+    }
+
+    done = addNewMarker(_coord, _type, firstSelectedMarkerId->markerData().markerId);
+
+    return done;
+}
+
 bool MapMarkerTreeModel::isValidMove(int _fromMarkerId, int _toMarkerId, bool addAfter)
 {
     if(_fromMarkerId == _toMarkerId)
@@ -760,6 +867,25 @@ bool MapMarkerTreeModel::removeItem(MapMarkerTreeItem *_treeItem)
     return done;
 }
 
+MapMarkerTreeItem* MapMarkerTreeModel::getFirstSelectedMarkerId()
+{
+    MapMarkerTreeItem* firstSelectedMarkerId = m_root;
+
+    auto getFirstSelected = [&](MapMarkerTreeItem* _treeItem) -> VisitorReturn
+    {
+        if(_treeItem->markerData().selected)
+        {
+            firstSelectedMarkerId = _treeItem;
+            return VisitorReturn::VisitorBreak;
+        }
+
+        return VisitorReturn::VisitorContinue;
+    };
+    visit(getFirstSelected);
+
+    return firstSelectedMarkerId;
+}
+
 void MapMarkerTreeModel::updateTreeItemIndexInfo()
 {
     int id = 0;
@@ -791,4 +917,6 @@ void MapMarkerTreeModel::updateTreeItemIndexInfo()
         return VisitorReturn::VisitorContinue;
     };
     visit(updateInfo);
+
+    m_highestLinearIndexInActiveHierarchy = idActiveHierarchy - 1;
 }

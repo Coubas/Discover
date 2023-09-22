@@ -108,25 +108,6 @@ MapQuickItem
                 }
                 MenuItem
                 {
-                    text: "Change index to " + changeIdSlider.value
-                    enabled: changeIdSlider.value != markerId
-                    //TODO
-                    onTriggered: tracksManager.changePointIndexFromActiveTrack(markerId, changeIdSlider.value)
-                    //onTriggered: console.log("changePointIndexFromActiveTrack("+markerId+", "+changeIdSlider.value+")")
-                }
-                Slider
-                {
-                    id: changeIdSlider
-                    from: 0
-                    value: markerId+1
-                    //TODO
-                    to: tracksManager.activeTrackSize - 1
-                    snapMode: Slider.SnapAlways
-                    stepSize: 1
-                    leftPadding: 25
-                }
-                MenuItem
-                {
                     text: "Log Info"
                     onTriggered: console.log("Marker id: " + markerId + ", selected: " + markerIsSelected + ", state:" + mapMarker.state +
                                              "\nType: " + markerType + ", Pos: " + markerCoordinate)

@@ -18,12 +18,13 @@ public:
 
 //    qsizetype size() const {return m_points.size();}
 
-//    void addPoint(const QGeoCoordinate& _coord, const QString& _type = "pin", int _insertIndex = -1);
-    void removePoint(int _markerId);
-    void setPointSelected(int _markerId, bool _selected = true);
-    void setPointCoordinate(int _markerId, const QGeoCoordinate& _coord);
+    bool addPoint(const QGeoCoordinate& _coord, const QString& _type = "pin", int _parentMarkerId = -1);
+    bool addPointAfterFirstSelected(const QGeoCoordinate& _coord, const QString& _type = "pin");
+    bool addPointAsChildOfFirstSelected(const QGeoCoordinate& _coord, const QString& _type = "pin");
+    bool removePoint(int _markerId);
+    bool setPointSelected(int _markerId, bool _selected = true);
+    bool setPointCoordinate(int _markerId, const QGeoCoordinate& _coord);
     void removeSelectedPoints();
-//    void changePointIndex(int _oldIndex, int _newIndex);
 //    const QVariantList& getWaypoints() const { return m_points.getWaypoints(); }
 
     const QString& name() const;

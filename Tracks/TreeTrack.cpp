@@ -15,40 +15,40 @@ TreeTrack::TreeTrack(QObject *parent)
     }
 }
 
-//void TreeTrack::addPoint(const QGeoCoordinate &_coord, const QString &_type /*= "pin"*/, int _insertIndex /*= -1*/)
-//{
-//    m_points.appendMarker(MapMarkerItem(m_points.size(), _type, _coord), _insertIndex);
-//}
-
-void TreeTrack::removePoint(int _markerId)
+bool TreeTrack::addPoint(const QGeoCoordinate& _coord, const QString& _type /*= "pin"*/, int _parentMarkerId /*= -1*/)
 {
-    m_tree.removeMaker(_markerId);
+    return m_tree.addNewMarker(_coord, _type, _parentMarkerId);
 }
 
-void TreeTrack::setPointSelected(int _markerId, bool _selected /*= true*/)
+bool TreeTrack::addPointAfterFirstSelected(const QGeoCoordinate &_coord, const QString &_type /*= "pin"*/)
 {
-    m_tree.setMarkerSelected(_markerId, _selected);
+    return m_tree.addNewMarkerAfterFirstSelected(_coord, _type);
 }
 
-void TreeTrack::setPointCoordinate(int _markerId, const QGeoCoordinate &_coord)
+bool TreeTrack::addPointAsChildOfFirstSelected(const QGeoCoordinate &_coord, const QString &_type /*= "pin"*/)
 {
-    m_tree.setMarkerCoordinate(_markerId, _coord);
+    return m_tree.addNewMarkerAsChildOfFirstSelected(_coord, _type);
+}
+
+bool TreeTrack::removePoint(int _markerId)
+{
+    return m_tree.removeMaker(_markerId);
+}
+
+bool TreeTrack::setPointSelected(int _markerId, bool _selected /*= true*/)
+{
+    return m_tree.setMarkerSelected(_markerId, _selected);
+}
+
+bool TreeTrack::setPointCoordinate(int _markerId, const QGeoCoordinate &_coord)
+{
+    return m_tree.setMarkerCoordinate(_markerId, _coord);
 }
 
 void TreeTrack::removeSelectedPoints()
 {
     m_tree.removeSelectedMarkers();
 }
-
-//void TreeTrack::removeSelectedPoints()
-//{
-//    m_points.removeSelectedMarkers();
-//}
-
-//void TreeTrack::changePointIndex(int _oldIndex, int _newIndex)
-//{
-//    m_points.changeMarkerIndex(_oldIndex, _newIndex);
-//}
 
 const QString& TreeTrack::name() const
 {

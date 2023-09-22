@@ -80,24 +80,35 @@ MapQuickItem
         closePolicy: Popup.CloseOnReleaseOutside | Popup.CloseOnEscape
         MenuItem
         {
-            text: "Add marker at " + insertIdSlider.value
+            text: "Add marker ..."
             onTriggered:
             {
                 //TODO
-                tracksManager.addPointToActiveTrack(cursor.coordinate, insertShape.currentText, insertIdSlider.value)
+                switch (addType.currentValue) {
+                case 0:
+                    tracksManager.addPointToActiveTrack(cursor.coordinate, insertShape.currentText)
+                    break
+                case 1:
+                    tracksManager.addPointAfterFirstSelectedToActiveTrack(cursor.coordinate, insertShape.currentText)
+                    break
+                case 2:
+                    tracksManager.addPointAsChildOfFirstSelectedToActiveTrack(cursor.coordinate, insertShape.currentText)
+                    break;
+                }
                 mapBackend.cursorVisible = false
             }
         }
 
-        Slider
+        ComboBox
         {
-            id: insertIdSlider
-            from: 0
-            to: tracksManager.activeTrackSize
-            value: tracksManager.activeTrackSize
-            snapMode: Slider.SnapAlways
-            stepSize: 1
-            leftPadding: 25
+            id: addType
+            textRole: "text"
+            valueRole: "value"
+            model: [
+                {text: "at the end", value: 0},
+                {text: "after first selected", value: 1},
+                {text: "as child of first selected", value: 2}
+            ]
         }
 
         ComboBox

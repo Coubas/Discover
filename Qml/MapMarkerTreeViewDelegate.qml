@@ -53,8 +53,6 @@ TreeViewDelegate
         id: mouseArea
         width: parent.width
         height: parent.height
-        //onClicked: tracksManager.setPointSelected(markerId, !markerIsSelected)
-        //onDoubleClicked: mapBackend.locusPos = markerCoordinate
 
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         onClicked: (mouse) =>

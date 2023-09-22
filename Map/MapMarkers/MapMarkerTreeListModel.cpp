@@ -204,6 +204,16 @@ void MapMarkerTreeListModel::triggerEndRemoveRows()
     endRemoveRows();
 }
 
+void MapMarkerTreeListModel::triggerBeginInsertRows(int _first, int _last)
+{
+    beginInsertRows(QModelIndex(), _first, _last);
+}
+
+void MapMarkerTreeListModel::triggerEndInsertRows()
+{
+    endInsertRows();
+}
+
 void MapMarkerTreeListModel::triggerBeginResetModel()
 {
     beginResetModel();
