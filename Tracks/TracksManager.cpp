@@ -15,23 +15,26 @@ TracksManager::TracksManager(QObject *parent)
 //    m_track.addPoint(QGeoCoordinate(43.82016, 3.81434));
 //    m_track.addPoint(QGeoCoordinate(43.89330, 3.85638));
 
-//    m_treeTrack.setName("My first tree track");
-//    MapMarkerTreeItemData item1{0, "pin", QGeoCoordinate(43.77483, 3.86748), false, true};
-//    MapMarkerTreeItemData item11{1, "pin", QGeoCoordinate(43.78895, 3.80571), false, true};
-//    MapMarkerTreeItemData item12{2, "pin", QGeoCoordinate(43.82016, 3.81434), false, false};
-//    MapMarkerTreeItemData item121{3, "pin", QGeoCoordinate(43.89330, 3.85638), false, true};
-//    MapMarkerTreeItemData item13{4, "pin", QGeoCoordinate(43.85483, 3.83748), false, true};
-//    MapMarkerTreeItemData item2{5, "pin", QGeoCoordinate(43.76483, 3.86748), false, true};
-//    MapMarkerTreeItemData item3{6, "pin", QGeoCoordinate(43.72483, 3.80748), false, true};
+    m_treeTrack.setName("My first tree track");
+    // id, type, coord, loop, selected, active
+    MapMarkerTreeItemData item1{0, "pin", QGeoCoordinate(43.844537, 3.699751), false, false, true};
+    MapMarkerTreeItemData item11{1, "pin", QGeoCoordinate(43.835689, 3.742811), false, false, true};
+    MapMarkerTreeItemData item12{2, "pin", QGeoCoordinate(43.788150, 3.732020), true, false, true};
+    MapMarkerTreeItemData item121{3, "pin", QGeoCoordinate(43.786633, 3.856006), false, false, true};
+    MapMarkerTreeItemData item122{4, "pin", QGeoCoordinate(43.737513, 3.832989), false, false, true};
+    MapMarkerTreeItemData item13{5, "pin", QGeoCoordinate(43.745660, 3.708688), false, false, true};
+    MapMarkerTreeItemData item2{6, "pin", QGeoCoordinate(43.723447, 3.628990), false, false, true};
+    MapMarkerTreeItemData item3{7, "pin", QGeoCoordinate(43.706158, 3.600439), false, false, false};
 
-//    m_treeTrack.getTreeModel()->getRoot()->appendChild(item1);
-//    m_treeTrack.getTreeModel()->getRoot()->child(0)->appendChild(item11);
-//    m_treeTrack.getTreeModel()->getRoot()->child(0)->appendChild(item12);
-//    m_treeTrack.getTreeModel()->getRoot()->child(0)->child(1)->appendChild(item121);
-//    m_treeTrack.getTreeModel()->getRoot()->child(0)->appendChild(item13);
-//    m_treeTrack.getTreeModel()->getRoot()->appendChild(item2);
-//    m_treeTrack.getTreeModel()->getRoot()->appendChild(item3);
-//    m_treeTrack.getTreeModel()->updateTreeItemIndexInfo();
+    m_treeTrack.getTreeModel()->getRoot()->appendChild(item1);
+    m_treeTrack.getTreeModel()->getRoot()->child(0)->appendChild(item11);
+    m_treeTrack.getTreeModel()->getRoot()->child(0)->appendChild(item12);
+    m_treeTrack.getTreeModel()->getRoot()->child(0)->child(1)->appendChild(item121);
+    m_treeTrack.getTreeModel()->getRoot()->child(0)->child(1)->appendChild(item122);
+    m_treeTrack.getTreeModel()->getRoot()->child(0)->appendChild(item13);
+    m_treeTrack.getTreeModel()->getRoot()->appendChild(item2);
+    m_treeTrack.getTreeModel()->getRoot()->appendChild(item3);
+    m_treeTrack.getTreeModel()->updateTreeItemIndexInfo();
 }
 
 void TracksManager::connectInputs(const InputHandler* _inputHdl)

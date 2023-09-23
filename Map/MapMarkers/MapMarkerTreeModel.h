@@ -44,11 +44,11 @@ public:
     bool insertRows(int _position, int _count, const QModelIndex& _parent = QModelIndex()) override;
     bool removeRows(int _position, int _count, const QModelIndex& _parent = QModelIndex()) override;
 
-    void visit(std::function<VisitorReturn(MapMarkerTreeItem*)> _function) const;
+    void visit(std::function<VisitorReturn(MapMarkerTreeItem*)> _function, std::function<VisitorReturn (MapMarkerTreeItem *)> _postChildFunction = {}) const;
 
     MapMarkerTreeListModel* getListModel() {return m_listModel;}
     const MapMarkerTreeListModel* getListModel() const {return m_listModel;}
-    const QVariantList getWaypoints() const;
+    const QVariantList getWaypoints();
 
     bool removeMaker(int _markerId);
     bool setMarkerSelected(int _markerId, bool _selected = true);
@@ -61,8 +61,8 @@ public:
     void updateTreeItemIndexInfo();
     void computeBounds(QPair<double, double>& _latBounds, QPair<double, double>& _lonBounds) const;
 
-    void triggerBeginResetModel() { beginResetModel(); }
-    void triggerEndResetModel() { endResetModel(); }
+    void triggerBeginResetModel();
+    void triggerEndResetModel();
 
 public slots:
     bool isValidMove(int _fromMarkerId, int _toMarkerId, bool addAfter = false);
@@ -83,6 +83,8 @@ private:
     MapMarkerTreeListModel* m_listModel{nullptr};
 
     int m_highestLinearIndexInActiveHierarchy{-1};
+    bool m_waypointsDirty{true};
+    QVariantList m_waypoints{};
 };
 
 QDataStream &operator<<(QDataStream& _ds, const MapMarkerTreeModel& _treeModel);

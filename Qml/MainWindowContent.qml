@@ -169,14 +169,61 @@ Rectangle
 //                                }
 //                            }
 
-                            Button
+                            RowLayout
                             {
                                 Layout.alignment: Qt.AlignCenter
-                                text: "Compute path"
-                                highlighted: true
-                                Material.background: Material.primary
-                                //onClicked: mapView.updateRouteQuery(travelModeSetting.currentValue, pathModeSetting.currentValue)
-                                onClicked: mapView.updateRouteQuery()
+                                Button
+                                {
+                                    Layout.alignment: Qt.AlignCenter
+                                    text: "Compute path"
+                                    highlighted: true
+                                    Material.background: Material.primary
+                                    //onClicked: mapView.updateRouteQuery(travelModeSetting.currentValue, pathModeSetting.currentValue)
+                                    onClicked: mapView.updateRouteQuery()
+                                }
+
+                                Button
+                                {
+                                    Layout.alignment: Qt.AlignCenter
+                                    text: "X"
+                                    highlighted: true
+                                    Material.background: Material.primary
+                                    onClicked: mapView.clearRouteQuery()
+                                }
+                            }
+
+                            RowLayout
+                            {
+                                Text {
+                                    id: labelTrackLength
+                                    text: qsTr("Track Length : ")
+                                    font.pixelSize: 14
+                                    Layout.fillHeight: false
+                                }
+
+                                Text {
+                                    id: trackLength
+                                    text: qsTr("---")
+                                    font.pixelSize: 14
+                                    Layout.rightMargin: 100
+                                }
+                            }
+
+                            RowLayout
+                            {
+                                Text {
+                                    id: labelTrackDuration
+                                    text: qsTr("Track Duration : ")
+                                    font.pixelSize: 14
+                                    Layout.fillHeight: false
+                                }
+
+                                Text {
+                                    id: trackDuration
+                                    text: qsTr("---")
+                                    font.pixelSize: 14
+                                    Layout.rightMargin: 100
+                                }
                             }
                         }
                     }

@@ -11,6 +11,7 @@ struct MapMarkerTreeItemData
     int markerId{-1};
     QString markerType{"invalidType"};
     QGeoCoordinate markerCoordinate{0.0, 0.0};
+    bool loop{false};
     bool selected{false};
     bool active{true};
 
@@ -31,6 +32,7 @@ public:
         MarkerId = Qt::UserRole,
         MarkerType,
         MarkerCoordinate,
+        MarkerIsLoop,
         MarkerIsSelected,
         MarkerIsActive,
         MarkerCoordinateLatitude,
@@ -69,9 +71,11 @@ public:
     int linearIndexActiveHierarchy() const;
     void setLinearIndexActiveHierarchy(int newLinearIndexActiveHierarchy);
 
-    VisitorReturn visit(std::function<VisitorReturn(MapMarkerTreeItem*)> _function);
+    VisitorReturn visit(std::function<VisitorReturn(MapMarkerTreeItem*)> _function, std::function<VisitorReturn (MapMarkerTreeItem *)> _postChildFunction = {});
     VisitorReturn visitChilds(std::function<VisitorReturn(MapMarkerTreeItem*)> _function);
     int count() const;
+
+    bool hasVisibleChild();
 
     bool operator==(const MapMarkerTreeItem& _other) const
     {

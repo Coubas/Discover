@@ -60,7 +60,8 @@ qt_add_qml_module(Discover
         Qml/PinMarkerShape.qml
         Qml/CircleMarkerShape.qml
         Qml/TextColumnItem.qml
-        Qml/CheckboxColumnItem.qml
+        Qml/MarkerIsActiveColumnItem.qml
+        Qml/MarkerIsLoopColumnItem.qml
         Qml/MapMarkerTreeViewDelegate.qml
     RESOURCES
         qtquickcontrols2.conf
@@ -110,7 +111,8 @@ qt_add_resources(Discover "qml"
         Qml/PinMarkerShape.qml
         Qml/CircleMarkerShape.qml
         Qml/TextColumnItem.qml
-        Qml/CheckboxColumnItem.qml
+        Qml/MarkerIsActiveColumnItem.qml
+        Qml/MarkerIsLoopColumnItem.qml
 )
 
 qt_add_resources(Discover "settings"

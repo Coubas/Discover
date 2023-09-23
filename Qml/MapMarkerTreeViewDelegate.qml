@@ -9,14 +9,16 @@ TreeViewDelegate
             {
                 id: shapeLoader
                 z:10
-                source: getShape(model.column)
+                source: getColumnType(model.column)
 
-                function getShape(t)
+                function getColumnType(c)
                 {
-                    switch(t)
+                    switch(c)
                     {
                     case 0:
-                        return "CheckboxColumnItem.qml"
+                        return "MarkerIsActiveColumnItem.qml"
+                    case 2:
+                        return "MarkerIsLoopColumnItem.qml"
                     default:
                         return "TextColumnItem.qml"
                     }

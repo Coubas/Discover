@@ -38,7 +38,7 @@ public:
 
     const TreeTrack* getTreeTrack() const {return &m_treeTrack;}
     TreeTrack* getTreeTrack() {return &m_treeTrack;}
-    const QVariantList getTreeTrackWaypoints() const
+    const QVariantList getTreeTrackWaypoints()
     {
         return m_treeTrack.getTreeModel()->getWaypoints();
     }

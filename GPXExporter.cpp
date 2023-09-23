@@ -5,7 +5,7 @@
 #include <TreeTrack.h>
 #include <MapMarkerTreeItem.h>
 
-GPXExporter::GPXExporter(const TreeTrack& _track)
+GPXExporter::GPXExporter(TreeTrack& _track)
     : m_track(_track)
 {
     m_xml.setAutoFormatting(true);
@@ -54,24 +54,17 @@ void GPXExporter::writeTrack()
 {
     m_xml.writeStartElement("trk");
     {
-        auto writeWaypoints = [&](MapMarkerTreeItem* _treeItem) -> VisitorReturn
+        QGeoCoordinate markerCoordinate;
+        for(QVariant waypoint : m_track.getTreeModel()->getWaypoints())
         {
-            const MapMarkerTreeItemData& data = _treeItem->markerData();
-            if(data.active)
+            markerCoordinate = waypoint.value<QGeoCoordinate>();
+            m_xml.writeStartElement("trkpt");
             {
-                m_xml.writeStartElement("trkpt");
-                {
-                    m_xml.writeAttribute("lat", QString::number(data.markerCoordinate.latitude(), 'f'));
-                    m_xml.writeAttribute("lon", QString::number(data.markerCoordinate.longitude(), 'f'));
-                }
-                m_xml.writeEndElement();
-
-                return VisitorReturn::VisitorContinue;
+                m_xml.writeAttribute("lat", QString::number(markerCoordinate.latitude(), 'f'));
+                m_xml.writeAttribute("lon", QString::number(markerCoordinate.longitude(), 'f'));
             }
-
-            return VisitorReturn::VisitorIgnoreChilds;
-        };
-        m_track.getTreeModel()->visit(writeWaypoints);
+            m_xml.writeEndElement();
+        }
     }
     m_xml.writeEndElement();
 }

@@ -14,6 +14,8 @@ public:
     explicit MapMarkerTreeListModel(MapMarkerTreeItem* _root, QObject *parent = nullptr);
     ~MapMarkerTreeListModel();
 
+    void setRoot(MapMarkerTreeItem* _root) { m_root = _root; }
+
     QModelIndex index(int _row, int _column, const QModelIndex& _parent = QModelIndex()) const override;
     QModelIndex parent(const QModelIndex &index) const override;
 

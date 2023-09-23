@@ -31,16 +31,18 @@ int MapMarkerTreeModel::size() const
 
 void MapMarkerTreeModel::clear()
 {
-    delete m_listModel;
+    m_listModel->triggerBeginResetModel();
+    m_listModel->setRoot(nullptr);
     delete m_root;
 
     m_root = new MapMarkerTreeItem();
     m_root->markerData().markerId = -1;
     m_root->setInActiveHierarchy(true);
 
-    m_listModel = new MapMarkerTreeListModel{m_root};
+    m_listModel->setRoot(m_root);
 
     m_highestLinearIndexInActiveHierarchy = -1;
+    m_listModel->triggerEndResetModel();
 }
 
 QModelIndex MapMarkerTreeModel::index(int _row, int _column, const QModelIndex& _parent/* = QModelIndex()*/) const
@@ -147,6 +149,7 @@ QHash<int, QByteArray> MapMarkerTreeModel::roleNames() const
     names[MapMarkerTreeItem::MarkerId] = "markerId";
     names[MapMarkerTreeItem::MarkerType] = "markerType";
     names[MapMarkerTreeItem::MarkerCoordinate] = "markerCoordinate";
+    names[MapMarkerTreeItem::MarkerIsLoop] = "markerIsLoop";
     names[MapMarkerTreeItem::MarkerIsSelected] = "markerIsSelected";
     names[MapMarkerTreeItem::MarkerIsActive] = "markerIsActive";
     names[MapMarkerTreeItem::MarkerCoordinateLatitude] = "markerCoordinateLatitude";
@@ -184,6 +187,9 @@ bool MapMarkerTreeModel::setData(const QModelIndex& _index, const QVariant& _val
     {
         if(item->setData(_value, _role))
         {
+            m_waypointsDirty = true;
+
+            //qDebug() << Q_FUNC_INFO << "setData(" << _index <<", " << _value <<", " << roleNames()[_role] <<")";
             int first = item->linearIndexActiveHierarchy();
             if(_role == MapMarkerTreeItem::MarkerIsActive && _value.toBool() &&
                 !item->inActiveHierarchy() && item->parent()->inActiveHierarchy()) // Item wasn't in active hierarchy but will be now
@@ -323,6 +329,11 @@ bool MapMarkerTreeModel::insertRows(int _position, int _count, const QModelIndex
         const bool success = item->insertChildren(_position, _count);
         endInsertRows();
 
+        if(success)
+        {
+            updateTreeItemIndexInfo();
+        }
+
         return success;
     }
 
@@ -342,37 +353,60 @@ bool MapMarkerTreeModel::removeRows(int _position, int _count, const QModelIndex
         const bool success = item->removeChildren(_position, _count);
         endRemoveRows();
 
+        if(success)
+        {
+            updateTreeItemIndexInfo();
+        }
+
         return success;
     }
 
     return false;
 }
 
-void MapMarkerTreeModel::visit(std::function<VisitorReturn (MapMarkerTreeItem *)> _function) const
+void MapMarkerTreeModel::visit(std::function<VisitorReturn (MapMarkerTreeItem *)> _function, std::function<VisitorReturn (MapMarkerTreeItem *)> _postChildFunction /*= {}*/) const
 {
-    m_root->visit(_function);
+    m_root->visit(_function, _postChildFunction);
 }
 
-const QVariantList MapMarkerTreeModel::getWaypoints() const
+const QVariantList MapMarkerTreeModel::getWaypoints()
 {
-    QVariantList waypoints;
+    if(!m_waypointsDirty)
+    {
+        return m_waypoints;
+    }
+
+    m_waypoints.clear();
 
     auto gatherWaypoints = [&](MapMarkerTreeItem* _treeItem) -> VisitorReturn
     {
         if(_treeItem->markerData().active)
         {
-            waypoints.append(QVariant::fromValue(_treeItem->markerData().markerCoordinate));
+//            qDebug() << Q_FUNC_INFO << "add waypoint: " << _treeItem->markerData().markerId;
+            m_waypoints.append(QVariant::fromValue(_treeItem->markerData().markerCoordinate));
+            return VisitorReturn::VisitorContinue;
         }
-        else
+
+        return VisitorReturn::VisitorIgnoreChilds;
+    };
+
+    auto handleLoopWaypoints = [&](MapMarkerTreeItem* _treeItem) -> VisitorReturn
+    {
+        const MapMarkerTreeItemData& data = _treeItem->markerData();
+        if(data.active && data.loop && _treeItem->hasVisibleChild())
         {
-            return VisitorReturn::VisitorIgnoreChilds;
+//            qDebug() << Q_FUNC_INFO << "add waypoint: " << data.markerId;
+            m_waypoints.append(QVariant::fromValue(_treeItem->markerData().markerCoordinate));
         }
 
         return VisitorReturn::VisitorContinue;
     };
-    visit(gatherWaypoints);
 
-    return waypoints;
+    visit(gatherWaypoints, handleLoopWaypoints);
+
+    m_waypointsDirty = false;
+
+    return m_waypoints;
 }
 
 bool MapMarkerTreeModel::removeMaker(int _markerId)
@@ -390,6 +424,11 @@ bool MapMarkerTreeModel::removeMaker(int _markerId)
         return VisitorReturn::VisitorContinue;
     };
     visit(remove);
+
+    if(done)
+    {
+        updateTreeItemIndexInfo();
+    }
 
     return done;
 }
@@ -438,15 +477,19 @@ bool MapMarkerTreeModel::setMarkerCoordinate(int _markerId, const QGeoCoordinate
     };
     visit(setCoordinate);
 
+    m_waypointsDirty |= done;
+
     return done;
 }
 
 void MapMarkerTreeModel::removeSelectedMarkers()
 {
+    int nbRemoved = 0;
     auto removeSelected = [&](MapMarkerTreeItem* _treeItem) -> VisitorReturn
     {
         if(_treeItem->markerData().selected)
         {
+            ++nbRemoved;
             removeItem(_treeItem);
             return VisitorReturn::VisitorIgnoreChilds;
         }
@@ -454,6 +497,11 @@ void MapMarkerTreeModel::removeSelectedMarkers()
         return VisitorReturn::VisitorContinue;
     };
     visit(removeSelected);
+
+    if(nbRemoved > 0)
+    {
+        updateTreeItemIndexInfo();
+    }
 }
 
 bool MapMarkerTreeModel::addNewMarker(const QGeoCoordinate& _coord, const QString& _type /*= "pin"*/, int _parentMarkerId /*= -1*/)
@@ -468,7 +516,7 @@ bool MapMarkerTreeModel::addNewMarker(const QGeoCoordinate& _coord, const QStrin
         beginInsertRows(index(m_root), insertIndex, insertIndex);
         m_listModel->triggerBeginInsertRows(listInsterIndex, listInsterIndex);
 
-        MapMarkerTreeItemData markerData{ size(), _type, _coord, false, true};
+        MapMarkerTreeItemData markerData{ size(), _type, _coord};
         done = m_root->appendChild(markerData);
 
         m_listModel->triggerEndInsertRows();
@@ -490,7 +538,7 @@ bool MapMarkerTreeModel::addNewMarker(const QGeoCoordinate& _coord, const QStrin
 //                    qDebug() << Q_FUNC_INFO << "triggerBeginInsertRows(" << insertIndex << ", " << insertIndex << ")";
                 }
 
-                MapMarkerTreeItemData markerData{ size(), _type, _coord, false, true};
+                MapMarkerTreeItemData markerData{ size(), _type, _coord};
                 done = _treeItem->appendChild(markerData);
 
                 if(_treeItem->inActiveHierarchy())
@@ -508,7 +556,10 @@ bool MapMarkerTreeModel::addNewMarker(const QGeoCoordinate& _coord, const QStrin
         visit(addMarker);
     }
 
-    updateTreeItemIndexInfo();
+    if(done)
+    {
+        updateTreeItemIndexInfo();
+    }
 
     return done;
 }
@@ -916,6 +967,7 @@ void MapMarkerTreeModel::updateTreeItemIndexInfo()
     visit(updateInfo);
 
     m_highestLinearIndexInActiveHierarchy = idActiveHierarchy - 1;
+    m_waypointsDirty = true;
 }
 
 void MapMarkerTreeModel::computeBounds(QPair<double, double>& _latBounds, QPair<double, double>& _lonBounds) const
@@ -944,6 +996,18 @@ void MapMarkerTreeModel::computeBounds(QPair<double, double>& _latBounds, QPair<
     visit(gatherTreeBounds);
 }
 
+void MapMarkerTreeModel::triggerBeginResetModel()
+{
+    beginResetModel();
+    m_listModel->triggerBeginResetModel();
+}
+
+void MapMarkerTreeModel::triggerEndResetModel()
+{
+    m_listModel->triggerEndResetModel();
+    endResetModel();
+}
+
 QDataStream& operator<<(QDataStream& _ds, const MapMarkerTreeModel& _treeModel)
 {
     _ds << *(_treeModel.getRoot())
@@ -961,6 +1025,7 @@ QDataStream& operator>>(QDataStream& _ds, MapMarkerTreeModel& _treeModel)
     int highestLinearIndexInActiveHierarchy;
     _ds >> highestLinearIndexInActiveHierarchy;
     _treeModel.setHighestLinearIndexInActiveHierarchy(highestLinearIndexInActiveHierarchy);
+    _treeModel.updateTreeItemIndexInfo();
 
     _treeModel.triggerEndResetModel();
 

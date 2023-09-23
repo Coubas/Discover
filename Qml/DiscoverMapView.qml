@@ -62,6 +62,12 @@ Item
         routeModel.update()
     }
 
+    function clearRouteQuery()
+    {
+        routeQuery.clearWaypoints();
+        routeModel.reset()
+    }
+
     Plugin {
         id: mapPlugin
         name: "osm"
@@ -201,12 +207,22 @@ Item
         autoUpdate: false
         query: routeQuery
 
-        onQueryChanged: console.log("New Query...")
+        //onQueryChanged: console.log("New Query...")
         onRoutesChanged:
         {
-            console.log("Number of route computed: " + count)
-            var r = get(0)
-            console.log("Routes CHanged..." +  "Dist :" + r.distance + " travel time: " + r.travelTime)
+            if(count > 0)
+            {
+                //console.log("Number of route computed: " + count)
+                var r = get(0)
+                //console.log("Routes Changed..." +  "Dist :" + r.distance + " travel time: " + r.travelTime)
+                trackLength.text = distanceNiceString(r.distance)
+                trackDuration.text = durationNiceString(r.travelTime)
+            }
+            else
+            {
+                trackLength.text = "---"
+                trackDuration.text = "---"
+            }
         }
 
         onStatusChanged:
@@ -219,7 +235,7 @@ Item
                     console.log("Route conputed with no points, something might be wrong :/")
                     break
                 case 1:
-                    console.log("Route computed !")
+                    //console.log("Route computed !")
                     break
                 }
             }
@@ -231,6 +247,16 @@ Item
             {
                 console.log("Computing route...")
             }
+        }
+
+        function distanceNiceString(d)
+        {
+            return Math.floor(d / 1000) + "km " + Math.floor(d % 1000) + "m"
+        }
+
+        function durationNiceString(d)
+        {
+            return Math.floor(d / 3600) + "h " + Math.floor((d / 60) % 60) + "min " + Math.floor(d % 60) + "s"
         }
     }
 

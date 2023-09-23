@@ -118,6 +118,7 @@ QHash<int, QByteArray> MapMarkerTreeListModel::roleNames() const
     names[MapMarkerTreeItem::MarkerId] = "markerId";
     names[MapMarkerTreeItem::MarkerType] = "markerType";
     names[MapMarkerTreeItem::MarkerCoordinate] = "markerCoordinate";
+    names[MapMarkerTreeItem::MarkerIsLoop] = "markerIsLoop";
     names[MapMarkerTreeItem::MarkerIsSelected] = "markerIsSelected";
     names[MapMarkerTreeItem::MarkerIsActive] = "markerIsActive";
     names[MapMarkerTreeItem::MarkerCoordinateLatitude] = "markerCoordinateLatitude";

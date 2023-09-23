@@ -1,6 +1,6 @@
 #include "MapMarkerTreeItem.h"
 
-const QList<int> MapMarkerTreeItem::ms_columns{MapMarkerTreeItem::MarkerIsActive, MapMarkerTreeItem::MarkerId, MapMarkerTreeItem::MarkerCoordinateLatitude, MapMarkerTreeItem::MarkerCoordinateLongitude};
+const QList<int> MapMarkerTreeItem::ms_columns{MapMarkerTreeItem::MarkerIsActive, MapMarkerTreeItem::MarkerId, MapMarkerTreeItem::MarkerIsLoop, MapMarkerTreeItem::MarkerCoordinateLatitude, MapMarkerTreeItem::MarkerCoordinateLongitude};
 
 MapMarkerTreeItem::MapMarkerTreeItem(MapMarkerTreeItem* _parent /*= nullptr*/, const MapMarkerTreeItem *_source /*= nullptr*/)
     : m_parentItem(_parent)
@@ -106,6 +106,8 @@ QVariant MapMarkerTreeItem::data(int _role /*= Qt::DisplayRole*/) const
         return QVariant(m_markerData.markerType);
     case MarkerCoordinate:
         return QVariant::fromValue<QGeoCoordinate>(m_markerData.markerCoordinate);
+    case MarkerIsLoop:
+        return QVariant(m_markerData.loop);
     case MarkerIsSelected:
         return QVariant(m_markerData.selected);
     case MarkerIsActive:
@@ -131,6 +133,9 @@ bool MapMarkerTreeItem::setData(const QVariant& _value, int _role /*= Qt::EditRo
         break;
     case MarkerCoordinate:
         m_markerData.markerCoordinate = _value.value<QGeoCoordinate>();
+        break;
+    case MarkerIsLoop:
+        m_markerData.loop = _value.toBool();
         break;
     case MarkerIsSelected:
         m_markerData.selected = _value.toBool();
@@ -255,7 +260,7 @@ void MapMarkerTreeItem::setLinearIndexActiveHierarchy(int newLinearIndexActiveHi
     m_linearIndexActiveHierarchy = newLinearIndexActiveHierarchy;
 }
 
-VisitorReturn MapMarkerTreeItem::visit(std::function<VisitorReturn (MapMarkerTreeItem *)> _function)
+VisitorReturn MapMarkerTreeItem::visit(std::function<VisitorReturn (MapMarkerTreeItem *)> _function, std::function<VisitorReturn (MapMarkerTreeItem *)> _postChildFunction /*= {}*/)
 {
     VisitorReturn result = m_parentItem == nullptr ? VisitorReturn::VisitorContinue : _function(this); // Root item is an empty item
     switch (result)
@@ -263,20 +268,28 @@ VisitorReturn MapMarkerTreeItem::visit(std::function<VisitorReturn (MapMarkerTre
     case VisitorBreak:
         return VisitorBreak;
     case VisitorIgnoreChilds: // Ignore Child won't propagate up the tree so return Continue.
-        return VisitorContinue;
+        result =  VisitorContinue;
+        break;
     case VisitorContinue:
         for(MapMarkerTreeItem* child : m_childItems)
         {
-            result = child->visit(_function);
+            result = child->visit(_function, _postChildFunction);
             if(result == VisitorBreak)
             {
                 return result;
             }
         }
-        return VisitorContinue;
+        break;
     default: // Something whent wrong
         return VisitorBreak;
     }
+
+    if(_postChildFunction)
+    {
+        return _postChildFunction(this);
+    }
+
+    return result;
 }
 
 VisitorReturn MapMarkerTreeItem::visitChilds(std::function<VisitorReturn (MapMarkerTreeItem *)> _function)
@@ -302,6 +315,27 @@ int MapMarkerTreeItem::count() const
         count += child->count();
     }
     return count;
+}
+
+bool MapMarkerTreeItem::hasVisibleChild()
+{
+    bool found = false;
+
+    auto visibleChild= [&](MapMarkerTreeItem* _treeItem) -> VisitorReturn
+    {
+        if(_treeItem->markerData().active)
+        {
+            found = true;
+            return VisitorReturn::VisitorBreak;
+        }
+        else
+        {
+            return VisitorReturn::VisitorIgnoreChilds;
+        }
+    };
+    visitChilds(visibleChild);
+
+    return found;
 }
 
 //bool MapMarkerTreeItem::insertColumns(int _position, int _count)
@@ -349,6 +383,7 @@ QDataStream &operator<<(QDataStream& _ds, const MapMarkerTreeItemData& _data)
     _ds << _data.markerId
         << _data.markerType
         << _data.markerCoordinate
+        << _data.loop
         << _data.selected
         << _data.active;
 
@@ -360,6 +395,7 @@ QDataStream &operator>>(QDataStream& _ds, MapMarkerTreeItemData& _data)
     _ds >> _data.markerId
         >> _data.markerType
         >> _data.markerCoordinate
+        >> _data.loop
         >> _data.selected
         >> _data.active;
 
