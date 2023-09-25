@@ -304,9 +304,37 @@ TreeViewDelegate
         }
         MenuItem
         {
+            text: "Rename"
+            onTriggered: renamePopup.open()
+        }
+        MenuItem
+        {
             text: "Log Info"
             onTriggered: console.log("Marker id: " + markerId + ", selected: " + markerIsSelected +
                                      "\nType: " + markerType + ", Pos: " + markerCoordinate)
+        }
+    }
+
+    Popup {
+        id: renamePopup
+        modal: true
+        focus: true
+        onOpened: markerRenameInput.selectAll()
+        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
+
+        TextInput
+        {
+            id: markerRenameInput
+            anchors.fill: parent
+            text: markerName
+            focus: true
+            horizontalAlignment: Text.AlignHCenter
+            selectionColor: Material.accent
+            onAccepted:
+            {
+                markerName = text
+                renamePopup.close()
+            }
         }
     }
 }
