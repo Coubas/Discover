@@ -1,6 +1,6 @@
 #include "MapMarkerTreeItem.h"
 
-const QList<int> MapMarkerTreeItem::ms_columns{MapMarkerTreeItem::MarkerIsActive, MapMarkerTreeItem::MarkerId, MapMarkerTreeItem::MarkerIsLoop, MapMarkerTreeItem::MarkerCoordinateLatitude, MapMarkerTreeItem::MarkerCoordinateLongitude};
+const QList<int> MapMarkerTreeItem::ms_columns{MapMarkerTreeItem::MarkerIsActive, MapMarkerTreeItem::MarkerLinearIndexInActiveHierarchy, MapMarkerTreeItem::MarkerName, MapMarkerTreeItem::MarkerIsLoop};
 
 MapMarkerTreeItem::MapMarkerTreeItem(MapMarkerTreeItem* _parent /*= nullptr*/, const MapMarkerTreeItem *_source /*= nullptr*/)
     : m_parentItem(_parent)
@@ -106,6 +106,8 @@ QVariant MapMarkerTreeItem::data(int _role /*= Qt::DisplayRole*/) const
         return QVariant(m_markerData.markerType);
     case MarkerCoordinate:
         return QVariant::fromValue<QGeoCoordinate>(m_markerData.markerCoordinate);
+    case MarkerName:
+        return QVariant(m_markerData.markerName);
     case MarkerIsLoop:
         return QVariant(m_markerData.loop);
     case MarkerIsSelected:
@@ -116,6 +118,10 @@ QVariant MapMarkerTreeItem::data(int _role /*= Qt::DisplayRole*/) const
         return QVariant(m_markerData.markerCoordinate.latitude());
     case MarkerCoordinateLongitude:
         return QVariant(m_markerData.markerCoordinate.longitude());
+    case MarkerLinearIndex:
+        return QVariant(m_linearIndex);
+    case MarkerLinearIndexInActiveHierarchy:
+        return QVariant(m_linearIndexActiveHierarchy);
     }
 
     return QVariant();
@@ -134,6 +140,8 @@ bool MapMarkerTreeItem::setData(const QVariant& _value, int _role /*= Qt::EditRo
     case MarkerCoordinate:
         m_markerData.markerCoordinate = _value.value<QGeoCoordinate>();
         break;
+    case MarkerName:
+        m_markerData.markerName = _value.toString();
     case MarkerIsLoop:
         m_markerData.loop = _value.toBool();
         break;
@@ -148,6 +156,12 @@ bool MapMarkerTreeItem::setData(const QVariant& _value, int _role /*= Qt::EditRo
         break;
     case MarkerCoordinateLongitude:
         m_markerData.markerCoordinate.setLongitude(_value.toDouble());
+        break;
+    case MarkerLinearIndex:
+        m_linearIndex = _value.toInt();
+        break;
+    case MarkerLinearIndexInActiveHierarchy:
+        m_linearIndexActiveHierarchy = _value.toInt();
         break;
     }
 

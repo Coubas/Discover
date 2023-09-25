@@ -118,11 +118,14 @@ QHash<int, QByteArray> MapMarkerTreeListModel::roleNames() const
     names[MapMarkerTreeItem::MarkerId] = "markerId";
     names[MapMarkerTreeItem::MarkerType] = "markerType";
     names[MapMarkerTreeItem::MarkerCoordinate] = "markerCoordinate";
+    names[MapMarkerTreeItem::MarkerName] = "markerName";
     names[MapMarkerTreeItem::MarkerIsLoop] = "markerIsLoop";
     names[MapMarkerTreeItem::MarkerIsSelected] = "markerIsSelected";
     names[MapMarkerTreeItem::MarkerIsActive] = "markerIsActive";
     names[MapMarkerTreeItem::MarkerCoordinateLatitude] = "markerCoordinateLatitude";
     names[MapMarkerTreeItem::MarkerCoordinateLongitude] = "markerCoordinateLongitude";
+    names[MapMarkerTreeItem::MarkerLinearIndex] = "markerLinearIndex";
+    names[MapMarkerTreeItem::MarkerLinearIndexInActiveHierarchy] = "markerLinearIndexInActiveHierarchy";
     return names;
 }
 

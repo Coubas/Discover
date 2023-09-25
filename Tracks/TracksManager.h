@@ -47,9 +47,9 @@ signals:
     void activeTrackNameChanged();
 
 public slots:
-    bool addPointToActiveTrack(const QGeoCoordinate& _coord, const QString& _type = "pin", int _insertIndex = -1);
-    bool addPointAfterFirstSelectedToActiveTrack(const QGeoCoordinate& _coord, const QString& _type = "pin");
-    bool addPointAsChildOfFirstSelectedToActiveTrack(const QGeoCoordinate& _coord, const QString& _type = "pin");
+    bool addPointToActiveTrack(const QString& _name, const QGeoCoordinate& _coord, const QString& _type = "pin", int _insertIndex = -1);
+    bool addPointAfterFirstSelectedToActiveTrack(const QString& _name, const QGeoCoordinate& _coord, const QString& _type = "pin");
+    bool addPointAsChildOfFirstSelectedToActiveTrack(const QString& _name, const QGeoCoordinate& _coord, const QString& _type = "pin");
     bool removePointFromActiveTrack(int _markerId);
     bool setPointSelected(int _markerId, bool _selected /*= true*/);
     bool setPointCoordinate(int _markerId, const QGeoCoordinate& _coord);

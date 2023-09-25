@@ -1,31 +1,15 @@
 <RCC>
     <qresource prefix="/icons">
-        <file>Images/Icons/arrival_flag.svg</file>
-        <file>Images/Icons/arrival_flag_filled.svg</file>
-        <file>Images/Icons/distance.svg</file>
-        <file>Images/Icons/distance_filled.svg</file>
-        <file>Images/Icons/explore.svg</file>
-        <file>Images/Icons/explore_filled.svg</file>
-        <file>Images/Icons/flag_circle.svg</file>
-        <file>Images/Icons/flag_circle_filled.svg</file>
-        <file>Images/Icons/flags.svg</file>
-        <file>Images/Icons/flags_filled.svg</file>
-        <file>Images/Icons/home_pin.svg</file>
-        <file>Images/Icons/home_pin_filled.svg</file>
-        <file>Images/Icons/location_home.svg</file>
-        <file>Images/Icons/location_home_filled.svg</file>
-        <file>Images/Icons/location_on.svg</file>
-        <file>Images/Icons/location_on_filled.svg</file>
-        <file>Images/Icons/location_searching.svg</file>
-        <file>Images/Icons/location_searching_filled.svg</file>
-        <file>Images/Icons/my_location.svg</file>
-        <file>Images/Icons/my_location_filled.svg</file>
-        <file>Images/Icons/person_pin.svg</file>
-        <file>Images/Icons/person_pin_circle.svg</file>
-        <file>Images/Icons/person_pin_circle_filled.svg</file>
-        <file>Images/Icons/person_pin_filled.svg</file>
-        <file>Images/Icons/push_pin.svg</file>
-        <file>Images/Icons/push_pin_filled.svg</file>
         <file>moto.ico</file>
+        <file>Images/Icons/addPin.png</file>
+        <file>Images/Icons/arrowRight.png</file>
+        <file>Images/Icons/circle.png</file>
+        <file>Images/Icons/circle_filled.png</file>
+        <file>Images/Icons/cursor.png</file>
+        <file>Images/Icons/pin.png</file>
+        <file>Images/Icons/pin_filled.png</file>
+        <file>Images/Icons/loop.png</file>
+        <file>Images/Icons/loopPin.png</file>
+        <file>Images/Icons/loopPin_filled.png</file>
     </qresource>
 </RCC>

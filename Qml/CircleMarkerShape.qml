@@ -15,11 +15,11 @@ Image
     {
         if(filled)
         {
-            "qrc:/icons/Images/Icons/location_searching_filled.svg"
+            "qrc:/icons/Images/Icons/circle_filled.png"
         }
         else
         {
-            "qrc:/icons/Images/Icons/location_searching.svg"
+            "qrc:/icons/Images/Icons/circle.png"
         }
     }
 

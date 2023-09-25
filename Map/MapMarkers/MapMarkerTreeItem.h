@@ -11,6 +11,7 @@ struct MapMarkerTreeItemData
     int markerId{-1};
     QString markerType{"invalidType"};
     QGeoCoordinate markerCoordinate{0.0, 0.0};
+    QString markerName{""};
     bool loop{false};
     bool selected{false};
     bool active{true};
@@ -32,11 +33,14 @@ public:
         MarkerId = Qt::UserRole,
         MarkerType,
         MarkerCoordinate,
+        MarkerName,
         MarkerIsLoop,
         MarkerIsSelected,
         MarkerIsActive,
         MarkerCoordinateLatitude,
         MarkerCoordinateLongitude,
+        MarkerLinearIndex,
+        MarkerLinearIndexInActiveHierarchy,
         MarkerRoleCount
     };
     int rolesCount() const { return MarkerRoleCount - MarkerId; }

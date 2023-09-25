@@ -48,53 +48,11 @@ qt_add_qml_module(Discover
         Tracks/TreeTrack.h Tracks/TreeTrack.cpp
         DiscoverMainWindow.h DiscoverMainWindow.cpp
         GPXExporter.h GPXExporter.cpp
-    QML_FILES
-        Qml/MainWindow.qml
-        Qml/MainWindowContent.qml
-        Qml/DiscoverMapView.qml
-        Qml/MapMarkerBase.qml
-        Qml/MapMarkerCursor.qml
-        Qml/MapMarkerListViewItem.qml
-        Qml/MapRouteBase.qml
-        Qml/CursorMarkerShape.qml
-        Qml/PinMarkerShape.qml
-        Qml/CircleMarkerShape.qml
-        Qml/TextColumnItem.qml
-        Qml/MarkerIsActiveColumnItem.qml
-        Qml/MarkerIsLoopColumnItem.qml
-        Qml/MapMarkerTreeViewDelegate.qml
     RESOURCES
         qtquickcontrols2.conf
         qml.qrc
         settings.qrc
         images.qrc
-        moto.ico
-        Images/icons/arrival_flag.svg
-        Images/Icons/arrival_flag_filled.svg
-        Images/Icons/distance.svg
-        Images/Icons/distance_filled.svg
-        Images/Icons/explore.svg
-        Images/Icons/explore_filled.svg
-        Images/Icons/flag_circle.svg
-        Images/Icons/flag_circle_filled.svg
-        Images/Icons/flags.svg
-        Images/Icons/flags_filled.svg
-        Images/Icons/home_pin.svg
-        Images/Icons/home_pin_filled.svg
-        Images/Icons/location_home.svg
-        Images/Icons/location_home_filled.svg
-        Images/Icons/location_on.svg
-        Images/Icons/location_on_filled.svg
-        Images/Icons/location_searching.svg
-        Images/Icons/location_searching_filled.svg
-        Images/Icons/my_location.svg
-        Images/Icons/my_location_filled.svg
-        Images/Icons/person_pin.svg
-        Images/Icons/person_pin_filled.svg
-        Images/Icons/person_pin_circle.svg
-        Images/Icons/person_pin_circle_filled.svg
-        Images/Icons/push_pin.svg
-        Images/Icons/push_pin_filled.svg
 )
 
 qt_add_resources(Discover "qml"
@@ -113,6 +71,7 @@ qt_add_resources(Discover "qml"
         Qml/TextColumnItem.qml
         Qml/MarkerIsActiveColumnItem.qml
         Qml/MarkerIsLoopColumnItem.qml
+        Qml/MapMarkerTreeViewDelegate.qml
 )
 
 qt_add_resources(Discover "settings"
@@ -124,32 +83,16 @@ qt_add_resources(Discover "images"
     PREFIX "/icons"
     FILES
         moto.ico
-        Images/icons/arrival_flag.svg
-        Images/Icons/arrival_flag_filled.svg
-        Images/Icons/distance.svg
-        Images/Icons/distance_filled.svg
-        Images/Icons/explore.svg
-        Images/Icons/explore_filled.svg
-        Images/Icons/flag_circle.svg
-        Images/Icons/flag_circle_filled.svg
-        Images/Icons/flags.svg
-        Images/Icons/flags_filled.svg
-        Images/Icons/home_pin.svg
-        Images/Icons/home_pin_filled.svg
-        Images/Icons/location_home.svg
-        Images/Icons/location_home_filled.svg
-        Images/Icons/location_on.svg
-        Images/Icons/location_on_filled.svg
-        Images/Icons/location_searching.svg
-        Images/Icons/location_searching_filled.svg
-        Images/Icons/my_location.svg
-        Images/Icons/my_location_filled.svg
-        Images/Icons/person_pin.svg
-        Images/Icons/person_pin_filled.svg
-        Images/Icons/person_pin_circle.svg
-        Images/Icons/person_pin_circle_filled.svg
-        Images/Icons/push_pin.svg
-        Images/Icons/push_pin_filled.svg
+        Images/Icons/addPin.png
+        Images/Icons/arrowRight.png
+        Images/Icons/circle.png
+        Images/Icons/circle_filled.png
+        Images/Icons/cursor.png
+        Images/Icons/loop.png
+        Images/Icons/loopPin.png
+        Images/Icons/loopPin_filled.png
+        Images/Icons/pin.png
+        Images/Icons/pin_filled.png
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

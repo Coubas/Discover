@@ -13,13 +13,24 @@ Image
     property double anchorY: height
     source:
     {
-        if(filled)
+        if(markerIsLoop)
         {
-            "qrc:/icons/Images/Icons/location_on_filled.svg"
+            if(filled)
+            {
+                "qrc:/icons/Images/Icons/loopPin_filled.png"
+            }
+            else
+            {
+                "qrc:/icons/Images/Icons/loopPin.png"
+            }
+        }
+        else if(filled)
+        {
+            "qrc:/icons/Images/Icons/pin_filled.png"
         }
         else
         {
-            "qrc:/icons/Images/Icons/location_on.svg"
+            "qrc:/icons/Images/Icons/pin.png"
         }
     }
 

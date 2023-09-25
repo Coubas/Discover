@@ -9,16 +9,17 @@ TreeViewDelegate
             {
                 id: shapeLoader
                 z:10
-                source: getColumnType(model.column)
+                source: getColumnType(model.column, hasChildren)
 
-                function getColumnType(c)
+                // See in MapMarkerTreeItem.cpp -> ms_columns
+                function getColumnType(col, children)
                 {
-                    switch(c)
+                    switch(col)
                     {
                     case 0:
                         return "MarkerIsActiveColumnItem.qml"
-                    case 2:
-                        return "MarkerIsLoopColumnItem.qml"
+                    case 3:
+                        return children ? "MarkerIsLoopColumnItem.qml" : ""
                     default:
                         return "TextColumnItem.qml"
                     }
@@ -26,6 +27,7 @@ TreeViewDelegate
             }
 
     background: Rectangle {
+        id: rowBackground
         //anchors.fill: parent
         visible: isTreeNode
         width: delegate.parent.width
@@ -61,7 +63,8 @@ TreeViewDelegate
         {
             if (mouse.button === Qt.LeftButton)
             {
-                doucleClickThreshold()
+                tracksManager.setPointSelected(markerId, !markerIsSelected)
+                //doucleClickThreshold()
             }
             else if (mouse.button === Qt.RightButton)
             {
@@ -265,6 +268,7 @@ TreeViewDelegate
     states:
     [
         State {
+            name: "dragFeedback"
             when: mouseArea.drag.target.Drag.active
             ParentChange {
                 target: mouseArea.drag.target
@@ -276,6 +280,33 @@ TreeViewDelegate
                 anchors.horizontalCenter: treeViewRoot.horizontalCenter
                 anchors.verticalCenter: undefined
             }
+        },
+
+        State {
+            name: "InActiveHierarchy"
+            when: markerLinearIndexInActiveHierarchy === -1
+            PropertyChanges {
+                target: rowBackground
+                opacity: model.markerIsSelected ? 0.5 : 0.2
+                color: model.markerIsSelected ? Material.accent : "grey"
+            }
         }
     ]
+
+    Menu
+    {
+        id: contextMenu
+        closePolicy: Popup.CloseOnReleaseOutside | Popup.CloseOnEscape
+        MenuItem
+        {
+            text: "Center map"
+            onTriggered: mapBackend.locusPos = markerCoordinate
+        }
+        MenuItem
+        {
+            text: "Log Info"
+            onTriggered: console.log("Marker id: " + markerId + ", selected: " + markerIsSelected +
+                                     "\nType: " + markerType + ", Pos: " + markerCoordinate)
+        }
+    }
 }

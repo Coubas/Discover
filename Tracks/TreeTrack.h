@@ -18,9 +18,9 @@ public:
 
 //    qsizetype size() const {return m_points.size();}
 
-    bool addPoint(const QGeoCoordinate& _coord, const QString& _type = "pin", int _parentMarkerId = -1);
-    bool addPointAfterFirstSelected(const QGeoCoordinate& _coord, const QString& _type = "pin");
-    bool addPointAsChildOfFirstSelected(const QGeoCoordinate& _coord, const QString& _type = "pin");
+    bool addPoint(const QString& _name, const QGeoCoordinate& _coord, const QString& _type = "pin", int _parentMarkerId = -1);
+    bool addPointAfterFirstSelected(const QString& _name, const QGeoCoordinate& _coord, const QString& _type = "pin");
+    bool addPointAsChildOfFirstSelected(const QString& _name, const QGeoCoordinate& _coord, const QString& _type = "pin");
     bool removePoint(int _markerId);
     bool setPointSelected(int _markerId, bool _selected = true);
     bool setPointCoordinate(int _markerId, const QGeoCoordinate& _coord);

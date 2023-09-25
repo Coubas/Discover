@@ -13,13 +13,13 @@ Image
     property var anchorY: height * 0.5
     source:
     {
-        if(filled)
+//        if(filled)
+//        {
+//            "qrc:/icons/Images/Icons/my_location_filled.svg"
+//        }
+//        else
         {
-            "qrc:/icons/Images/Icons/my_location_filled.svg"
-        }
-        else
-        {
-            "qrc:/icons/Images/Icons/my_location.svg"
+            "qrc:/icons/Images/Icons/cursor.png"
         }
     }
 

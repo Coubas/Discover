@@ -2,5 +2,5 @@ import QtQuick 2.0
 
 Text
 {
-    text: model.display
+    text: model.display === -1 ? "-" : model.display
 }

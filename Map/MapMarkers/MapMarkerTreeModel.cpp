@@ -149,11 +149,14 @@ QHash<int, QByteArray> MapMarkerTreeModel::roleNames() const
     names[MapMarkerTreeItem::MarkerId] = "markerId";
     names[MapMarkerTreeItem::MarkerType] = "markerType";
     names[MapMarkerTreeItem::MarkerCoordinate] = "markerCoordinate";
+    names[MapMarkerTreeItem::MarkerName] = "markerName";
     names[MapMarkerTreeItem::MarkerIsLoop] = "markerIsLoop";
     names[MapMarkerTreeItem::MarkerIsSelected] = "markerIsSelected";
     names[MapMarkerTreeItem::MarkerIsActive] = "markerIsActive";
     names[MapMarkerTreeItem::MarkerCoordinateLatitude] = "markerCoordinateLatitude";
     names[MapMarkerTreeItem::MarkerCoordinateLongitude] = "markerCoordinateLongitude";
+    names[MapMarkerTreeItem::MarkerLinearIndex] = "markerLinearIndex";
+    names[MapMarkerTreeItem::MarkerLinearIndexInActiveHierarchy] = "markerLinearIndexInActiveHierarchy";
     return names;
 }
 
@@ -221,7 +224,7 @@ bool MapMarkerTreeModel::setData(const QModelIndex& _index, const QVariant& _val
                 QModelIndex idLon = createIndex(_index.row(), item->getColumnIdFromRole(MapMarkerTreeItem::MarkerCoordinateLongitude), item);
                 emit dataChanged(idLat, idLon, roles);
             }
-            else if(_role == MapMarkerTreeItem::MarkerIsSelected)
+            else if(_role == MapMarkerTreeItem::MarkerIsSelected || _role == MapMarkerTreeItem::MarkerLinearIndexInActiveHierarchy)
             {
                 QModelIndex idFirst = createIndex(_index.row(), 0, item);
                 QModelIndex idLast = createIndex(_index.row(), columnCount() -1, item);
@@ -504,7 +507,7 @@ void MapMarkerTreeModel::removeSelectedMarkers()
     }
 }
 
-bool MapMarkerTreeModel::addNewMarker(const QGeoCoordinate& _coord, const QString& _type /*= "pin"*/, int _parentMarkerId /*= -1*/, int _index /*= -1*/)
+bool MapMarkerTreeModel::addNewMarker(const QString& _name, const QGeoCoordinate& _coord, const QString& _type /*= "pin"*/, int _parentMarkerId /*= -1*/, int _index /*= -1*/)
 {
     bool done = false;
 
@@ -535,7 +538,7 @@ bool MapMarkerTreeModel::addNewMarker(const QGeoCoordinate& _coord, const QStrin
                 qDebug() << Q_FUNC_INFO << "triggerBeginInsertRows(" << listInsterIndex << ", " << listInsterIndex << ")";
             }
 
-            MapMarkerTreeItemData markerData{ size(), _type, _coord};
+            MapMarkerTreeItemData markerData{ m_idCounter++, _type, _coord, _name};
             done = _treeItem->insertChild(insertIndex, markerData);
 
             if(_treeItem->inActiveHierarchy())
@@ -568,7 +571,7 @@ bool MapMarkerTreeModel::addNewMarker(const QGeoCoordinate& _coord, const QStrin
     return done;
 }
 
-bool MapMarkerTreeModel::addNewMarkerAfterFirstSelected(const QGeoCoordinate &_coord, const QString &_type /*= "pin"*/)
+bool MapMarkerTreeModel::addNewMarkerAfterFirstSelected(const QString& _name, const QGeoCoordinate &_coord, const QString &_type /*= "pin"*/)
 {
     bool done = false;
     MapMarkerTreeItem* firstSelectedMarkerId = getFirstSelectedMarkerId();
@@ -581,13 +584,13 @@ bool MapMarkerTreeModel::addNewMarkerAfterFirstSelected(const QGeoCoordinate &_c
 
     if(MapMarkerTreeItem* parent = firstSelectedMarkerId->parent())
     {
-        done = addNewMarker(_coord, _type, parent->markerData().markerId, firstSelectedMarkerId->childNumber() + 1);
+        done = addNewMarker(_name, _coord, _type, parent->markerData().markerId, firstSelectedMarkerId->childNumber() + 1);
     }
 
     return done;
 }
 
-bool MapMarkerTreeModel::addNewMarkerAsChildOfFirstSelected(const QGeoCoordinate &_coord, const QString &_type /*= "pin"*/)
+bool MapMarkerTreeModel::addNewMarkerAsChildOfFirstSelected(const QString& _name, const QGeoCoordinate &_coord, const QString &_type /*= "pin"*/)
 {
     bool done = false;
     MapMarkerTreeItem* firstSelectedMarkerId = getFirstSelectedMarkerId();
@@ -598,7 +601,7 @@ bool MapMarkerTreeModel::addNewMarkerAsChildOfFirstSelected(const QGeoCoordinate
         return false;
     }
 
-    done = addNewMarker(_coord, _type, firstSelectedMarkerId->markerData().markerId);
+    done = addNewMarker(_name, _coord, _type, firstSelectedMarkerId->markerData().markerId);
 
     return done;
 }
@@ -946,7 +949,9 @@ void MapMarkerTreeModel::updateTreeItemIndexInfo()
 
     auto updateInfo = [&](MapMarkerTreeItem* _treeItem) -> VisitorReturn
     {
-        _treeItem->setLinearIndex(id);
+        QModelIndex itemIndex = index(_treeItem);
+        setData(itemIndex, id, MapMarkerTreeItem::MarkerLinearIndex);
+        //_treeItem->setLinearIndex(id);
         ++id;
 
         bool inActiveHerarchy{ false };
@@ -958,12 +963,14 @@ void MapMarkerTreeModel::updateTreeItemIndexInfo()
         _treeItem->setInActiveHierarchy(inActiveHerarchy);
         if(inActiveHerarchy)
         {
-            _treeItem->setLinearIndexActiveHierarchy(idActiveHierarchy);
+            setData(itemIndex, idActiveHierarchy, MapMarkerTreeItem::MarkerLinearIndexInActiveHierarchy);
+            //_treeItem->setLinearIndexActiveHierarchy(idActiveHierarchy);
             ++idActiveHierarchy;
         }
         else
         {
-            _treeItem->setLinearIndexActiveHierarchy(-1);
+            setData(itemIndex, -1, MapMarkerTreeItem::MarkerLinearIndexInActiveHierarchy);
+            //_treeItem->setLinearIndexActiveHierarchy(-1);
         }
 
         //qDebug() << Q_FUNC_INFO << "Id: "<< _treeItem->markerData().markerId << "linearIndex: "<< _treeItem->linearIndex() << ", inActiveHierarchy: " << _treeItem->inActiveHierarchy() << ", linearIndexInActiveHierarchy: " << _treeItem->linearIndexActiveHierarchy();
@@ -1016,6 +1023,7 @@ void MapMarkerTreeModel::triggerEndResetModel()
 QDataStream& operator<<(QDataStream& _ds, const MapMarkerTreeModel& _treeModel)
 {
     _ds << *(_treeModel.getRoot())
+        << _treeModel.getIdCounter()
         << _treeModel.getHighestLinearIndexInActiveHierarchy();
 
     return _ds;
@@ -1026,6 +1034,10 @@ QDataStream& operator>>(QDataStream& _ds, MapMarkerTreeModel& _treeModel)
     _treeModel.triggerBeginResetModel();
 
     _ds >> *(_treeModel.getRoot());
+
+    int idCounter;
+    _ds >> idCounter;
+    _treeModel.setIdCounter(idCounter);
 
     int highestLinearIndexInActiveHierarchy;
     _ds >> highestLinearIndexInActiveHierarchy;

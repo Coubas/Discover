@@ -190,6 +190,7 @@ Item
             {
                 //console.log("Adresse : " + get(0).address.text + "\n" + get(0).coordinate)
                 inputHandler.onCursorGeolocComputed(get(0).location)
+                cursor.addName = get(0).address.city
             }
         }
 

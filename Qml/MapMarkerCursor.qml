@@ -11,6 +11,7 @@ import MapBackend 1.0
 MapQuickItem
 {
     id: cursor
+    property string addName: "addName"
     anchorPoint.x: shape.width / 2
     anchorPoint.y:  shape.height / 2
     coordinate: mapBackend.cursorPos
@@ -86,13 +87,13 @@ MapQuickItem
                 //TODO
                 switch (addType.currentValue) {
                 case 0:
-                    tracksManager.addPointToActiveTrack(cursor.coordinate, insertShape.currentText)
+                    tracksManager.addPointToActiveTrack(cursor.addName, cursor.coordinate, insertShape.currentText)
                     break
                 case 1:
-                    tracksManager.addPointAfterFirstSelectedToActiveTrack(cursor.coordinate, insertShape.currentText)
+                    tracksManager.addPointAfterFirstSelectedToActiveTrack(cursor.addName, cursor.coordinate, insertShape.currentText)
                     break
                 case 2:
-                    tracksManager.addPointAsChildOfFirstSelectedToActiveTrack(cursor.coordinate, insertShape.currentText)
+                    tracksManager.addPointAsChildOfFirstSelectedToActiveTrack(cursor.addName, cursor.coordinate, insertShape.currentText)
                     break;
                 }
                 mapBackend.cursorVisible = false

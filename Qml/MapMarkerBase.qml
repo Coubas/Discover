@@ -78,8 +78,19 @@ MapQuickItem
 
             Text
             {
-                text: markerId
-                font.pointSize: mapMarker.shapeWidth * 0.33
+                text: markerLinearIndexInActiveHierarchy
+                font.pointSize: mapMarker.shapeWidth * 0.3
+                font.bold: true
+                color: markerIsSelected ? Material.primary : "white"
+
+                anchors.verticalCenter: shapeLoader.verticalCenter
+                anchors.horizontalCenter: shapeLoader.horizontalCenter
+            }
+
+            Text
+            {
+                text: markerLinearIndexInActiveHierarchy
+                font.pointSize: mapMarker.shapeWidth * 0.25
                 font.bold: true
                 color: markerIsSelected ? "white" : Material.primary
 

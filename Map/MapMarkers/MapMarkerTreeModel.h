@@ -24,6 +24,8 @@ public:
     const MapMarkerTreeItem* getRoot() const { return m_root; }
     int getHighestLinearIndexInActiveHierarchy() const{ return m_highestLinearIndexInActiveHierarchy; }
     void setHighestLinearIndexInActiveHierarchy(int _value) { m_highestLinearIndexInActiveHierarchy = _value; }
+    int getIdCounter() const { return m_idCounter; }
+    void setIdCounter(int _count) { m_idCounter = _count; }
 
     QModelIndex index(int _row, int _column, const QModelIndex& _parent = QModelIndex()) const override;
     QModelIndex index(const MapMarkerTreeItem* _item) const;
@@ -54,9 +56,9 @@ public:
     bool setMarkerSelected(int _markerId, bool _selected = true);
     bool setMarkerCoordinate(int _markerId, const QGeoCoordinate& _coord);
     void removeSelectedMarkers();
-    bool addNewMarker(const QGeoCoordinate& _coord, const QString& _type = "pin", int _parentMarkerId = -1, int _index = -1);
-    bool addNewMarkerAfterFirstSelected(const QGeoCoordinate& _coord, const QString& _type = "pin");
-    bool addNewMarkerAsChildOfFirstSelected(const QGeoCoordinate& _coord, const QString& _type = "pin");
+    bool addNewMarker(const QString& _name, const QGeoCoordinate& _coord, const QString& _type = "pin", int _parentMarkerId = -1, int _index = -1);
+    bool addNewMarkerAfterFirstSelected(const QString& _name, const QGeoCoordinate& _coord, const QString& _type = "pin");
+    bool addNewMarkerAsChildOfFirstSelected(const QString& _name, const QGeoCoordinate& _coord, const QString& _type = "pin");
 
     void updateTreeItemIndexInfo();
     void computeBounds(QPair<double, double>& _latBounds, QPair<double, double>& _lonBounds) const;
@@ -82,6 +84,7 @@ private:
     MapMarkerTreeItem* m_root{nullptr};
     MapMarkerTreeListModel* m_listModel{nullptr};
 
+    int m_idCounter{0};
     int m_highestLinearIndexInActiveHierarchy{-1};
     bool m_waypointsDirty{true};
     QVariantList m_waypoints{};
