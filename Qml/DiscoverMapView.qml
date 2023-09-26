@@ -2,7 +2,7 @@
 //
 //This file is part of Discover.
 //
-//Discover is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+//Discover is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.
 //Discover is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 //You should have received a copy of the GNU General Public License along with Foobar. If not, see <https://www.gnu.org/licenses/>.
 
@@ -22,21 +22,46 @@ import Tracks 1.0
 
 Item
 {
-//    ComboBox
-//    {
-//        z:100
-//        width: 200
-//        anchors.right: parent.right
-//        anchors.rightMargin: 5
+    ComboBox
+    {
+        z:100
+        width: 200
+        anchors.right: parent.right
+        anchors.rightMargin: 5
+        textRole: "text"
+        valueRole: "value"
+        model: [
+            {text: "Roads", value: map.supportedMapTypes.length - 1},
+            {text: "Cycle path", value: 1},
+            {text: "Hiking Trail", value: 5},
+            {text: "Terrain", value: 4}
+        ]
+        onCurrentValueChanged: {
+            //map.activeMapType = map.supportedMapTypes[currentIndex]
+            map.activeMapType = map.supportedMapTypes[currentValue]
+        }
+
 //        model: map.supportedMapTypes
-//        textRole:"name"
 //        currentIndex: map.supportedMapTypes.length - 1
-//        onCurrentIndexChanged: map.activeMapType = map.supportedMapTypes[currentIndex]
+//        onCurrentIndexChanged: {
+//            map.activeMapType = map.supportedMapTypes[currentIndex]
+//        }
 //        delegate: ItemDelegate
 //        {
 //            text: map.supportedMapTypes[index].name
 //        }
-//    }
+        Rectangle
+        {
+            //anchors.fill: parent
+            anchors.verticalCenter: parent.verticalCenter
+            radius: 5
+            z: -1
+            height: parent.height * 0.8
+            width: parent.width
+            color:"white"
+            opacity: 0.8
+        }
+    }
 //    Button
 //    {
 //        text: "Test Button"
@@ -80,10 +105,12 @@ Item
         id: mapPlugin
         name: "osm"
         locales: "fr_FR"
-        PluginParameter {
-            name: "osm.mapping.custom.host"
-            value: "http://a.tile.openstreetmap.fr/osmfr/"
-        }
+        PluginParameter { name: "osm.useragent"; value: "Discover - Tracks Editor" }
+        PluginParameter { name: "osm.mapping.host"; value: "http://osm.tile.server.address/" }
+        PluginParameter { name: "osm.mapping.copyright"; value: "Copyright 2023 Lauryl Escoubas - GPL 3 or later version" }
+        PluginParameter { name: "osm.routing.host"; value: "http://router.project-osrm.org/route/v1/driving/" }
+        PluginParameter { name: "osm.geocoding.host"; value: "http://nominatim.openstreetmap.org/" }
+        PluginParameter { name: "osm.mapping.custom.host"; value: "http://a.tile.openstreetmap.fr/osmfr/" }
     }
 
     Map
