@@ -54,6 +54,7 @@ public slots:
     bool setPointSelected(int _markerId, bool _selected /*= true*/);
     bool setPointCoordinate(int _markerId, const QGeoCoordinate& _coord);
     void removeSelectedPointsFromActiveTrack();
+    void removeAllPointsFromActiveTrack();
 
     // Save, Load, Export
     void saveActiveTrackToFile();

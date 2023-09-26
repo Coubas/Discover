@@ -31,6 +31,7 @@ int MapMarkerTreeModel::size() const
 
 void MapMarkerTreeModel::clear()
 {
+    beginResetModel();
     m_listModel->triggerBeginResetModel();
     m_listModel->setRoot(nullptr);
     delete m_root;
@@ -41,8 +42,10 @@ void MapMarkerTreeModel::clear()
 
     m_listModel->setRoot(m_root);
 
+    m_idCounter = 0;
     m_highestLinearIndexInActiveHierarchy = -1;
     m_listModel->triggerEndResetModel();
+    endResetModel();
 }
 
 QModelIndex MapMarkerTreeModel::index(int _row, int _column, const QModelIndex& _parent/* = QModelIndex()*/) const
@@ -505,6 +508,11 @@ void MapMarkerTreeModel::removeSelectedMarkers()
     {
         updateTreeItemIndexInfo();
     }
+}
+
+void MapMarkerTreeModel::removeAllMarkers()
+{
+    clear();
 }
 
 bool MapMarkerTreeModel::addNewMarker(const QString& _name, const QGeoCoordinate& _coord, const QString& _type /*= "pin"*/, int _parentMarkerId /*= -1*/, int _index /*= -1*/)

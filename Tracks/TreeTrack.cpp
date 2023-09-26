@@ -50,6 +50,11 @@ void TreeTrack::removeSelectedPoints()
     m_tree.removeSelectedMarkers();
 }
 
+void TreeTrack::removeAllPoints()
+{
+    m_tree.removeAllMarkers();
+}
+
 const QString& TreeTrack::name() const
 {
     return m_name;

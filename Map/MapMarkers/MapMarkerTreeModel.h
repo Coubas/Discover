@@ -56,6 +56,7 @@ public:
     bool setMarkerSelected(int _markerId, bool _selected = true);
     bool setMarkerCoordinate(int _markerId, const QGeoCoordinate& _coord);
     void removeSelectedMarkers();
+    void removeAllMarkers();
     bool addNewMarker(const QString& _name, const QGeoCoordinate& _coord, const QString& _type = "pin", int _parentMarkerId = -1, int _index = -1);
     bool addNewMarkerAfterFirstSelected(const QString& _name, const QGeoCoordinate& _coord, const QString& _type = "pin");
     bool addNewMarkerAsChildOfFirstSelected(const QString& _name, const QGeoCoordinate& _coord, const QString& _type = "pin");

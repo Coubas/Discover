@@ -94,6 +94,11 @@ void TracksManager::removeSelectedPointsFromActiveTrack()
     getTreeTrack()->removeSelectedPoints();
 }
 
+void TracksManager::removeAllPointsFromActiveTrack()
+{
+    getTreeTrack()->removeAllPoints();
+}
+
 QString TracksManager::getSaveLoadPath()
 {
     QDir dir = QDir::current();

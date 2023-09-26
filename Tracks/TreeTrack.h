@@ -25,6 +25,7 @@ public:
     bool setPointSelected(int _markerId, bool _selected = true);
     bool setPointCoordinate(int _markerId, const QGeoCoordinate& _coord);
     void removeSelectedPoints();
+    void removeAllPoints();
 //    const QVariantList& getWaypoints() const { return m_points.getWaypoints(); }
 
     const QString& name() const;
