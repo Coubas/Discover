@@ -12,10 +12,10 @@
 #include <QAbstractItemModel>
 
 #include <VisitorReturnEnum.h>
-#include <MapMarkerList.h>
 
 class MapMarkerTreeItem;
 class MapMarkerTreeListModel;
+class QGeoCoordinate;
 
 class MapMarkerTreeModel : public QAbstractItemModel
 {
@@ -58,7 +58,7 @@ public:
 
     MapMarkerTreeListModel* getListModel() {return m_listModel;}
     const MapMarkerTreeListModel* getListModel() const {return m_listModel;}
-    const QVariantList getWaypoints();
+    const QVariantList& getWaypoints();
 
     bool removeMaker(int _markerId);
     bool setMarkerSelected(int _markerId, bool _selected = true);

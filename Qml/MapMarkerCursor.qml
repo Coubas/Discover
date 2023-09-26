@@ -132,10 +132,10 @@ MapQuickItem
             onTriggered: mapBackend.cursorVisible = false
         }
 
-        MenuItem
-        {
-            text: "Log Info"
-            onTriggered: console.log("Marker clicked Cursor" + ", selected : " + cursor.isSelected + "\n Coordinate : " + cursor.coordinate)
-        }
+//        MenuItem
+//        {
+//            text: "Log Info"
+//            onTriggered: console.log("Marker clicked Cursor" + ", selected : " + cursor.isSelected + "\n Coordinate : " + cursor.coordinate)
+//        }
     }
 }

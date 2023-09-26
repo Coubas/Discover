@@ -8,7 +8,6 @@
 
 #include "Tracks/TreeTrack.h"
 
-#include <MapMarkerItem.h>
 #include <MapMarkerTreeItem.h>
 
 TreeTrack::TreeTrack(QObject *parent)

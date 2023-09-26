@@ -89,27 +89,34 @@ Rectangle
                     Layout.fillHeight: true
                     Layout.alignment: Qt.AlignLeft | Qt.AlignTop
 
-                    Rectangle
-                    {
+                    TreeView {
+                        id: treeView
                         anchors.fill: parent
-                        color: "transparent"
+                        //interactive: false
+                        clip: true
+                        boundsBehavior: Flickable.StopAtBounds
+                        property int dragMarkerId: -1
+                        property int dragOveredRow: -1
+                        property var dragOveredRowPart: "none"
+                        model: tracksManager.activeTrack.treeModel
+                        delegate: MapMarkerTreeViewDelegate{}
+                        Component.onCompleted: expandRecursively()
 
-                        TreeView {
-                            id: treeView
-                            anchors.fill: parent
-                            interactive: false
-                            property int dragMarkerId: -1
-                            property int dragOveredRow: -1
-                            property var dragOveredRowPart: "none"
-                            model: tracksManager.treeTrack.treeModel
-                            delegate: MapMarkerTreeViewDelegate{}
-                            Component.onCompleted: expandRecursively()
+                        function resetDragInfo()
+                        {
+                            dragOveredRow = -1
+                            dragOveredRowPart = "none"
+                        }
 
-                            function resetDragInfo()
-                            {
-                                dragOveredRow = -1
-                                dragOveredRowPart = "none"
-                            }
+                        ScrollBar.vertical: ScrollBar
+                        {
+                            policy: ScrollBar.AsNeeded
+                            wheelEnabled: true
+                        }
+
+                        ScrollBar.horizontal: ScrollBar
+                        {
+                            policy: ScrollBar.AsNeeded
                         }
                     }
                 }

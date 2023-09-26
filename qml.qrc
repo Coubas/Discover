@@ -7,11 +7,9 @@
         <file>Qml/CircleMarkerShape.qml</file>
         <file>Qml/CursorMarkerShape.qml</file>
         <file>Qml/PinMarkerShape.qml</file>
-        <file>Qml/MapMarkerListViewItem.qml</file>
         <file>Qml/DiscoverMapView.qml</file>
         <file>Qml/MapRouteBase.qml</file>
         <file>Qml/TextColumnItem.qml</file>
-        <file>Qml/CheckboxColumnItem.qml</file>
         <file>Qml/MarkerIsLoopColumnItem.qml</file>
         <file>Qml/MainMenuBar.qml</file>
         <file>Qml/HelpWindow.qml</file>

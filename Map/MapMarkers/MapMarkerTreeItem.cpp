@@ -405,6 +405,7 @@ QDataStream &operator<<(QDataStream& _ds, const MapMarkerTreeItemData& _data)
     _ds << _data.markerId
         << _data.markerType
         << _data.markerCoordinate
+        << _data.markerName
         << _data.loop
         << _data.selected
         << _data.active;
@@ -417,6 +418,7 @@ QDataStream &operator>>(QDataStream& _ds, MapMarkerTreeItemData& _data)
     _ds >> _data.markerId
         >> _data.markerType
         >> _data.markerCoordinate
+        >> _data.markerName
         >> _data.loop
         >> _data.selected
         >> _data.active;

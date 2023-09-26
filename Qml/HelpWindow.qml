@@ -60,8 +60,8 @@ Window
 
     StackLayout
     {
-        x: subjects.width
-        width: parent.width - subjects.width
+        anchors.left: subjects.right
+        anchors.leftMargin: 25
         currentIndex: subjects.currentIndex
         Item {
             id: createPointTab

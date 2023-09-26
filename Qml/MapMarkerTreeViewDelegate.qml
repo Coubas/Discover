@@ -315,12 +315,12 @@ TreeViewDelegate
             text: "Rename"
             onTriggered: renamePopup.open()
         }
-        MenuItem
-        {
-            text: "Log Info"
-            onTriggered: console.log("Marker id: " + markerId + ", selected: " + markerIsSelected +
-                                     "\nType: " + markerType + ", Pos: " + markerCoordinate)
-        }
+//        MenuItem
+//        {
+//            text: "Log Info"
+//            onTriggered: console.log("Marker id: " + markerId + ", selected: " + markerIsSelected +
+//                                     "\nType: " + markerType + ", Pos: " + markerCoordinate)
+//        }
     }
 
     Popup {

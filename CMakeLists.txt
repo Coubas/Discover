@@ -40,48 +40,43 @@ qt_add_qml_module(Discover
     URI Discover
     VERSION 1.0
     SOURCES
-        Map/MapHelper.h Map/MapHelper.cpp
-        Map/MapBackend.h Map/MapBackend.cpp
-        Map/VecGeoCoord2D.h Map/VecGeoCoord2D.cpp
+        DiscoverMainWindow.h DiscoverMainWindow.cpp
+        GPXExporter.h GPXExporter.cpp
         InputHandler.h InputHandler.cpp
-        Map/MapMarkers/MapMarkerModel.h Map/MapMarkers/MapMarkerModel.cpp
-        Map/MapMarkers/MapMarkerList.h Map/MapMarkers/MapMarkerList.cpp
-        Map/MapMarkers/MapMarkerItem.h Map/MapMarkers/MapMarkerItem.cpp
+        Map/MapBackend.h Map/MapBackend.cpp
+        Map/MapHelper.h Map/MapHelper.cpp
         Map/MapMarkers/MapMarkerTreeItem.h Map/MapMarkers/MapMarkerTreeItem.cpp
         Map/MapMarkers/MapMarkerTreeListModel.h Map/MapMarkers/MapMarkerTreeListModel.cpp
         Map/MapMarkers/MapMarkerTreeModel.h Map/MapMarkers/MapMarkerTreeModel.cpp
         Map/MapMarkers/VisitorReturnEnum.h
+        Map/VecGeoCoord2D.h Map/VecGeoCoord2D.cpp
         Tracks/TracksManager.h Tracks/TracksManager.cpp
-        Tracks/Track.h Tracks/Track.cpp
         Tracks/TreeTrack.h Tracks/TreeTrack.cpp
-        DiscoverMainWindow.h DiscoverMainWindow.cpp
-        GPXExporter.h GPXExporter.cpp
     RESOURCES
-        qtquickcontrols2.conf
-        qml.qrc
-        settings.qrc
         images.qrc
+        qml.qrc
+        qtquickcontrols2.conf
+        settings.qrc
 )
 
 qt_add_resources(Discover "qml"
     PREFIX "/qml"
     FILES
-        Qml/MainWindow.qml
-        Qml/MainMenuBar.qml
-        Qml/MainWindowContent.qml
+        Qml/CircleMarkerShape.qml
+        Qml/CursorMarkerShape.qml
         Qml/DiscoverMapView.qml
         Qml/HelpWindow.qml
+        Qml/MainMenuBar.qml
+        Qml/MainWindow.qml
+        Qml/MainWindowContent.qml
         Qml/MapMarkerBase.qml
         Qml/MapMarkerCursor.qml
-        Qml/MapMarkerListViewItem.qml
+        Qml/MapMarkerTreeViewDelegate.qml
         Qml/MapRouteBase.qml
-        Qml/CursorMarkerShape.qml
-        Qml/PinMarkerShape.qml
-        Qml/CircleMarkerShape.qml
-        Qml/TextColumnItem.qml
         Qml/MarkerIsActiveColumnItem.qml
         Qml/MarkerIsLoopColumnItem.qml
-        Qml/MapMarkerTreeViewDelegate.qml
+        Qml/PinMarkerShape.qml
+        Qml/TextColumnItem.qml
 )
 
 qt_add_resources(Discover "settings"
@@ -92,7 +87,6 @@ qt_add_resources(Discover "settings"
 qt_add_resources(Discover "images"
     PREFIX "/icons"
     FILES
-        moto.ico
         Images/Icons/addPin.png
         Images/Icons/arrowRight.png
         Images/Icons/circle.png
@@ -103,6 +97,7 @@ qt_add_resources(Discover "images"
         Images/Icons/loopPin_filled.png
         Images/Icons/pin.png
         Images/Icons/pin_filled.png
+        moto.ico
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

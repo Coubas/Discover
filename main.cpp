@@ -27,8 +27,6 @@
 #include <InputHandler.h>
 #include <MapBackend.h>
 #include <MapHelper.h>
-#include <MapMarkerList.h>
-#include <MapMarkerModel.h>
 #include <MapMarkerTreeModel.h>
 #include <MapMarkerTreeItem.h>
 #include <TracksManager.h>
@@ -41,12 +39,9 @@ int main(int argc, char *argv[])
 
     qmlRegisterSingletonType<MapHelper>("MapHelper", 1, 0, "MapHelper", &MapHelper::qmlInstance);
     qmlRegisterUncreatableType<MapBackend>("MapBackend", 1, 0,"MapBackend", QStringLiteral("MapBackend should not be created in QML."));
-    qmlRegisterType<MapMarkerModel>("MapMarker", 1, 0, "MapMarkerModel");
     qmlRegisterType<MapMarkerTreeModel>("MapMarker", 1, 0, "MapMarkerTreeModel");
-    qmlRegisterUncreatableType<MapMarkerList>("MapMarker", 1, 0, "MapMarkerList", QStringLiteral("MapMarkerList should not be created in QML."));
     qmlRegisterUncreatableType<MapMarkerTreeItem>("MapMarker", 1, 0, "MapMarkerTreeItem", QStringLiteral("MapMarkerTreeItem should not be created in QML."));
     qmlRegisterUncreatableType<TracksManager>("Tracks", 1, 0, "TracksManager", QStringLiteral("TracksManager should not be created in QML."));
-    qmlRegisterUncreatableType<Track>("Tracks", 1, 0, "Track", QStringLiteral("Track should not be created in QML."));
     qmlRegisterUncreatableType<TreeTrack>("Tracks", 1, 0, "TreeTrack", QStringLiteral("TreeTrack should not be created in QML."));
     qmlRegisterUncreatableType<InputHandler>("Inputs", 1, 0, "InputHandler", QStringLiteral("InputHandler should not be created in QML."));
 
@@ -61,7 +56,7 @@ int main(int argc, char *argv[])
     TracksManager tracksManager;
     tracksManager.connectInputs(&inputHdl);
 
-//    MapMarkerTreeModel *modelToBeTested = tracksManager.getTreeTrack()->getTreeModel();
+//    MapMarkerTreeModel *modelToBeTested = tracksManager.getActiveTrack()->getTreeModel();
 //    auto tester = new QAbstractItemModelTester(modelToBeTested, QAbstractItemModelTester::FailureReportingMode::Fatal);
 
     QQmlApplicationEngine engine;
@@ -79,7 +74,7 @@ int main(int argc, char *argv[])
     model->setRootPath(QDir::currentPath());
 
     QTreeView *tree = new QTreeView(wdg);
-    tree->setModel(tracksManager.getTreeTrack()->getTreeModel());
+    tree->setModel(tracksManager.getActiveTrack()->getTreeModel());
     //tree->setModel(simpleModel);
     tree->show();
 
@@ -94,11 +89,11 @@ int main(int argc, char *argv[])
         qDebug() << Q_FUNC_INFO << "btn click";
         QGeoCoordinate randCoord = QGeoCoordinate((double)rand() / RAND_MAX, (double)rand() / RAND_MAX);
         tracksManager.setPointCoordinate(prevID, randCoord);
-        //tracksManager.getTreeTrack()->getTreeModel()->setData(tracksManager.getTreeTrack()->getTreeModel()->index(0, 0), QVariant::fromValue<QGeoCoordinate>(randCoord), MapMarkerTreeItem::MarkerCoordinate);
-//        tracksManager.getTreeTrack()->getTreeModel()->setData(tracksManager.getTreeTrack()->getTreeModel()->index(0, 1), (double)rand() / RAND_MAX, MapMarkerTreeItem::MarkerCoordinateLatitude);
-//        tracksManager.getTreeTrack()->getTreeModel()->setData(tracksManager.getTreeTrack()->getTreeModel()->index(0, 2), (double)rand() / RAND_MAX, MapMarkerTreeItem::MarkerCoordinateLongitude);
+        //tracksManager.getActiveTrack()->getTreeModel()->setData(tracksManager.getActiveTrack()->getTreeModel()->index(0, 0), QVariant::fromValue<QGeoCoordinate>(randCoord), MapMarkerTreeItem::MarkerCoordinate);
+//        tracksManager.getActiveTrack()->getTreeModel()->setData(tracksManager.getActiveTrack()->getTreeModel()->index(0, 1), (double)rand() / RAND_MAX, MapMarkerTreeItem::MarkerCoordinateLatitude);
+//        tracksManager.getActiveTrack()->getTreeModel()->setData(tracksManager.getActiveTrack()->getTreeModel()->index(0, 2), (double)rand() / RAND_MAX, MapMarkerTreeItem::MarkerCoordinateLongitude);
         prevID = rand();
-        tracksManager.getTreeTrack()->getTreeModel()->setData(tracksManager.getTreeTrack()->getTreeModel()->index(0, 0), prevID, MapMarkerTreeItem::MarkerId);
+        tracksManager.getActiveTrack()->getTreeModel()->setData(tracksManager.getActiveTrack()->getTreeModel()->index(0, 0), prevID, MapMarkerTreeItem::MarkerId);
         //simpleModel->setData(simpleModel->index(1,1), rand());
     });
 #endif // TEST_SIMPLETREEVIEW

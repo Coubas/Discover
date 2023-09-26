@@ -383,7 +383,7 @@ void MapMarkerTreeModel::visit(std::function<VisitorReturn (MapMarkerTreeItem *)
     m_root->visit(_function, _postChildFunction);
 }
 
-const QVariantList MapMarkerTreeModel::getWaypoints()
+const QVariantList& MapMarkerTreeModel::getWaypoints()
 {
     if(!m_waypointsDirty)
     {
@@ -540,7 +540,7 @@ bool MapMarkerTreeModel::addNewMarker(const QString& _name, const QGeoCoordinate
             }
             beginInsertRows(id, insertIndex, insertIndex);
 
-            qDebug() << Q_FUNC_INFO << "beginInsertRows(" << id  << ", " << insertIndex  << ", " << insertIndex << ")";
+//            qDebug() << Q_FUNC_INFO << "beginInsertRows(" << id  << ", " << insertIndex  << ", " << insertIndex << ")";
             if(_treeItem->inActiveHierarchy())
             {
                 int listInsterIndex = _treeItem->linearIndexActiveHierarchy() + getNbVisibleChild(*_treeItem) + 1;
@@ -551,7 +551,7 @@ bool MapMarkerTreeModel::addNewMarker(const QString& _name, const QGeoCoordinate
                 }
 
                 m_listModel->triggerBeginInsertRows(listInsterIndex, listInsterIndex);
-                qDebug() << Q_FUNC_INFO << "triggerBeginInsertRows(" << listInsterIndex << ", " << listInsterIndex << ")";
+//                qDebug() << Q_FUNC_INFO << "triggerBeginInsertRows(" << listInsterIndex << ", " << listInsterIndex << ")";
             }
 
             MapMarkerTreeItemData markerData{ m_idCounter++, _type, _coord, _name};

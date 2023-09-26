@@ -29,32 +29,38 @@ MapRoute
     //smooth: true
     opacity: 0.8
 
-    MouseArea
-    {
-        id: routeMouseArea
-        anchors.fill: route
-        acceptedButtons: Qt.LeftButton | Qt.RightButton
-        onClicked: (mouse) =>
-                   {
-                       if (mouse.button === Qt.LeftButton)
-                       {
-                           //tracksManager.setPointSelected(markerId, !markerIsSelected)
-                       }
-                       else if (mouse.button === Qt.RightButton)
-                       {
-                           routeContextMenu.popup()
-                       }
-                   }
-    }
+//    MouseArea
+//    {
+//        id: routeMouseArea
+//        anchors.fill: route
+//        acceptedButtons: Qt.LeftButton | Qt.RightButton
+//        onClicked: (mouse) =>
+//                   {
+//                       if (mouse.button === Qt.LeftButton)
+//                       {
+//                           //tracksManager.setPointSelected(markerId, !markerIsSelected)
+//                       }
+//                       else if (mouse.button === Qt.RightButton)
+//                       {
+//                           routeContextMenu.popup()
+//                       }
+//                   }
 
-    Menu
-    {
-        id: routeContextMenu
-        closePolicy: Popup.CloseOnReleaseOutside | Popup.CloseOnEscape
-        MenuItem
-        {
-            text: "This is a useless context menu"
-            //                            onTriggered: tracksManager.removePointFromActiveTrack(markerId)
-        }
-    }
+//        Rectangle
+//        {
+//            anchors.fill: parent
+//            color: "red"
+//        }
+//    }
+
+//    Menu
+//    {
+//        id: routeContextMenu
+//        closePolicy: Popup.CloseOnReleaseOutside | Popup.CloseOnEscape
+//        MenuItem
+//        {
+//            text: "This is a useless context menu"
+//            //                            onTriggered: tracksManager.removePointFromActiveTrack(markerId)
+//        }
+//    }
 }

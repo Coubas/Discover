@@ -11,7 +11,6 @@
 
 #include <QObject>
 
-#include <Track.h>
 #include <TreeTrack.h>
 
 class InputHandler;
@@ -19,36 +18,22 @@ class InputHandler;
 class TracksManager : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(Track* activeTrack READ getActiveTrack CONSTANT)
+    Q_PROPERTY(TreeTrack* activeTrack READ getActiveTrack CONSTANT)
     Q_PROPERTY(QString activeTrackName READ getActiveTrackName WRITE setActiveTrackName NOTIFY activeTrackNameChanged FINAL)
     Q_PROPERTY(const QVariantList& activeTrackWaypoints READ getActiveTrackWaypoints CONSTANT FINAL)
-
-    Q_PROPERTY(TreeTrack* treeTrack READ getTreeTrack CONSTANT)
-    Q_PROPERTY(const QVariantList& treeTrackWaypoints READ getTreeTrackWaypoints CONSTANT FINAL)
 
 public:
     explicit TracksManager(QObject *parent = nullptr);
 
     void connectInputs(const InputHandler *_inputHdl);
 
-    const Track* getActiveTrack() const {return &m_track;}
-    Track* getActiveTrack() {return &m_track;}
+    const TreeTrack* getActiveTrack() const {return &m_treeTrack;}
+    TreeTrack* getActiveTrack() {return &m_treeTrack;}
     const QString& getActiveTrackName() const;
     void setActiveTrackName(const QString& _name);
-    const QVariantList& getActiveTrackWaypoints() const
+    const QVariantList& getActiveTrackWaypoints()
     {
-//        for (const QVariant& v : getActiveTrack()->getWaypoints())
-//        {
-//            qDebug() << Q_FUNC_INFO << v;
-//        }
-        return getActiveTrack()->getWaypoints();
-    }
-
-    const TreeTrack* getTreeTrack() const {return &m_treeTrack;}
-    TreeTrack* getTreeTrack() {return &m_treeTrack;}
-    const QVariantList getTreeTrackWaypoints()
-    {
-        return m_treeTrack.getTreeModel()->getWaypoints();
+        return getActiveTrack()->getTreeModel()->getWaypoints();
     }
 
 signals:
@@ -70,7 +55,6 @@ public slots:
     void exportActiveTrackToGPX();
 
 private:
-    Track m_track{};
     TreeTrack m_treeTrack{};
 
     int m_selectedPoint;

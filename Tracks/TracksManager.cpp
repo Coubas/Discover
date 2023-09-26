@@ -13,6 +13,7 @@
 
 #include <InputHandler.h>
 #include <GPXExporter.h>
+#include <MapMarkerTreeItem.h>
 
 TracksManager::TracksManager(QObject *parent)
     : QObject{parent}
@@ -58,53 +59,53 @@ void TracksManager::connectInputs(const InputHandler* _inputHdl)
 
 const QString &TracksManager::getActiveTrackName() const
 {
-    return getTreeTrack()->name();
+    return getActiveTrack()->name();
 }
 
 void TracksManager::setActiveTrackName(const QString &_name)
 {
-    getTreeTrack()->setName(_name);
+    getActiveTrack()->setName(_name);
     emit activeTrackNameChanged();
 }
 
 bool TracksManager::addPointToActiveTrack(const QString& _name, const QGeoCoordinate &_coord, const QString& _type /*= "pin"*/, int _insertIndex /*= -1*/)
 {
-    return getTreeTrack()->addPoint(_name, _coord, _type, _insertIndex);
+    return getActiveTrack()->addPoint(_name, _coord, _type, _insertIndex);
 }
 
 bool TracksManager::addPointAfterFirstSelectedToActiveTrack(const QString& _name, const QGeoCoordinate &_coord, const QString &_type /*= "pin"*/)
 {
-    return getTreeTrack()->addPointAfterFirstSelected(_name, _coord, _type);
+    return getActiveTrack()->addPointAfterFirstSelected(_name, _coord, _type);
 }
 
 bool TracksManager::addPointAsChildOfFirstSelectedToActiveTrack(const QString& _name, const QGeoCoordinate &_coord, const QString &_type /*= "pin"*/)
 {
-    return getTreeTrack()->addPointAsChildOfFirstSelected(_name, _coord, _type);
+    return getActiveTrack()->addPointAsChildOfFirstSelected(_name, _coord, _type);
 }
 
 bool TracksManager::removePointFromActiveTrack(int _markerId)
 {
-    return getTreeTrack()->removePoint(_markerId);
+    return getActiveTrack()->removePoint(_markerId);
 }
 
 bool TracksManager::setPointSelected(int _markerId, bool _selected /*= true*/)
 {
-    return getTreeTrack()->setPointSelected(_markerId, _selected);
+    return getActiveTrack()->setPointSelected(_markerId, _selected);
 }
 
 bool TracksManager::setPointCoordinate(int _markerId, const QGeoCoordinate &_coord)
 {
-    return getTreeTrack()->setPointCoordinate(_markerId, _coord);
+    return getActiveTrack()->setPointCoordinate(_markerId, _coord);
 }
 
 void TracksManager::removeSelectedPointsFromActiveTrack()
 {
-    getTreeTrack()->removeSelectedPoints();
+    getActiveTrack()->removeSelectedPoints();
 }
 
 void TracksManager::removeAllPointsFromActiveTrack()
 {
-    getTreeTrack()->removeAllPoints();
+    getActiveTrack()->removeAllPoints();
 }
 
 QString TracksManager::getSaveLoadPath()
@@ -134,7 +135,7 @@ void TracksManager::saveActiveTrackToFile()
 
         QDataStream out(&file);
         out.setVersion(QDataStream::Qt_6_5);
-        out << *getTreeTrack();
+        out << *getActiveTrack();
 
         file.close();
     }
@@ -157,8 +158,8 @@ void TracksManager::loadActiveTrackFromFile()
 
         QDataStream in(&file);
         in.setVersion(QDataStream::Qt_6_5);
-        getTreeTrack()->clear();
-        in >> *getTreeTrack();
+        getActiveTrack()->clear();
+        in >> *getActiveTrack();
 
         file.close();
         emit activeTrackNameChanged();
@@ -181,7 +182,7 @@ void TracksManager::exportActiveTrackToGPX()
             return;
         }
 
-        GPXExporter exporter{*getTreeTrack()};
+        GPXExporter exporter{*getActiveTrack()};
         exporter.writeFile(&file);
 
         file.close();

@@ -128,12 +128,12 @@ MapQuickItem
                     text: "Remove"
                     onTriggered: tracksManager.removePointFromActiveTrack(markerId)
                 }
-                MenuItem
-                {
-                    text: "Log Info"
-                    onTriggered: console.log("Marker id: " + markerId + ", selected: " + markerIsSelected + ", state:" + mapMarker.state +
-                                             "\nType: " + markerType + ", Pos: " + markerCoordinate + ", active: " + markerIsActive + ", loop: " + markerIsLoop)
-                }
+//                MenuItem
+//                {
+//                    text: "Log Info"
+//                    onTriggered: console.log("Marker id: " + markerId + ", selected: " + markerIsSelected + ", state:" + mapMarker.state +
+//                                             "\nType: " + markerType + ", Pos: " + markerCoordinate + ", active: " + markerIsActive + ", loop: " + markerIsLoop)
+//                }
             }
         }
 }

@@ -57,7 +57,7 @@ Item
 //           var coord = tracksManager.activeTrackWaypoints[i]
 //           routeQuery.addWaypoint(coord)
 //        }
-        var waypoints = tracksManager.treeTrackWaypoints
+        var waypoints = tracksManager.activeTrackWaypoints
         for (var i = 0; i < waypoints.length; i++)
         {
            var coord = waypoints[i]
@@ -172,7 +172,7 @@ Item
         MapItemView
         {
             id: mapMarkers
-            model: tracksManager.treeTrack.treeModel.listModel
+            model: tracksManager.activeTrack.treeModel.listModel
             delegate: MapMarkerBase{}
         }
     }
