@@ -1,3 +1,11 @@
+//Copyright 2023 Lauryl Escoubas
+//
+//This file is part of Discover.
+//
+//Discover is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+//Discover is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//You should have received a copy of the GNU General Public License along with Foobar. If not, see <https://www.gnu.org/licenses/>.
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -14,82 +22,7 @@ ApplicationWindow
     width: 1920
     height: 1080
 
-    menuBar: MenuBar
-    {
-        Menu
-        {
-            title: "File"
-            MenuItem
-            {
-                text:"Save active track"
-                onTriggered: tracksManager.saveActiveTrackToFile()
-            }
-
-            MenuItem
-            {
-                text:"Load track"
-                onTriggered: tracksManager.loadActiveTrackFromFile()
-            }
-
-            MenuItem
-            {
-                text:"Export active track to GPX"
-                onTriggered: tracksManager.exportActiveTrackToGPX()
-            }
-        }
-
-        Menu
-        {
-            title: "Edit"
-            MenuItem
-            {
-                text:"Remove All Markers"
-                onTriggered: removeAllPopup.open()
-            }
-        }
-    }
-
-    Popup {
-        id: removeAllPopup
-        modal: true
-        focus: true
-        width:  500
-        height: 150
-        x: mainWindow.width * 0.5 - width * 0.5
-        y: mainWindow.height * 0.35 - height * 0.5
-        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
-
-        ColumnLayout
-        {
-            anchors {
-                horizontalCenter: parent.horizontalCenter
-                verticalCenter: parent.verticalCenter
-            }
-
-            Text
-            {
-                text: "Are you sure you want to remove all the points ?"
-            }
-            RowLayout
-            {
-                Layout.alignment: Qt.AlignCenter | Qt.AlignHCenter
-                Button
-                {
-                    text: "Yes"
-                    onClicked:
-                    {
-                        tracksManager.removeAllPointsFromActiveTrack()
-                        removeAllPopup.close()
-                    }
-                }
-                Button
-                {
-                    text: "No"
-                    onClicked: removeAllPopup.close()
-                }
-            }
-        }
-    }
+    menuBar: MainMenuBar {}
 
 //    header: ToolBar
 //    {

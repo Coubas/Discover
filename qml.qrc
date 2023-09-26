@@ -13,5 +13,7 @@
         <file>Qml/TextColumnItem.qml</file>
         <file>Qml/CheckboxColumnItem.qml</file>
         <file>Qml/MarkerIsLoopColumnItem.qml</file>
+        <file>Qml/MainMenuBar.qml</file>
+        <file>Qml/HelpWindow.qml</file>
     </qresource>
 </RCC>
