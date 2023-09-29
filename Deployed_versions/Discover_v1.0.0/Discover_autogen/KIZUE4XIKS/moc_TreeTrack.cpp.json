@@ -1,0 +1,32 @@
+{
+    "classes": [
+        {
+            "className": "TreeTrack",
+            "object": true,
+            "properties": [
+                {
+                    "constant": true,
+                    "designable": true,
+                    "final": false,
+                    "index": 0,
+                    "name": "treeModel",
+                    "read": "getTreeModel",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "MapMarkerTreeModel*",
+                    "user": false
+                }
+            ],
+            "qualifiedClassName": "TreeTrack",
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QObject"
+                }
+            ]
+        }
+    ],
+    "inputFile": "TreeTrack.h",
+    "outputRevision": 68
+}

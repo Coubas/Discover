@@ -1,0 +1,264 @@
+{
+    "classes": [
+        {
+            "className": "TracksManager",
+            "object": true,
+            "properties": [
+                {
+                    "constant": true,
+                    "designable": true,
+                    "final": false,
+                    "index": 0,
+                    "name": "activeTrack",
+                    "read": "getActiveTrack",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "TreeTrack*",
+                    "user": false
+                },
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": true,
+                    "index": 1,
+                    "name": "activeTrackName",
+                    "notify": "activeTrackNameChanged",
+                    "read": "getActiveTrackName",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "QString",
+                    "user": false,
+                    "write": "setActiveTrackName"
+                },
+                {
+                    "constant": true,
+                    "designable": true,
+                    "final": true,
+                    "index": 2,
+                    "name": "activeTrackWaypoints",
+                    "read": "getActiveTrackWaypoints",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "QVariantList",
+                    "user": false
+                }
+            ],
+            "qualifiedClassName": "TracksManager",
+            "signals": [
+                {
+                    "access": "public",
+                    "name": "activeTrackNameChanged",
+                    "returnType": "void"
+                }
+            ],
+            "slots": [
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_name",
+                            "type": "QString"
+                        },
+                        {
+                            "name": "_coord",
+                            "type": "QGeoCoordinate"
+                        },
+                        {
+                            "name": "_type",
+                            "type": "QString"
+                        },
+                        {
+                            "name": "_insertIndex",
+                            "type": "int"
+                        }
+                    ],
+                    "name": "addPointToActiveTrack",
+                    "returnType": "bool"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_name",
+                            "type": "QString"
+                        },
+                        {
+                            "name": "_coord",
+                            "type": "QGeoCoordinate"
+                        },
+                        {
+                            "name": "_type",
+                            "type": "QString"
+                        }
+                    ],
+                    "isCloned": true,
+                    "name": "addPointToActiveTrack",
+                    "returnType": "bool"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_name",
+                            "type": "QString"
+                        },
+                        {
+                            "name": "_coord",
+                            "type": "QGeoCoordinate"
+                        }
+                    ],
+                    "isCloned": true,
+                    "name": "addPointToActiveTrack",
+                    "returnType": "bool"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_name",
+                            "type": "QString"
+                        },
+                        {
+                            "name": "_coord",
+                            "type": "QGeoCoordinate"
+                        },
+                        {
+                            "name": "_type",
+                            "type": "QString"
+                        }
+                    ],
+                    "name": "addPointAfterFirstSelectedToActiveTrack",
+                    "returnType": "bool"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_name",
+                            "type": "QString"
+                        },
+                        {
+                            "name": "_coord",
+                            "type": "QGeoCoordinate"
+                        }
+                    ],
+                    "isCloned": true,
+                    "name": "addPointAfterFirstSelectedToActiveTrack",
+                    "returnType": "bool"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_name",
+                            "type": "QString"
+                        },
+                        {
+                            "name": "_coord",
+                            "type": "QGeoCoordinate"
+                        },
+                        {
+                            "name": "_type",
+                            "type": "QString"
+                        }
+                    ],
+                    "name": "addPointAsChildOfFirstSelectedToActiveTrack",
+                    "returnType": "bool"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_name",
+                            "type": "QString"
+                        },
+                        {
+                            "name": "_coord",
+                            "type": "QGeoCoordinate"
+                        }
+                    ],
+                    "isCloned": true,
+                    "name": "addPointAsChildOfFirstSelectedToActiveTrack",
+                    "returnType": "bool"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_markerId",
+                            "type": "int"
+                        }
+                    ],
+                    "name": "removePointFromActiveTrack",
+                    "returnType": "bool"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_markerId",
+                            "type": "int"
+                        },
+                        {
+                            "name": "_selected",
+                            "type": "bool"
+                        }
+                    ],
+                    "name": "setPointSelected",
+                    "returnType": "bool"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_markerId",
+                            "type": "int"
+                        },
+                        {
+                            "name": "_coord",
+                            "type": "QGeoCoordinate"
+                        }
+                    ],
+                    "name": "setPointCoordinate",
+                    "returnType": "bool"
+                },
+                {
+                    "access": "public",
+                    "name": "removeSelectedPointsFromActiveTrack",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "name": "removeAllPointsFromActiveTrack",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "name": "saveActiveTrackToFile",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "name": "loadActiveTrackFromFile",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "name": "exportActiveTrackToGPX",
+                    "returnType": "void"
+                }
+            ],
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QObject"
+                }
+            ]
+        }
+    ],
+    "inputFile": "TracksManager.h",
+    "outputRevision": 68
+}

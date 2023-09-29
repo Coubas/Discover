@@ -1,0 +1,147 @@
+{
+    "classes": [
+        {
+            "className": "InputHandler",
+            "object": true,
+            "qualifiedClassName": "InputHandler",
+            "signals": [
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_centerCoord",
+                            "type": "QGeoCoordinate"
+                        },
+                        {
+                            "name": "_mouseCoord",
+                            "type": "QGeoCoordinate"
+                        },
+                        {
+                            "name": "_zoomFactor",
+                            "type": "int"
+                        }
+                    ],
+                    "name": "mapZoomed",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_newMapCenter",
+                            "type": "QGeoCoordinate"
+                        }
+                    ],
+                    "name": "mapDraged",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_mouseCoord",
+                            "type": "QGeoCoordinate"
+                        }
+                    ],
+                    "name": "mapClicked",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_coord",
+                            "type": "QGeoCoordinate"
+                        }
+                    ],
+                    "name": "cursorPosChanged",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_loc",
+                            "type": "QGeoLocation"
+                        }
+                    ],
+                    "name": "cursorGeolocComputed",
+                    "returnType": "void"
+                }
+            ],
+            "slots": [
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_centerCoord",
+                            "type": "QGeoCoordinate"
+                        },
+                        {
+                            "name": "_mouseCoord",
+                            "type": "QGeoCoordinate"
+                        },
+                        {
+                            "name": "_zoomFactor",
+                            "type": "int"
+                        }
+                    ],
+                    "name": "onMapZoomed",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_newMapCenter",
+                            "type": "QGeoCoordinate"
+                        }
+                    ],
+                    "name": "onMapDraged",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_mouseCoord",
+                            "type": "QGeoCoordinate"
+                        }
+                    ],
+                    "name": "onMapClicked",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_loc",
+                            "type": "QGeoLocation"
+                        }
+                    ],
+                    "name": "onCursorGeolocComputed",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_coord",
+                            "type": "QGeoCoordinate"
+                        }
+                    ],
+                    "name": "onCursorPosChanged",
+                    "returnType": "void"
+                }
+            ],
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QObject"
+                }
+            ]
+        }
+    ],
+    "inputFile": "InputHandler.h",
+    "outputRevision": 68
+}

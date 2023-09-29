@@ -1,0 +1,150 @@
+{
+    "classes": [
+        {
+            "classInfos": [
+                {
+                    "name": "QML.Element",
+                    "value": "auto"
+                }
+            ],
+            "className": "MapBackend",
+            "object": true,
+            "properties": [
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": true,
+                    "index": 0,
+                    "name": "zoomLevel",
+                    "notify": "zoomLevelUpdated",
+                    "read": "currentZoomLevel",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "float",
+                    "user": false,
+                    "write": "setCurrentZoomLevel"
+                },
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": true,
+                    "index": 1,
+                    "name": "locusPos",
+                    "notify": "locusPosUptated",
+                    "read": "locusPos",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "QGeoCoordinate",
+                    "user": false,
+                    "write": "setLocusPos"
+                },
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": true,
+                    "index": 2,
+                    "name": "cursorPos",
+                    "notify": "cursorPosChanged",
+                    "read": "cursorPos",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "QGeoCoordinate",
+                    "user": false,
+                    "write": "setCursorPos"
+                },
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": true,
+                    "index": 3,
+                    "name": "cursorVisible",
+                    "notify": "cursorVisibleChanged",
+                    "read": "cursorVisible",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "bool",
+                    "user": false,
+                    "write": "setCursorVisible"
+                }
+            ],
+            "qualifiedClassName": "MapBackend",
+            "signals": [
+                {
+                    "access": "public",
+                    "name": "locusPosUptated",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "name": "zoomLevelUpdated",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "name": "cursorPosChanged",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "name": "cursorVisibleChanged",
+                    "returnType": "void"
+                }
+            ],
+            "slots": [
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_clickCoord",
+                            "type": "QGeoCoordinate"
+                        }
+                    ],
+                    "name": "onMapClick",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_centerCoord",
+                            "type": "QGeoCoordinate"
+                        },
+                        {
+                            "name": "_mouseCoord",
+                            "type": "QGeoCoordinate"
+                        },
+                        {
+                            "name": "_zoomFactor",
+                            "type": "int"
+                        }
+                    ],
+                    "name": "onMapZoom",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_newMapCenter",
+                            "type": "QGeoCoordinate"
+                        }
+                    ],
+                    "name": "onMapDrag",
+                    "returnType": "void"
+                }
+            ],
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QObject"
+                }
+            ]
+        }
+    ],
+    "inputFile": "MapBackend.h",
+    "outputRevision": 68
+}

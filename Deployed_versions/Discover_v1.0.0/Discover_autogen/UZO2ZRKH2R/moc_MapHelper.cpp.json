@@ -1,0 +1,24 @@
+{
+    "classes": [
+        {
+            "className": "MapHelper",
+            "methods": [
+                {
+                    "access": "public",
+                    "name": "getPosition",
+                    "returnType": "float"
+                }
+            ],
+            "object": true,
+            "qualifiedClassName": "MapHelper",
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QObject"
+                }
+            ]
+        }
+    ],
+    "inputFile": "MapHelper.h",
+    "outputRevision": 68
+}

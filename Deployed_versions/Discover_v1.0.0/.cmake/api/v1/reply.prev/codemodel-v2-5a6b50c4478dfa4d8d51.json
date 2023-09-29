@@ -1,0 +1,115 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-MinSizeRel-d0920255b5c2d96ed092.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6
+					]
+				}
+			],
+			"name" : "MinSizeRel",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Discover",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Discover::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Discover-MinSizeRel-3d95eb65f2d0752979f7.json",
+					"name" : "Discover",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Discover_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Discover_autogen-MinSizeRel-d86ee2f0b68447027013.json",
+					"name" : "Discover_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Discover_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Discover_autogen_timestamp_deps-MinSizeRel-fc5c7523fca3e3a7f0e4.json",
+					"name" : "Discover_autogen_timestamp_deps",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Discover_qmlimportscan::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Discover_qmlimportscan-MinSizeRel-9e548288944c8ccd2e1d.json",
+					"name" : "Discover_qmlimportscan",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Discover_qmltyperegistration::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Discover_qmltyperegistration-MinSizeRel-5d537ec2e466d5a0e77b.json",
+					"name" : "Discover_qmltyperegistration",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Discover_tooling::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Discover_tooling-MinSizeRel-c6faea1cfc523226d67c.json",
+					"name" : "Discover_tooling",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "all_qmltyperegistrations::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-all_qmltyperegistrations-MinSizeRel-1b275838fcdf6dc66b77.json",
+					"name" : "all_qmltyperegistrations",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "S:/Qt_Projects/build-Discover-Desktop_Qt_6_5_2_MinGW_64_bit-MinSizeRel",
+		"source" : "S:/Qt_Projects/Discover"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}

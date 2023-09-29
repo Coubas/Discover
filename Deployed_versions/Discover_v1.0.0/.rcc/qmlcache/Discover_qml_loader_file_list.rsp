@@ -1,0 +1,14 @@
+/qt/qml/Discover/Qml/MainWindow.qml
+/qt/qml/Discover/Qml/MainWindowContent.qml
+/qt/qml/Discover/Qml/DiscoverMapView.qml
+/qt/qml/Discover/Qml/MapMarkerBase.qml
+/qt/qml/Discover/Qml/MapMarkerCursor.qml
+/qt/qml/Discover/Qml/MapMarkerListViewItem.qml
+/qt/qml/Discover/Qml/MapRouteBase.qml
+/qt/qml/Discover/Qml/CursorMarkerShape.qml
+/qt/qml/Discover/Qml/PinMarkerShape.qml
+/qt/qml/Discover/Qml/CircleMarkerShape.qml
+/qt/qml/Discover/Qml/TextColumnItem.qml
+/qt/qml/Discover/Qml/MarkerIsActiveColumnItem.qml
+/qt/qml/Discover/Qml/MarkerIsLoopColumnItem.qml
+/qt/qml/Discover/Qml/MapMarkerTreeViewDelegate.qml

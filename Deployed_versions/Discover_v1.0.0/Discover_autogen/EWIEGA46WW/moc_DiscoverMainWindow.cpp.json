@@ -1,0 +1,41 @@
+{
+    "classes": [
+        {
+            "className": "DiscoverMainWindow",
+            "object": true,
+            "qualifiedClassName": "DiscoverMainWindow",
+            "slots": [
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_coord",
+                            "type": "QGeoCoordinate"
+                        }
+                    ],
+                    "name": "displayCurrentPos",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "_loc",
+                            "type": "QGeoLocation"
+                        }
+                    ],
+                    "name": "displayAdress",
+                    "returnType": "void"
+                }
+            ],
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QObject"
+                }
+            ]
+        }
+    ],
+    "inputFile": "DiscoverMainWindow.h",
+    "outputRevision": 68
+}
