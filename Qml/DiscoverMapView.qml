@@ -107,7 +107,7 @@ Item
         locales: "fr_FR"
         PluginParameter { name: "osm.useragent"; value: "Discover - Tracks Editor" }
         PluginParameter { name: "osm.mapping.host"; value: "http://osm.tile.server.address/" }
-        PluginParameter { name: "osm.mapping.copyright"; value: "Copyright 2023 Lauryl Escoubas - GPL 3 or later version" }
+        //PluginParameter { name: "osm.mapping.copyright"; value: "Copyright 2023 Lauryl Escoubas - GPL 3 or later version" }
         PluginParameter { name: "osm.routing.host"; value: "http://router.project-osrm.org/route/v1/driving/" }
         PluginParameter { name: "osm.geocoding.host"; value: "http://nominatim.openstreetmap.org/" }
         PluginParameter { name: "osm.mapping.custom.host"; value: "http://a.tile.openstreetmap.fr/osmfr/" }

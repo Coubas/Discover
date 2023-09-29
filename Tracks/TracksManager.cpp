@@ -2,7 +2,7 @@
 //
 //This file is part of Discover.
 //
-//Discover is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+//Discover is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.
 //Discover is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 //You should have received a copy of the GNU General Public License along with Foobar. If not, see <https://www.gnu.org/licenses/>.
 
@@ -18,12 +18,7 @@
 TracksManager::TracksManager(QObject *parent)
     : QObject{parent}
 {
-//    m_track.setName("My first track");
-//    m_track.addPoint(QGeoCoordinate(43.77483, 3.86748), "circle");
-//    m_track.addPoint(QGeoCoordinate(43.78895, 3.80571));
-//    m_track.addPoint(QGeoCoordinate(43.82016, 3.81434));
-//    m_track.addPoint(QGeoCoordinate(43.89330, 3.85638));
-
+#ifdef QT_DEBUG
     m_treeTrack.setName("My first tree track");
     // id, type, coord, loop, selected, active
     MapMarkerTreeItemData item1{0, "pin", QGeoCoordinate(43.844537, 3.699751), "Name 1", false, false, true};
@@ -45,6 +40,7 @@ TracksManager::TracksManager(QObject *parent)
     m_treeTrack.getTreeModel()->getRoot()->appendChild(item3);
     m_treeTrack.getTreeModel()->setIdCounter(8);
     m_treeTrack.getTreeModel()->updateTreeItemIndexInfo();
+#endif //QT_DEBUG
 }
 
 void TracksManager::connectInputs(const InputHandler* _inputHdl)
