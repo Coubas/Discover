@@ -1,6 +1,0 @@
-<RCC>
-  <qresource prefix="/qt/qml/Discover">
-    <file alias="qmldir">S:/Qt_Projects/build-Discover-Desktop_Qt_6_5_2_MinGW_64_bit-MinSizeRel/Discover/qmldir</file>
-  </qresource>
-</RCC>
-
