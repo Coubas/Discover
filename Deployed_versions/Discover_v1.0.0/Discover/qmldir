@@ -1,0 +1,4 @@
+module Discover
+typeinfo Discover.qmltypes
+prefer :/qt/qml/Discover/
+

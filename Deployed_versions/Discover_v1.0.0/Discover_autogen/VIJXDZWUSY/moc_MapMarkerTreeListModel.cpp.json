@@ -1,0 +1,17 @@
+{
+    "classes": [
+        {
+            "className": "MapMarkerTreeListModel",
+            "object": true,
+            "qualifiedClassName": "MapMarkerTreeListModel",
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QAbstractItemModel"
+                }
+            ]
+        }
+    ],
+    "inputFile": "MapMarkerTreeListModel.h",
+    "outputRevision": 68
+}

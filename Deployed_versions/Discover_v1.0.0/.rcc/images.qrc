@@ -1,0 +1,16 @@
+<RCC>
+  <qresource prefix="/icons">
+    <file alias="Images/Icons/addPin.png">S:/Qt_Projects/Discover/Images/Icons/addPin.png</file>
+    <file alias="Images/Icons/arrowRight.png">S:/Qt_Projects/Discover/Images/Icons/arrowRight.png</file>
+    <file alias="Images/Icons/circle.png">S:/Qt_Projects/Discover/Images/Icons/circle.png</file>
+    <file alias="Images/Icons/circle_filled.png">S:/Qt_Projects/Discover/Images/Icons/circle_filled.png</file>
+    <file alias="Images/Icons/cursor.png">S:/Qt_Projects/Discover/Images/Icons/cursor.png</file>
+    <file alias="Images/Icons/loop.png">S:/Qt_Projects/Discover/Images/Icons/loop.png</file>
+    <file alias="Images/Icons/loopPin.png">S:/Qt_Projects/Discover/Images/Icons/loopPin.png</file>
+    <file alias="Images/Icons/loopPin_filled.png">S:/Qt_Projects/Discover/Images/Icons/loopPin_filled.png</file>
+    <file alias="Images/Icons/pin.png">S:/Qt_Projects/Discover/Images/Icons/pin.png</file>
+    <file alias="Images/Icons/pin_filled.png">S:/Qt_Projects/Discover/Images/Icons/pin_filled.png</file>
+    <file alias="moto.ico">S:/Qt_Projects/Discover/moto.ico</file>
+  </qresource>
+</RCC>
+

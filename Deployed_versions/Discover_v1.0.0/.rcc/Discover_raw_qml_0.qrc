@@ -1,0 +1,9 @@
+<RCC>
+  <qresource prefix="/qt/qml/Discover/">
+    <file alias="images.qrc">S:/Qt_Projects/Discover/images.qrc</file>
+    <file alias="qml.qrc">S:/Qt_Projects/Discover/qml.qrc</file>
+    <file alias="qtquickcontrols2.conf">S:/Qt_Projects/Discover/qtquickcontrols2.conf</file>
+    <file alias="settings.qrc">S:/Qt_Projects/Discover/settings.qrc</file>
+  </qresource>
+</RCC>
+
